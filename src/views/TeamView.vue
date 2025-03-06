@@ -1,8 +1,8 @@
 <template>
   <Breadcrumb breadcrumb="Team" />
   <div>
-    <TeamList @team-updated="fetchTeams" />
-    <TeamRegister @team-registered="fetchTeams" />
+    <TeamList ref="teamList" />
+    <TeamRegister @team-registered="handleTeamRegistered" />
     <TeamUpdate />
   </div>
 </template>
@@ -13,30 +13,13 @@ import Breadcrumb from "../partials/AppBreadcrumb.vue";
 import TeamList from "../components/team/TeamList.vue";
 import TeamRegister from "../components/team/TeamRegister.vue";
 import TeamUpdate from "../components/team/TeamUpdate.vue";
-import axios from "axios";
 
-const teams = ref([]);
+const teamList = ref();
 
-// 팀 목록 가져오기 (자식 컴포넌트의 변경을 감지하여 업데이트합니다.)
-const fetchTeams = async () => {
-  try {
-    const response = await axios.get("/teams", {
-      params: {
-        page: 0,
-        size: 10,
-      },
-    });
-    teams.value = response.data.content;
-  } catch (error) {
-    if (error.response) {
-      console.error("Error data:", error.response.data);
-      console.error("Error status:", error.response.status);
-      console.error("Error headers:", error.response.headers);
-    } else if (error.request) {
-      console.error("Error request:", error.request);
-    } else {
-      console.error("Error message:", error.message);
-    }
+const handleTeamRegistered = () => {
+  console.log("Team registered event received.");
+  if (teamList.value) {
+    teamList.value.fetchTeams(); // 이 부분은 TeamList 컴포넌트가 가지고 있는 데이터 갱신 메서드를 호출하는 예시입니다.
   }
 };
 </script>
