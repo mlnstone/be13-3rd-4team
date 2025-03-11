@@ -89,10 +89,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import Breadcrumb from '../partials/AppBreadcrumb.vue'
+import { ref } from "vue";
+import Breadcrumb from "../../partials/AppBreadcrumb.vue";
 
-const open = ref(false)
+const open = ref(false);
 </script>
 
 <style>

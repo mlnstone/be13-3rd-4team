@@ -1,69 +1,31 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Dashboard from "../views/AppDashboard.vue";
-import Forms from "../views/AppForms.vue";
-import Tables from "../views/AppTables.vue";
-import UIElements from "../views/UIElements.vue";
-import Login from "../views/AppLogin.vue";
-import Modal from "../views/AppModal.vue";
-import Chart from "../views/ChartView.vue";
-import Card from "../views/CardView.vue";
-import Blank from "../views/BlankView.vue";
-import NotFound from "../views/NotFound.vue";
-import Team from "../views/TeamView.vue";
+import Dashboard from "@/views/sample/AppDashboard.vue";
+import Forms from "@/views/sample/AppForms.vue";
+import Tables from "@/views/sample/AppTables.vue";
+import UIElements from "@/views/sample/UIElements.vue";
+import Login from "@/views/sample/AppLogin.vue";
+import Modal from "@/views/sample/AppModal.vue";
+import Chart from "@/views/sample/ChartView.vue";
+import Card from "@/views/sample/CardView.vue";
+import Blank from "@/views/BlankView.vue";
+//----------------------------
+import NotFound from "@/views/sample/NotFound.vue";
+import Team from "@/views/TeamView.vue";
+import Post from "@/views/PostView.vue";
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/",
-    name: "Login",
-    component: Login,
-    meta: { layout: "empty" },
-  },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
-  },
-  {
-    path: "/forms",
-    name: "Forms",
-    component: Forms,
-  },
-  {
-    path: "/cards",
-    name: "Cards",
-    component: Card,
-  },
-  {
-    path: "/tables",
-    name: "Tables",
-    component: Tables,
-  },
-  {
-    path: "/ui-elements",
-    name: "UIElements",
-    component: UIElements,
-  },
-  {
-    path: "/modal",
-    name: "Modal",
-    component: Modal,
-  },
-  {
-    path: "/charts",
-    name: "Chart",
-    component: Chart,
-  },
-  {
-    path: "/blank",
-    name: "Blank",
-    component: Blank,
-  },
-
-  {
-    path: "/team",
-    name: "Team",
-    component: Team,
-  },
+  { path: "/", name: "Login", component: Login, meta: { layout: "empty" } },
+  { path: "/dashboard", name: "Dashboard", component: Dashboard },
+  { path: "/forms", name: "Forms", component: Forms },
+  { path: "/cards", name: "Cards", component: Card },
+  { path: "/tables", name: "Tables", component: Tables },
+  { path: "/ui-elements", name: "UIElements", component: UIElements },
+  { path: "/modal", name: "Modal", component: Modal },
+  { path: "/charts", name: "Chart", component: Chart },
+  { path: "/blank", name: "Blank", component: Blank },
+  //----------------------------
+  { path: "/team", name: "Team", component: Team },
+  { path: "/post", name: "Post", component: Post },
 
   { path: "/:pathMatch(.*)*", component: NotFound },
 ];

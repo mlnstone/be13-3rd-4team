@@ -145,25 +145,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import Breadcrumb from '../partials/AppBreadcrumb.vue'
+import { ref } from "vue";
+import Breadcrumb from "../../partials/AppBreadcrumb.vue";
 
 interface User {
-  username: string
-  email: string
-  password: string
-  confirm: string
+  username: string;
+  email: string;
+  password: string;
+  confirm: string;
 }
 
 const user = ref<User>({
-  username: '',
-  email: '',
-  password: '',
-  confirm: '',
-})
+  username: "",
+  email: "",
+  password: "",
+  confirm: "",
+});
 
 const register = () => {
-  const data = JSON.parse(JSON.stringify(user.value))
-  console.log('Registered: ', data)
-}
+  const data = JSON.parse(JSON.stringify(user.value));
+  console.log("Registered: ", data);
+};
 </script>

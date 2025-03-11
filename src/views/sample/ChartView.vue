@@ -8,15 +8,7 @@
 
       <div class="mt-6">
         <div
-          class="
-            my-6
-            overflow-hidden
-            bg-white
-            rounded-md
-            shadow
-            grid grid-cols-2
-            gap-3
-          "
+          class="my-6 overflow-hidden bg-white rounded-md shadow grid grid-cols-2 gap-3"
         >
           <LineChart />
           <DonutChart />
@@ -29,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumb from "../partials/AppBreadcrumb.vue";
+import Breadcrumb from "../../partials/AppBreadcrumb.vue";
 import DonutChart from "@/components/charts/DonutChart.vue";
 import LineChart from "@/components/charts/LineChart.vue";
-import BarChart from "../components/charts/BarChart.vue";
-import AreaChart from "../components/charts/AreaChart.vue";
+import BarChart from "../../components/charts/BarChart.vue";
+import AreaChart from "../../components/charts/AreaChart.vue";
 </script>

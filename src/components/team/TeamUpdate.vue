@@ -1,10 +1,22 @@
 <template>
-  <div class="p-6 bg-white rounded-md shadow-md">
-    <h2 class="text-lg font-semibold text-gray-700 capitalize">팀 수정</h2>
-    <!-- TODO: 팀 수정 Form 구현 -->
-  </div>
+  <button @click="updateTeam">팀 수정</button>
 </template>
+<script setup lang="ts">
+import { defineEmits } from "vue";
+import axios from "axios";
 
-<script lang="ts" setup>
-// 팀 수정 로직 구현 예정
+const emit = defineEmits(["team-updated"]);
+
+const updateTeam = async () => {
+  try {
+    // 팀 등록 API 호출
+    await axios.put("/teams", {
+      /* 팀 수정에 필요한 데이터 */
+    });
+    // 성공적으로 팀이 수정되면 부모 컴포넌트에 알림
+    emit("team-updated");
+  } catch (error) {
+    // 에러 처리
+  }
+};
 </script>
