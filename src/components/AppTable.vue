@@ -29,19 +29,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(p, index) in posts"
-              :key="index"
-              class="hover:bg-gray-200"
-            >
+            <tr v-for="(post, i) in posts" :key="i" class="hover:bg-gray-200">
               <td class="px-6 py-4 text-lg text-gray-500 border-b">
-                {{ p }}
+                {{ post.postNo }}
               </td>
               <td class="px-6 py-4 text-gray-700 border-b">
-                {{ p }}
+                {{ post.title }}
               </td>
-              <td class="px-6 py-4 text-gray-500 border-b">홍길동</td>
-              <td class="px-6 py-4 text-gray-500 border-b">2025.03.11</td>
+              <td class="px-6 py-4 text-gray-500 border-b">
+                {{ post.userName }}
+              </td>
+              <td class="px-6 py-4 text-gray-500 border-b">
+                {{ new Date(post.createdAt).toLocaleDateString() }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -51,22 +51,13 @@
 </template>
 
 <script>
-import { useTableData } from "@/hooks/useTableData";
 export default {
   name: "AppTable",
   props: {
     posts: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },
-  setup() {
-    const { simpleTableData } = useTableData();
-    return {
-      simpleTableData,
-    };
-  },
 };
 </script>
-
-<style></style>

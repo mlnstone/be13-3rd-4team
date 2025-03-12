@@ -24,6 +24,6 @@ const handleTeamRegistered = () => {
 
 // 컴포넌트 마운트 시 팀 목록을 가져옴
 onMounted(() => {
-  fetchTeams();
+  teamList.value.fetchTeams();
 });
 </script>
