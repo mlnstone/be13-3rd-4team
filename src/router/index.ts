@@ -3,13 +3,13 @@ import Dashboard from "@/views/sample/AppDashboard.vue";
 import Forms from "@/views/sample/AppForms.vue";
 import Tables from "@/views/sample/AppTables.vue";
 import UIElements from "@/views/sample/UIElements.vue";
-import Login from "@/views/sample/AppLogin.vue";
 import Modal from "@/views/sample/AppModal.vue";
 import Chart from "@/views/sample/ChartView.vue";
 import Card from "@/views/sample/CardView.vue";
-import Blank from "@/views/BlankView.vue";
 //----------------------------
 import NotFound from "@/views/sample/NotFound.vue";
+import Blank from "@/views/BlankView.vue";
+import Login from "@/views/AppLogin.vue";
 import Team from "@/views/TeamView.vue";
 import Post from "@/views/PostView.vue";
 
