@@ -109,6 +109,7 @@
       :posts="postData.content"
       :current-page="page"
       :items-per-page="parseInt(size)"
+      :total-pages="postData.totalPages"
       @set-page="setPage"
     />
     <!-- 페이징 -->
@@ -151,7 +152,7 @@ export default {
     // 데이터를 가져오는 메소드
     fetchPostData() {
       axios
-        .get("/posts", {
+        .get("/posts/search", {
           // 백엔드에서 데이터를 가져옴
           params: {
             boardType: this.boardType,
@@ -166,6 +167,9 @@ export default {
         })
         .catch((error) => {
           console.error("데이터를 불러오는 중, 오류 발생 :", error); // 오류 처리
+          // 에러 발생 시 페이지 번호 초기화 및 데이터 재로드
+          this.page = 1;
+          this.fetchPostData();
         });
     },
     // 분류별로 데이터를 가져오는 메소드
@@ -173,27 +177,32 @@ export default {
       this.boardType = type;
       this.fetchPostData();
     },
-    // 검색 데이터를 가져오는 메소드
-    searchData() {
-      axios
-        .get("/posts/search", {
-          params: {
-            boardType: this.boardType,
-            option: this.selectOption,
-            keyword: this.searchQuery,
-            page: this.page - 1, // 현재 페이지 번호 -1 (0 기반 인덱스)
-            size: this.size,
-            // sort: "postNo,DESC", // 역순으로 정렬
-          },
-        })
-        .then((response) => {
-          console.log("검색 응답 데이터:", response.data); // 응답 데이터 로그 추가
-          this.postData = response.data; // 응답 데이터를 postData에 저장
-        })
-        .catch((error) => {
-          console.error("검색 중 오류 발생 :", error); // 오류 처리
-        });
+    // 페이징 시 값 변경 메소드
+    setPage(page) {
+      this.page = page; // 부모 컴포넌트에서 페이지 업데이트
+      this.fetchPostData(); // 데이터 재 호출
     },
+    // 검색 데이터를 가져오는 메소드
+    // searchData() {
+    //   axios
+    //     .get("/posts/search", {
+    //       params: {
+    //         boardType: this.boardType,
+    //         option: this.selectOption,
+    //         keyword: this.searchQuery,
+    //         page: this.page - 1, // 현재 페이지 번호 -1 (0 기반 인덱스)
+    //         size: this.size,
+    //         // sort: "postNo,DESC", // 역순으로 정렬
+    //       },
+    //     })
+    //     .then((response) => {
+    //       console.log("검색 응답 데이터:", response.data); // 응답 데이터 로그 추가
+    //       this.postData = response.data; // 응답 데이터를 postData에 저장
+    //     })
+    //     .catch((error) => {
+    //       console.error("검색 중 오류 발생 :", error); // 오류 처리
+    //     });
+    // },
   },
 };
 </script>

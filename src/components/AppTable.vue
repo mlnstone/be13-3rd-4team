@@ -74,32 +74,39 @@
 export default {
   name: "AppTable",
   props: {
+    // 부모로 부터 받아오는 값들
     posts: {
       type: Array,
+      default: () => [], // 기본값을 빈 배열로 설정
+      required: true,
+    },
+    currentPage: {
+      type: Number,
+      default: 1,
+    },
+    itemsPerPage: {
+      type: Number,
+      default: 10,
+    },
+    totalPages: {
+      type: Number,
       required: true,
     },
   },
-  data() {
-    return {
-      currentPage: 1,
-      itemsPerPage: 10,
-    };
-  },
+  emits: ["set-page"], // 이벤트 정의 (부모에게 값을 전달)
+  // data() {
+  //   return {
+  //     // 컴포넌트 내부 변수
+  //   };
+  // },
   computed: {
     paginatedPosts() {
-      // 현재 페이지 번호에 따라 시작 인덱스를 계산합니다.
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      // posts 배열에서 해당 범위의 게시물을 추출합니다.
-      return this.posts.slice(start, start + this.itemsPerPage);
-    },
-    totalPages() {
-      // 전체 게시물 수에 따라 총 페이지 수를 계산합니다.
-      return Math.ceil(this.posts.length / this.itemsPerPage);
+      return this.posts; // posts 배열 직접 반환
     },
   },
   methods: {
     setPage(page) {
-      this.currentPage = page;
+      this.$emit("set-page", page);
     },
   },
 };
