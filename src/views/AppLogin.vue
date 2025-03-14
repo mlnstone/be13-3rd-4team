@@ -84,16 +84,16 @@
 
       <form class="mt-4" @submit.prevent="login">
         <label class="block">
-          <span class="text-sm text-gray-700">Email</span>
+          <span class="text-sm text-gray-700">사용자 이름</span>
           <input
-            type="email"
+            type="text"
             class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-            v-model="email"
+            v-model="userName"
           />
         </label>
 
         <label class="block mt-3">
-          <span class="text-sm text-gray-700">Password</span>
+          <span class="text-sm text-gray-700">비밀번호</span>
           <input
             type="password"
             class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
@@ -107,6 +107,7 @@
               <input
                 type="checkbox"
                 class="text-indigo-600 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                v-model="rememberMe"
               />
               <span class="mx-2 text-sm text-gray-600">내 정보 기억</span>
             </label>
@@ -149,22 +150,43 @@
 </template>
 
 <script>
+import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const router = useRouter();
-    const email = ref("johndoe@mail.com");
+    const userName = ref("example");
     const password = ref("@#!@#asdf1231!_!@#");
+    const rememberMe = ref(false); // 체크박스 여부
 
-    function login() {
-      router.push("/dashboard");
+    async function login() {
+      try {
+        const response = await axios.post("/auth/login", {
+          username: userName.value,
+          password: password.value,
+        });
+        console.log(response);
+        const token = response.data.accessToken;
+        console.log(response.data.message);
+        localStorage.setItem("token", token);
+        // 내 정보 기억하기
+        if (rememberMe.value) {
+          console.log(response.data.refreshToken);
+          console.log("내 정보 기억 체크됨 (임시)");
+        }
+        router.push("/dashboard");
+      } catch (err) {
+        // error.value = "잘못된 사용자 이름 또는 비밀번호입니다.";
+        console.log("로그인 실패");
+      }
     }
 
     return {
-      email,
+      userName,
       password,
+      rememberMe,
       login,
     };
   },
