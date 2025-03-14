@@ -12,6 +12,7 @@ import Blank from "@/views/BlankView.vue";
 import Login from "@/views/AppLogin.vue";
 import Team from "@/views/TeamView.vue";
 import Post from "@/views/PostView.vue";
+import SignUp from "@/views/SignUp.vue";
 
 const routes: Array<RouteRecordRaw> = [
   { path: "/", name: "Login", component: Login, meta: { layout: "empty" } },
@@ -24,6 +25,12 @@ const routes: Array<RouteRecordRaw> = [
   { path: "/charts", name: "Chart", component: Chart },
   { path: "/blank", name: "Blank", component: Blank },
   //----------------------------
+  {
+    path: "/sign-up",
+    name: "SignUp",
+    component: SignUp,
+    meta: { layout: "empty" },
+  },
   { path: "/team", name: "Team", component: Team },
   { path: "/post", name: "Post", component: Post },
 
