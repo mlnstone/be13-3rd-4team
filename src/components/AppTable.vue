@@ -34,7 +34,7 @@
             <tr
               v-for="(post, i) in paginatedPosts"
               :key="i"
-              class="hover:bg-gray-200"
+              class="hover:bg-gray-200 cursor-pointer"
             >
               <td class="px-6 py-4 text-lg text-gray-500 border-b">
                 {{ post.postNo }}
@@ -57,11 +57,29 @@
         >
           <div class="flex mr-4 rounded">
             <a
+              href="#"
+              @click="prevPage"
+              class="px-3 py-2 ml-0 leading-tight text-indigo-700 bg-white border border-r-0 border-gray-200 rounded-l hover:bg-indigo-500 hover:text-white"
+              ><span>Previous</span></a
+            >
+            <a
+              href="#"
               v-for="page in totalPages"
               :key="page"
+              :class="
+                page === currentPage
+                  ? 'bg-indigo-500 text-white'
+                  : 'text-indigo-700'
+              "
               @click="setPage(page)"
-              class="px-3 py-2 leading-tight text-indigo-700 bg-white border border-r-0 border-gray-200 hover:bg-indigo-500 hover:text-white"
+              class="px-3 py-2 leading-tight bg-white border border-r-0 border-gray-200 hover:bg-indigo-500 hover:text-white"
               ><span>{{ page }}</span></a
+            >
+            <a
+              href="#"
+              @click="nextPage"
+              class="px-3 py-2 leading-tight text-indigo-700 bg-white border border-gray-200 rounded-r hover:bg-indigo-500 hover:text-white"
+              ><span>Next</span></a
             >
           </div>
         </div>
@@ -107,6 +125,16 @@ export default {
   methods: {
     setPage(page) {
       this.$emit("set-page", page);
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.$emit("set-page", this.currentPage - 1);
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.$emit("set-page", this.currentPage + 1);
+      }
     },
   },
 };
