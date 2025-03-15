@@ -163,7 +163,7 @@ export default {
 
     async function login() {
       try {
-        const response = await axios.post("/auth/login", {
+        const response = await axios.post("http://localhost:8087/auth/login", {
           username: userName.value,
           password: password.value,
         });

@@ -189,7 +189,7 @@ export default {
       }
 
       axios
-        .get("/posts/search", { params })
+        .get("http://localhost:8087/posts/search", { params })
         .then((response) => {
           console.log("응답 데이터:", response.data); // 응답 데이터 로그 추가
           this.postData = response.data; // 응답 데이터를 postData에 저장
