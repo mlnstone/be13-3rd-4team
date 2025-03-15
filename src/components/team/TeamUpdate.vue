@@ -3,14 +3,14 @@
 </template>
 <script setup lang="ts">
 import { defineEmits } from "vue";
-import axios from "axios";
+import api from "@/api";
 
 const emit = defineEmits(["team-updated"]);
 
 const updateTeam = async () => {
   try {
     // 팀 등록 API 호출
-    await axios.put("http://localhost:8087/teams", {
+    await api.put("/teams", {
       /* 팀 수정에 필요한 데이터 */
     });
     // 성공적으로 팀이 수정되면 부모 컴포넌트에 알림
