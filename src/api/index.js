@@ -1,12 +1,16 @@
-import axios from 'axios';
+mport axios from 'axios';
+
+const baseURL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://183.99.3.15:8087'  // 배포 환경
+    : 'http://localhost:8087';    // 개발 환경
 
 const api = axios.create({
-  baseURL: process.env.VUE_APP_API_URL || "http://183.99.3.15:8087", // 기본값 설정
+  baseURL: baseURL,
   headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json"  // 응답 데이터 타입 명시
+    'Content-Type': 'application/json',
   },
-  withCredentials: true // CORS 요청 시 인증정보 포함
+  withCredentials: true,
 });
 
 export default api;
