@@ -142,7 +142,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, defineExpose } from "vue";
-import axios from "axios";
+import api from "@/api";
 import TeamListItem from "./TeamListItem.vue";
 
 const teams = ref([]);
@@ -150,7 +150,7 @@ const teams = ref([]);
 // 팀 목록 가져오기
 const fetchTeams = async () => {
   try {
-    const response = await axios.get("http://localhost:8087/teams", {
+    const response = await api.get("/teams", {
       params: {
         page: 0,
         size: 10,
