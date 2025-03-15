@@ -150,7 +150,7 @@ const teams = ref([]);
 // 팀 목록 가져오기
 const fetchTeams = async () => {
   try {
-    const response = await axios.get("/teams", {
+    const response = await axios.get("http://localhost:8087/teams", {
       params: {
         page: 0,
         size: 10,

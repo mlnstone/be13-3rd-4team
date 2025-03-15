@@ -10,7 +10,7 @@ const emit = defineEmits(["team-updated"]);
 const updateTeam = async () => {
   try {
     // 팀 등록 API 호출
-    await axios.put("/teams", {
+    await axios.put("http://localhost:8087/teams", {
       /* 팀 수정에 필요한 데이터 */
     });
     // 성공적으로 팀이 수정되면 부모 컴포넌트에 알림

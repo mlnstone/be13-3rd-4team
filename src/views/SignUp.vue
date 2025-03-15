@@ -157,7 +157,7 @@ export default {
 
     async function signUp() {
       try {
-        const response = await axios.post("/auth/join", {
+        const response = await axios.post("http://localhost:8087/auth/join", {
           username: userName.value,
           password: password.value,
           confirmPassword: confirmPassword.value,
