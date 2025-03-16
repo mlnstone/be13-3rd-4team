@@ -13,7 +13,7 @@
           />
         </svg>
       </li>
-      <li :key="index" class="flex items-center">
+      <li class="flex items-center">
         <a :href="'/' + breadcrumb" class="text-gray-600">{{
           breadcrumbName
         }}</a>
@@ -22,9 +22,9 @@
   </nav>
 </template>
 <script lang="ts" setup>
-import { defineProps, computed } from 'vue'
-const props = defineProps<{ breadcrumb: string }>()
+import { defineProps, computed } from "vue";
+const props = defineProps<{ breadcrumb: string }>();
 const breadcrumbName = computed(() => {
-  return props.breadcrumb.toUpperCase()
-})
+  return props.breadcrumb.toUpperCase();
+});
 </script>
