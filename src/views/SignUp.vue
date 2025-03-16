@@ -165,8 +165,6 @@ export default {
           phoneNum: phoneNum.value,
         });
         console.log(response);
-        // const token = response.data.accessToken;
-        // localStorage.setItem("token", token);
 
         router.push("/");
       } catch (err) {

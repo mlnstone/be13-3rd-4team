@@ -81,7 +81,6 @@
         </svg>
         <span class="text-2xl font-semibold text-gray-700">모여봄</span>
       </div>
-
       <form class="mt-4" @submit.prevent="login">
         <label class="block">
           <span class="text-sm text-gray-700">사용자 이름</span>
@@ -151,7 +150,7 @@
 
 <script>
 import api from "@/api";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -161,6 +160,15 @@ export default {
     const password = ref("@#!@#asdf1231!_!@#");
     const rememberMe = ref(false); // 체크박스 여부
 
+    // 컴포넌트 마운트 시 토큰 존재 여부 확인
+    onMounted(() => {
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (accessToken) {
+        // 로그인 되어있으면 돌려보냄
+        router.push("/dashboard");
+      }
+    });
+
     async function login() {
       try {
         const response = await api.post("/auth/login", {
@@ -168,13 +176,14 @@ export default {
           password: password.value,
         });
         console.log(response);
-        const token = response.data.accessToken;
+        const accessToken = response.data.accessToken;
         console.log(response.data.message);
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("accessToken", accessToken);
         // 내 정보 기억하기
         if (rememberMe.value) {
-          console.log(response.data.refreshToken);
-          console.log("내 정보 기억 체크됨 (임시)");
+          const refreshToken = response.data.refreshToken;
+          localStorage.setItem("refreshToken", refreshToken);
+          console.log("내 정보 기억 체크됨");
         }
         router.push("/dashboard");
       } catch (err) {

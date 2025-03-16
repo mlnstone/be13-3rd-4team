@@ -138,6 +138,7 @@ import AppTable from "../components/team/TeamTable.vue";
 import ModalLayout from "../components/ModalLayout.vue"; // ModalLayout 컴포넌트 import
 import TeamAdd from "../components/team/TeamAdd.vue"; // TeamAdd 컴포넌트 import
 import api from "@/api";
+
 export default {
   name: "TeamView",
   components: {
@@ -154,7 +155,8 @@ export default {
       size: 10,
       searchQuery: "", // 추가된 데이터 속성
       selectOption: "",
-      isAddTeamModalOpen: false, // 모달 표시 여부
+      isAddTeamModalOpen: false,
+      selectedTeam: null,
     };
   },
   mounted() {
@@ -213,6 +215,7 @@ export default {
     closeAddTeamModal() {
       this.isAddTeamModalOpen = false;
     },
+    // 팀 추가 모달
     handleTeamAddSubmit(data) {
       // TeamAdd 컴포넌트에서 제출된 데이터 처리
       console.log("제출된 데이터:", data);
@@ -235,6 +238,10 @@ export default {
         });
 
       this.closeAddTeamModal(); // 모달 닫기
+    },
+    // 팀 선택 모달
+    handleTeamSelected(team) {
+      this.selectedTeam = team;
     },
   },
 };

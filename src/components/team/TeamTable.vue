@@ -35,6 +35,7 @@
               v-for="(post, i) in paginatedPosts"
               :key="i"
               class="hover:bg-gray-200 cursor-pointer"
+              @click="openModal(post)"
             >
               <td class="px-6 py-4 text-lg text-gray-500 border-b">
                 {{ post.no }}
@@ -49,6 +50,13 @@
                 {{ post.projectStatus }}
               </td>
             </tr>
+            <ModalLayout
+              v-if="isModalOpen"
+              :title="selectedPost.teamName"
+              @close="closeModal"
+            >
+              <TeamSingleView v-if="selectedTeam" :team="selectedTeam" />
+            </ModalLayout>
           </tbody>
         </table>
         <!-- 페이징 버튼 -->
@@ -89,8 +97,20 @@
 </template>
 
 <script>
+import ModalLayout from "../ModalLayout.vue";
+import TeamSingleView from "../team/TeamSingleView.vue";
 export default {
   name: "TeamTable",
+  components: {
+    ModalLayout,
+    TeamSingleView,
+  },
+  data() {
+    return {
+      isModalOpen: false,
+      selectedTeam: {},
+    };
+  },
   props: {
     // 부모로 부터 받아오는 값들
     posts: {
@@ -111,7 +131,7 @@ export default {
       required: true,
     },
   },
-  emits: ["set-page"], // 이벤트 정의 (부모에게 값을 전달)
+  emits: ["set-page", "team-selected"], // 이벤트 정의 (부모에게 값을 전달)
   // data() {
   //   return {
   //     // 컴포넌트 내부 변수
@@ -135,6 +155,14 @@ export default {
       if (this.currentPage < this.totalPages) {
         this.$emit("set-page", this.currentPage + 1);
       }
+    },
+    openModal(post) {
+      this.isModalOpen = true;
+      this.selectedPost = post;
+      this.$emit("team-selected", post); // 이벤트 발생
+    },
+    closeModal() {
+      this.isModalOpen = false;
     },
   },
 };

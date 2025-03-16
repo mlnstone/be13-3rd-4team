@@ -1,14 +1,6 @@
 <template>
   <header
-    class="
-      flex
-      items-center
-      justify-between
-      px-6
-      py-2
-      bg-white
-      border-b-4 border-indigo-600
-    "
+    class="flex items-center justify-between px-6 py-2 bg-white border-b-4 border-indigo-600"
   >
     <div class="flex items-center">
       <button
@@ -45,20 +37,7 @@
         </span>
 
         <input
-          class="
-            w-32
-            pl-10
-            pr-4
-            py-2
-            text-indigo-600
-            border-gray-200
-            rounded-md
-            sm:w-64
-            focus:border-indigo-600
-            focus:ring
-            focus:ring-opacity-40
-            focus:ring-indigo-500
-          "
+          class="w-32 pl-10 pr-4 py-2 text-indigo-600 border-gray-200 rounded-md sm:w-64 focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
           type="text"
           placeholder="Search"
         />
@@ -96,30 +75,12 @@
 
           <div
             v-show="notificationOpen"
-            class="
-              absolute
-              right-0
-              mt-2
-              w-80
-              bg-white
-              rounded-lg
-              shadow-xl
-              overflow-hidden
-              z-10
-            "
+            class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl overflow-hidden z-10"
             style="width: 20rem"
           >
             <a
               href="#"
-              class="
-                flex
-                items-center
-                px-4
-                py-3
-                text-gray-600
-                hover:text-white hover:bg-indigo-600
-                -mx-2
-              "
+              class="flex items-center px-4 py-3 text-gray-600 hover:text-white hover:bg-indigo-600 -mx-2"
             >
               <img
                 class="h-8 w-8 rounded-full object-cover mx-1"
@@ -136,15 +97,7 @@
             </a>
             <a
               href="#"
-              class="
-                flex
-                items-center
-                px-4
-                py-3
-                text-gray-600
-                hover:text-white hover:bg-indigo-600
-                -mx-2
-              "
+              class="flex items-center px-4 py-3 text-gray-600 hover:text-white hover:bg-indigo-600 -mx-2"
             >
               <img
                 class="h-8 w-8 rounded-full object-cover mx-1"
@@ -158,15 +111,7 @@
             </a>
             <a
               href="#"
-              class="
-                flex
-                items-center
-                px-4
-                py-3
-                text-gray-600
-                hover:text-white hover:bg-indigo-600
-                -mx-2
-              "
+              class="flex items-center px-4 py-3 text-gray-600 hover:text-white hover:bg-indigo-600 -mx-2"
             >
               <img
                 class="h-8 w-8 rounded-full object-cover mx-1"
@@ -184,15 +129,7 @@
             </a>
             <a
               href="#"
-              class="
-                flex
-                items-center
-                px-4
-                py-3
-                text-gray-600
-                hover:text-white hover:bg-indigo-600
-                -mx-2
-              "
+              class="flex items-center px-4 py-3 text-gray-600 hover:text-white hover:bg-indigo-600 -mx-2"
             >
               <img
                 class="h-8 w-8 rounded-full object-cover mx-1"
@@ -210,17 +147,7 @@
       <div class="relative">
         <button
           @click="dropdownOpen = !dropdownOpen"
-          class="
-            relative
-            z-10
-            block
-            w-8
-            h-8
-            overflow-hidden
-            rounded-full
-            shadow
-            focus:outline-none
-          "
+          class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"
         >
           <img
             class="object-cover w-full h-full"
@@ -245,28 +172,11 @@
         >
           <div
             v-show="dropdownOpen"
-            class="
-              absolute
-              right-0
-              z-20
-              w-48
-              py-1
-              mt-2
-              bg-white
-              rounded-lg
-              shadow-xl
-            "
+            class="absolute right-0 z-20 w-48 py-1 mt-2 bg-white rounded-lg shadow-xl"
           >
             <a
               href="#"
-              class="
-                px-4
-                py-2
-                flex
-                rounded-md
-                text-sm text-gray-700
-                hover:bg-indigo-600 hover:text-white
-              "
+              class="px-4 py-2 flex rounded-md text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -282,18 +192,11 @@
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                 />
               </svg>
-              Profile</a
+              프로필</a
             >
             <a
               href="#"
-              class="
-                flex
-                rounded-md
-                px-4
-                py-2
-                text-sm text-gray-700
-                hover:bg-indigo-600 hover:text-white
-              "
+              class="flex rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -314,18 +217,12 @@
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              Settings</a
+              설정</a
             >
             <router-link
+              @click="logout"
               to="/"
-              class="
-                flex
-                px-4
-                py-2
-                rounded-md
-                text-sm text-gray-700
-                hover:bg-indigo-600 hover:text-white
-              "
+              class="flex px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -341,7 +238,7 @@
                   d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                 />
               </svg>
-              Log out</router-link
+              로그아웃</router-link
             >
           </div>
         </transition>
@@ -350,11 +247,27 @@
   </header>
 </template>
 
-<script setup lang="ts">
+<script>
 import { ref } from "vue";
 import { useSidebar } from "../hooks/useSidebar";
 
-const dropdownOpen = ref(false);
-const { isOpen } = useSidebar();
-const notificationOpen = ref(false);
+export default {
+  setup() {
+    const dropdownOpen = ref(false);
+    const { isOpen } = useSidebar();
+    const notificationOpen = ref(false);
+
+    return {
+      dropdownOpen,
+      isOpen,
+      notificationOpen,
+    };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("refreshToken");
+      sessionStorage.removeItem("accessToken");
+    },
+  },
+};
 </script>
