@@ -4,9 +4,8 @@
   </component>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 
 const defaultLayout = "default";
 const { currentRoute } = useRouter();
