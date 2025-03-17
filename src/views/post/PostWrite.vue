@@ -70,7 +70,7 @@ export default {
     const content = ref(route.query.content || "");
     const boardType = ref(route.query.boardType || "FREE");
     const postNo = ref(route.query.postNo || null);
-    const isEditMode = ref(!!route.query.postNo);
+    const isEditMode = ref(!!route.query.title);
     const postStatus = ref("ACTIVE");
 
     const submitPostData = () => {
@@ -83,7 +83,10 @@ export default {
 
       if (isEditMode.value) {
         axios
-          .put(`/posts/${postNo.value}`, params)
+          .post(
+            `/posts/${postNo.value}?boardType=FREE&postStatus=ACTIVE`,
+            params
+          )
           .then(() => {
             alert("게시글이 수정되었습니다.");
             router.push(`/post/${postNo.value}`); // 수정 후 상세 페이지로 이동

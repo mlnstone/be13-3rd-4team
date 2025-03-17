@@ -105,6 +105,7 @@ export default {
       router.push({
         name: "PostWrite",
         query: {
+          postNo: post.value.postNo,
           title: post.value.title,
           content: post.value.content,
           boardType: post.value.boardType,
