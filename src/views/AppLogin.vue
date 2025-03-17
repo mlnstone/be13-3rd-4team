@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import api from "@/api";
+import axios from "@/api/index";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
@@ -171,7 +171,7 @@ export default {
 
     async function login() {
       try {
-        const response = await api.post("/auth/login", {
+        const response = await axios.post("/auth/login", {
           username: userName.value,
           password: password.value,
         });

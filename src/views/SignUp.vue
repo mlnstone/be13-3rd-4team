@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import api from "@/api";
+import axios from "@/api/index";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -157,7 +157,7 @@ export default {
 
     async function signUp() {
       try {
-        const response = await api.post("/auth/join", {
+        const response = await axios.post("/auth/join", {
           username: userName.value,
           password: password.value,
           confirmPassword: confirmPassword.value,

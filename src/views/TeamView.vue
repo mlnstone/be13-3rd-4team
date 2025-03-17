@@ -137,7 +137,7 @@ import Breadcrumb from "../partials/AppBreadcrumb.vue";
 import AppTable from "../components/team/TeamTable.vue";
 import ModalLayout from "../components/ModalLayout.vue"; // ModalLayout 컴포넌트 import
 import TeamAdd from "../components/team/TeamAdd.vue"; // TeamAdd 컴포넌트 import
-import api from "@/api";
+import axios from "@/api/index";
 
 export default {
   name: "TeamView",
@@ -184,7 +184,7 @@ export default {
 
       console.log(params);
 
-      api
+      axios
         .get("/team", { params })
         .then((response) => {
           console.log("응답 데이터:", response.data); // 응답 데이터 로그 추가
@@ -221,7 +221,7 @@ export default {
       console.log("제출된 데이터:", data);
 
       // API 호출 또는 데이터 처리 로직 추가
-      api
+      axios
         .post("/team", null, {
           params: {
             teamName: data.name,

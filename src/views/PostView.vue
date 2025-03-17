@@ -142,7 +142,7 @@
 <script>
 import Breadcrumb from "../partials/AppBreadcrumb.vue";
 import AppTable from "../components/AppTable.vue";
-import api from "@/api";
+import axios from "@/api/index";
 export default {
   name: "PostView",
   components: {
@@ -188,7 +188,7 @@ export default {
         params.keyword = this.searchQuery;
       }
 
-      api
+      axios
         .get("/posts/search", { params })
         .then((response) => {
           console.log("응답 데이터:", response.data); // 응답 데이터 로그 추가

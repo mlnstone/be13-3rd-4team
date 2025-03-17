@@ -2,7 +2,7 @@
   <nav class="text-sm font-semibold mb-6" aria-label="Breadcrumb">
     <ol class="list-none p-0 inline-flex">
       <li class="flex items-center text-purple">
-        <a href="/dashboard" class="text-gray-500">Dashboard</a>
+        <RouterLink to="/dashboard" class="text-gray-500">Dashboard</RouterLink>
         <svg
           class="fill-current w-3 h-3 mx-3 text-blue-600"
           xmlns="http://www.w3.org/2000/svg"
@@ -14,15 +14,16 @@
         </svg>
       </li>
       <li class="flex items-center">
-        <a :href="'/' + breadcrumb" class="text-gray-600">{{
+        <RouterLink :to="'/' + breadcrumb" class="text-gray-600">{{
           breadcrumbName
-        }}</a>
+        }}</RouterLink>
       </li>
     </ol>
   </nav>
 </template>
 <script lang="ts" setup>
 import { defineProps, computed } from "vue";
+import { RouterLink } from "vue-router";
 const props = defineProps<{ breadcrumb: string }>();
 const breadcrumbName = computed(() => {
   return props.breadcrumb.toUpperCase();

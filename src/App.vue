@@ -4,9 +4,9 @@
   </component>
 </template>
 <script lang="ts" setup>
+import axios from "@/api/index";
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import api from "@/api";
 
 const defaultLayout = "default";
 const { currentRoute } = useRouter();
@@ -23,7 +23,7 @@ onMounted(() => {
 
 async function refreshAccessToken(refreshToken: string) {
   try {
-    const response = await api.post(
+    const response = await axios.post(
       "/auth/refresh",
       { refreshToken },
       {
