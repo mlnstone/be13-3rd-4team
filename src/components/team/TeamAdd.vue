@@ -1,16 +1,31 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <label for="name">팀 명: </label>
-    <input type="text" id="name" v-model="name" />
-
-    <label for="introduce">내용: </label>
-    <input type="text" id="introduce" v-model="introduce" />
+    <div class="flex items-center border-8">
+      <!-- <span>팀 명 : </span> -->
+      <label for="name" class="w-[15%]">팀 명</label>
+      <input
+        type="text"
+        id="name"
+        v-model="name"
+        class="w-[85%] px-2 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+      />
+    </div>
+    <div class="flex items-center border-8">
+      <label for="introduce" class="w-[15%]">내용</label>
+      <input
+        type="text"
+        id="introduce"
+        v-model="introduce"
+        class="w-[85%] px-2 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+        maxlength="255"
+      />
+    </div>
     <div class="relative">
       <select
         v-model="option"
-        class="block w-full h-full px-4 py-2 pr-8 leading-tight text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+        class="block w-full h-full px-4 py-2 pr-8 leading-tight rounded-md border-none text-gray-700 bg-white border-t border-b border-r border-gray-400 rounded-r appearance-none sm:rounded-r-none sm:border-r-0 focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
       >
-        <option value="OPEN">모집중</option>
+        <option value="OPEN" selected>모집중</option>
         <option value="CLOSED">마감</option>
         <option value="IN_PROGRESS">진행중</option>
         <option value="COMPLETE">완료</option>
@@ -31,7 +46,7 @@
       </div>
     </div>
 
-    <button type="submit">제출</button>
+    <button type="submit" @click="handleSubmit">제출</button>
   </form>
 </template>
 
@@ -56,6 +71,9 @@ export default {
       this.name = "";
       this.introduce = "";
       this.option = "OPEN";
+    },
+    test() {
+      console.log("test");
     },
   },
 };

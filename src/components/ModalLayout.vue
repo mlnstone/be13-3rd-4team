@@ -7,37 +7,52 @@
     ></div>
 
     <div
-      class="z-50 w-11/12 mx-auto overflow-y-auto bg-white rounded shadow-lg modal-container md:max-w-md"
+      class="z-50 mx-auto bg-white rounded shadow-lg modal-container md:max-w-md"
     >
       <div
-        class="absolute top-0 right-0 z-50 flex flex-col items-center mt-4 mr-4 text-sm text-white cursor-pointer modal-close"
+        class="w-full max-w-sm overflow-hidden bg-white border rounded-md shadow-md"
       >
-        <svg
-          class="text-white fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 18 18"
-        >
-          <path
-            d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-          />
-        </svg>
-        <span class="text-sm">(Esc)</span>
-      </div>
-      <div class="px-6 py-4 text-left modal-content">
-        <div class="flex items-center justify-between pb-3">
-          <p class="text-2xl font-bold">{{ title }}</p>
-        </div>
-        <slot></slot>
-        <div class="flex justify-end pt-2">
-          <button
-            @click="close"
-            class="p-3 px-6 py-3 mr-2 text-indigo-500 bg-transparent rounded-lg hover:bg-gray-100 hover:text-indigo-400 focus:outline-none"
+        <form>
+          <div
+            class="flex items-center justify-between px-5 py-3 text-gray-700 border-b"
           >
-            취소
-          </button>
-        </div>
+            <h3 class="text-sm">{{ title }}</h3>
+            <button @click="close">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="px-5 py-6 text-gray-700 bg-gray-200 border-b">
+            <slot ref="tes2"></slot>
+          </div>
+
+          <div class="flex items-center justify-between px-5 py-3">
+            <button
+              class="px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none"
+              @click="close"
+            >
+              Cancel
+            </button>
+            <button
+              class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
+              @click="test"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -60,6 +75,9 @@ export default {
     close() {
       this.open = false;
       this.$emit("close");
+    },
+    test() {
+      this.$refs.tes2.test();
     },
   },
 };

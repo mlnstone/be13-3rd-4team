@@ -11,7 +11,9 @@ import NotFound from "@/views/sample/NotFound.vue";
 import Blank from "@/views/BlankView.vue";
 import Login from "@/views/AppLogin.vue";
 import Team from "@/views/TeamView.vue";
-import Post from "@/views/PostView.vue";
+import Post from "@/views/post/PostView.vue";
+import PostWrite from "@/views/post/PostWrite.vue";
+import PostDiteil from "@/views/post/PostDiteil.vue";
 import SignUp from "@/views/SignUp.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -31,8 +33,14 @@ const routes: Array<RouteRecordRaw> = [
     component: SignUp,
     meta: { layout: "empty" },
   },
+
+  // 팀
   { path: "/team", name: "Team", component: Team },
+
+  // 게시글
   { path: "/post", name: "Post", component: Post },
+  { path: "/post/write", name: "PostWrite", component: PostWrite },
+  { path: "/post/:postNo", name: "PostDiteil", component: PostDiteil },
 
   { path: "/:pathMatch(.*)*", component: NotFound },
 ];

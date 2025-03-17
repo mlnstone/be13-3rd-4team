@@ -3,7 +3,7 @@
     <!-- Breadcrumb -->
     <Breadcrumb breadcrumb="Post" />
     <!-- 분류바 -->
-    <div class="flex px-4 py-4 space-x-4 overflow-x-auto bg-white rounded-md">
+    <div class="flex px-4 py-4 space-x-4 overflow-x-auto">
       <button
         @click="changeBoardType('NOTICE')"
         class="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500"
@@ -22,6 +22,13 @@
       >
         자유
       </button>
+      <router-link to="/post/write">
+        <button
+          class="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500"
+        >
+          글 작성
+        </button>
+      </router-link>
     </div>
     <!-- 검색바 -->
     <div>
@@ -140,8 +147,8 @@
 </template>
 
 <script>
-import Breadcrumb from "../partials/AppBreadcrumb.vue";
-import AppTable from "../components/AppTable.vue";
+import Breadcrumb from "../../partials/AppBreadcrumb.vue";
+import AppTable from "../../components/post/PostTable.vue";
 import axios from "@/api/index";
 export default {
   name: "PostView",
@@ -154,8 +161,10 @@ export default {
       postData: [], // 초기 데이터 정의
       boardType: "FREE",
       postSortOption: "LATEST",
+
       page: 1, // 초기 페이지 번호 설정
       size: 10,
+
       searchQuery: "", // 추가된 데이터 속성
       selectOption: "",
     };

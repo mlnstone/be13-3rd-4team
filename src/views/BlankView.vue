@@ -46,5 +46,5 @@
 </template>
 <script lang="ts" setup>
 import { RouterLink } from "vue-router";
-import Breadcrumb from "../partials/AppBreadcrumb.vue";
+import Breadcrumb from "@/partials/AppBreadcrumb.vue";
 </script>

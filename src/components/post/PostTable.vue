@@ -1,6 +1,5 @@
 <template>
   <div class="mt-4">
-    <h4 class="text-gray-600">Simple Table</h4>
     <div class="mt-6">
       <div class="my-6 overflow-hidden bg-white rounded-md shadow">
         <table class="w-full text-left border-collapse">
@@ -34,6 +33,7 @@
             <tr
               v-for="(post, i) in paginatedPosts"
               :key="i"
+              @click="ditailePage(post.postNo)"
               class="hover:bg-gray-200 cursor-pointer"
             >
               <td class="px-6 py-4 text-lg text-gray-500 border-b">
@@ -58,7 +58,7 @@
           <div class="flex mr-4 rounded">
             <a
               href="#"
-              @click="prevPage"
+              @click="prevPage(post.no)"
               class="px-3 py-2 ml-0 leading-tight text-indigo-700 bg-white border border-r-0 border-gray-200 rounded-l hover:bg-indigo-500 hover:text-white"
               ><span>Previous</span></a
             >
@@ -123,6 +123,11 @@ export default {
     },
   },
   methods: {
+    // 상세 글 보기
+    ditailePage(no) {
+      this.$router.push(`/post/${no}`);
+    },
+    // 페이징 버튼 메소드
     setPage(page) {
       this.$emit("set-page", page);
     },

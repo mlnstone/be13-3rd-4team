@@ -50,6 +50,7 @@
                 {{ post.projectStatus }}
               </td>
             </tr>
+            <!-- 모달 레이아웃 -->
             <ModalLayout
               v-if="isModalOpen"
               :title="selectedPost.teamName"

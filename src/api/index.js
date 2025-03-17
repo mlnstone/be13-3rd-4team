@@ -10,7 +10,6 @@ axios.interceptors.request.use(
   (config) => {
     // sessionStorage에서 토큰 가져오기
     const token = sessionStorage.getItem("accessToken");
-    console.log("token", token);
     // 토큰이 존재하면 헤더에 추가
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
