@@ -1,15 +1,14 @@
 <template>
   <div>
-    <!-- Breadcrumb -->
     <Breadcrumb breadcrumb="Post" />
     <div class="mt-8">
       <div class="mt-4">
         <div class="p-6 bg-white rounded-md shadow-md">
           <h2 class="text-lg font-semibold text-gray-700 capitalize">
-            게시글 작성
+            {{ isEditMode ? "게시글 수정" : "게시글 작성" }}
           </h2>
 
-          <form @submit.prevent="register">
+          <form @submit.prevent="submitPostData">
             <div class="grid grid-cols-1 gap-6 mt-4">
               <div>
                 <label class="text-gray-700" for="username">제목</label>
@@ -22,11 +21,10 @@
 
               <div>
                 <label class="text-gray-700" for="emailAddress">내용</label>
-                <input
+                <textarea
                   class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                  type="text"
                   v-model="content"
-                />
+                ></textarea>
               </div>
 
               <div>
@@ -42,10 +40,9 @@
             <div class="flex justify-end mt-4">
               <button
                 type="submit"
-                @click="submitPostData"
                 class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
               >
-                저장
+                {{ isEditMode ? "수정" : "저장" }}
               </button>
             </div>
           </form>
@@ -58,40 +55,63 @@
 <script>
 import axios from "@/api/index";
 import Breadcrumb from "@/partials/AppBreadcrumb.vue";
+import { useRoute, useRouter } from "vue-router";
+import { ref } from "vue";
+
 export default {
   name: "PostWrite",
   components: {
     Breadcrumb,
   },
-  data() {
-    return {
-      title: "",
-      content: "",
-      boardType: "FREE",
-      postStatus: "ACTIVE",
-    };
-  },
-  methods: {
-    // 데이터를 보내는 메소드
-    submitPostData() {
-      // 데이터 파라미터
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const title = ref(route.query.title || "");
+    const content = ref(route.query.content || "");
+    const boardType = ref(route.query.boardType || "FREE");
+    const postNo = ref(route.query.postNo || null);
+    const isEditMode = ref(!!route.query.postNo);
+    const postStatus = ref("ACTIVE");
+
+    const submitPostData = () => {
       const params = {
-        title: this.title,
-        content: this.content,
-        boardType: this.boardType,
-        postStatus: this.postStatus,
+        title: title.value,
+        content: content.value,
+        boardType: boardType.value,
+        postStatus: postStatus.value,
       };
 
-      axios
-        .post("/posts?boardType=FREE", params)
-        .then((response) => {
-          this.postData = response.data; // 응답 데이터를 postData에 저장
-          this.$router.push("/post"); // '/posts' 페이지로 이동
-        })
-        .catch((error) => {
-          console.error("데이터를 전송하는 중, 오류 발생 :", error); // 오류 처리
-        });
-    },
+      if (isEditMode.value) {
+        axios
+          .put(`/posts/${postNo.value}`, params)
+          .then(() => {
+            alert("게시글이 수정되었습니다.");
+            router.push(`/post/${postNo.value}`); // 수정 후 상세 페이지로 이동
+          })
+          .catch((error) => {
+            console.error("게시글 수정 실패", error);
+          });
+      } else {
+        axios
+          .post("/posts?boardType=FREE", params)
+          .then(() => {
+            alert("게시글이 작성되었습니다.");
+            router.push("/post"); // 작성 후 목록 페이지로 이동
+          })
+          .catch((error) => {
+            console.error("게시글 작성 실패", error);
+          });
+      }
+    };
+
+    return {
+      title,
+      content,
+      boardType,
+      postNo,
+      isEditMode,
+      submitPostData,
+    };
   },
 };
 </script>

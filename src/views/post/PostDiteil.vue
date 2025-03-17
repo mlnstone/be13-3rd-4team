@@ -53,6 +53,7 @@
         <br />
         <button
           class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
+          @click="goToEditPage"
         >
           수정
         </button>
@@ -75,7 +76,7 @@
 </template>
 <script>
 import Breadcrumb from "../../partials/AppBreadcrumb.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import axios from "@/api/index";
 export default {
@@ -86,25 +87,38 @@ export default {
   setup() {
     // 초기 데이터 설정
     const route = useRoute(); // URL 정보 가져옴
+    const router = useRouter();
     const postNo = route.params.postNo; // 번호를 가져옴
     const post = ref({}); // 반응형 데이터 선언
     const initParams = {
       page: 1,
       size: 10,
     };
-    console.log(route);
-    console.log(postNo);
+
+    // 상세 정보 가져와서 post에 넣음
     axios.get(`/posts/${postNo}/with-comments`, initParams).then((response) => {
       post.value = response.data;
     });
 
+    // 게시글 수정용 데이터
+    const goToEditPage = () => {
+      router.push({
+        name: "PostWrite",
+        query: {
+          title: post.value.title,
+          content: post.value.content,
+          boardType: post.value.boardType,
+        },
+      });
+    };
+
+    // 메소드 반환
     return {
       post,
+      goToEditPage,
     };
   },
   methods: {
-    // 게시글 수정
-
     // 삭제 확인 창
     confirmDelete(postNo) {
       if (confirm("정말로 삭제하시겠습니까?")) {
