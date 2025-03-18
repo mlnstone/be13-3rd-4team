@@ -9,16 +9,21 @@ import Card from "@/views/sample/CardView.vue";
 //----------------------------
 import NotFound from "@/views/sample/NotFound.vue";
 import Blank from "@/views/BlankView.vue";
-import Login from "@/views/AppLogin.vue";
-import Team from "@/views/TeamView.vue";
+import Login from "@/views/auth/AppLogin.vue";
+import SignUp from "@/views/auth/SignUp.vue";
+import Team from "@/views/team/TeamView.vue";
 import Post from "@/views/post/PostView.vue";
 import PostWrite from "@/views/post/PostWrite.vue";
 import PostDiteil from "@/views/post/PostDiteil.vue";
-import SignUp from "@/views/SignUp.vue";
 
 const routes: Array<RouteRecordRaw> = [
+  // auth
   { path: "/", name: "Login", component: Login, meta: { layout: "empty" } },
+  { path: "/sign-up",name: "SignUp",component: SignUp,meta: { layout: "empty" },},
+
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
+
+  // 샘플
   { path: "/forms", name: "Forms", component: Forms },
   { path: "/cards", name: "Cards", component: Card },
   { path: "/tables", name: "Tables", component: Tables },
@@ -27,12 +32,6 @@ const routes: Array<RouteRecordRaw> = [
   { path: "/charts", name: "Chart", component: Chart },
   { path: "/blank", name: "Blank", component: Blank },
   //----------------------------
-  {
-    path: "/sign-up",
-    name: "SignUp",
-    component: SignUp,
-    meta: { layout: "empty" },
-  },
 
   // 팀
   { path: "/team", name: "Team", component: Team },

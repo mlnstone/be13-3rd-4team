@@ -70,7 +70,7 @@ export default {
     const content = ref(route.query.content || "");
     const boardType = ref(route.query.boardType || "FREE");
     const postNo = ref(route.query.postNo || null);
-    const isEditMode = ref(!!route.query.title);
+    const isEditMode = ref(!!route.query.title); // 수정모드 확인용 (!!은 강제로 Boolean 타입변경)
     const postStatus = ref("ACTIVE");
 
     const submitPostData = () => {

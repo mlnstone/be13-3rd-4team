@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import Breadcrumb from "../../partials/AppBreadcrumb.vue";
+import Breadcrumb from "@/partials/AppBreadcrumb.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import axios from "@/api/index";

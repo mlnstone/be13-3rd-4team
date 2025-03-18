@@ -133,10 +133,10 @@
 </template>
 
 <script>
-import Breadcrumb from "../partials/AppBreadcrumb.vue";
-import AppTable from "../components/team/TeamTable.vue";
-import ModalLayout from "../components/ModalLayout.vue"; // ModalLayout 컴포넌트 import
-import TeamAdd from "../components/team/TeamAdd.vue"; // TeamAdd 컴포넌트 import
+import Breadcrumb from "@/partials/AppBreadcrumb.vue";
+import AppTable from "@/components/team/TeamTable.vue";
+import ModalLayout from "@/components/ModalLayout.vue"; // ModalLayout 컴포넌트 import
+import TeamAdd from "@/components/team/TeamAdd.vue"; // TeamAdd 컴포넌트 import
 import axios from "@/api/index";
 
 export default {

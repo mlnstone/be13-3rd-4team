@@ -147,8 +147,8 @@
 </template>
 
 <script>
-import Breadcrumb from "../../partials/AppBreadcrumb.vue";
-import AppTable from "../../components/post/PostTable.vue";
+import Breadcrumb from "@/partials/AppBreadcrumb.vue";
+import AppTable from "@/components/post/PostTable.vue";
 import axios from "@/api/index";
 export default {
   name: "PostView",
