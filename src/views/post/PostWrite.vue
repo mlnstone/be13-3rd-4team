@@ -64,15 +64,16 @@ export default {
     Breadcrumb,
   },
   setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const title = ref(route.query.title || "");
+    const route = useRoute(); // 현재 URL 정보 가져옴
+    const router = useRouter(); // 경로 이동
+    const title = ref(route.query.title || ""); // 현재 URL에 값이 존재한다면 삽입 아니면 공백
     const content = ref(route.query.content || "");
     const boardType = ref(route.query.boardType || "FREE");
     const postNo = ref(route.query.postNo || null);
     const isEditMode = ref(!!route.query.title); // 수정모드 확인용 (!!은 강제로 Boolean 타입변경)
     const postStatus = ref("ACTIVE");
 
+    // 작성/ 수정 한 값을 처리하는 메소드
     const submitPostData = () => {
       const params = {
         title: title.value,

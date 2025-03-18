@@ -20,12 +20,12 @@
 
       <!-- Main Content -->
       <div class="space-y-6">
-        <!-- Title -->
+        <!-- 제목 -->
         <h1 class="text-3xl font-bold text-black">
           {{ post.title }}
         </h1>
 
-        <!-- Content -->
+        <!-- 내용 -->
         <div class="prose max-w-none text-black">
           <p class="text-gray-500 leading-relaxed">
             {{ post.content }}
@@ -86,9 +86,9 @@ export default {
   },
   setup() {
     // 초기 데이터 설정
-    const route = useRoute(); // URL 정보 가져옴
-    const router = useRouter();
-    const postNo = route.params.postNo; // 번호를 가져옴
+    const route = useRoute(); // 현재 URL 정보 가져옴
+    const router = useRouter(); // 경로 이동 (라우트를 이동하거나 상태 변경할때 사용)
+    const postNo = route.params.postNo; // 경로에 포함된 번호를 가져옴
     const post = ref({}); // 반응형 데이터 선언
     const initParams = {
       page: 1,
@@ -131,7 +131,8 @@ export default {
     deletePostData(postNo) {
       axios
         .delete(`/posts/${postNo}`)
-        .then((response) => {
+        .then(() => {
+          // 게시글을 삭제한 후 기존 페이지로 돌려보냄
           this.$router.push("/post");
         })
         .catch((error) => {

@@ -93,19 +93,23 @@ export default {
   name: "AppTable",
   props: {
     // 부모로 부터 받아오는 값들
+    // 기본 데이터 배열
     posts: {
       type: Array,
       default: () => [], // 기본값을 빈 배열로 설정
       required: true,
     },
+    // 현재 페이지 위치 (기본 1)
     currentPage: {
       type: Number,
       default: 1,
     },
+    // 한 페이지에 나타낼 항목 수 (기본 10)
     itemsPerPage: {
       type: Number,
       default: 10,
     },
+    // 총 페이지 수
     totalPages: {
       type: Number,
       required: true,
@@ -118,6 +122,7 @@ export default {
   //   };
   // },
   computed: {
+    // 페이징 처리된 페이지를 반환
     paginatedPosts() {
       return this.posts; // posts 배열 직접 반환
     },
@@ -131,11 +136,13 @@ export default {
     setPage(page) {
       this.$emit("set-page", page);
     },
+    // 페이징 뒤로 버튼
     prevPage() {
       if (this.currentPage > 1) {
         this.$emit("set-page", this.currentPage - 1);
       }
     },
+    // 페이징 앞으로 버튼
     nextPage() {
       if (this.currentPage < this.totalPages) {
         this.$emit("set-page", this.currentPage + 1);

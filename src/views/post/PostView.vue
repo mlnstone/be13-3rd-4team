@@ -134,7 +134,7 @@
       </div>
     </div>
     <!-- 테이블 -->
-    <AppTable
+    <PostTable
       v-if="postData.content && postData.content.length > 0"
       :posts="postData.content"
       :current-page="page"
@@ -148,25 +148,25 @@
 
 <script>
 import Breadcrumb from "@/partials/AppBreadcrumb.vue";
-import AppTable from "@/components/post/PostTable.vue";
+import PostTable from "@/components/post/PostTable.vue";
 import axios from "@/api/index";
 export default {
   name: "PostView",
   components: {
-    AppTable,
+    PostTable,
     Breadcrumb,
   },
   data() {
     return {
       postData: [], // 초기 데이터 정의
-      boardType: "FREE",
-      postSortOption: "LATEST",
+      boardType: "FREE", // 페이지 분류
+      postSortOption: "LATEST", // 정렬 순서
 
-      page: 1, // 초기 페이지 번호 설정
-      size: 10,
+      page: 1, // 초기 페이지 번호
+      size: 10, // 초기 페이지 사이즈
 
-      searchQuery: "", // 추가된 데이터 속성
-      selectOption: "",
+      searchQuery: "", // 검색어
+      selectOption: "", // 검색 옵션
     };
   },
   mounted() {
@@ -215,7 +215,7 @@ export default {
       this.boardType = type;
       this.page = 1; // 페이지 초기화
       this.searchQuery = ""; // 검색 초기화
-      this.fetchPostData();
+      this.fetchPostData(); // 데이터 재 호출
     },
     // 페이징 시 값 변경 메소드
     setPage(page) {

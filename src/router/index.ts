@@ -9,18 +9,28 @@ import Card from "@/views/sample/CardView.vue";
 //----------------------------
 import NotFound from "@/views/sample/NotFound.vue";
 import Blank from "@/views/BlankView.vue";
+
 import Login from "@/views/auth/AppLogin.vue";
 import SignUp from "@/views/auth/SignUp.vue";
+
 import Team from "@/views/team/TeamView.vue";
+
+import Message from "@/views/message/MessageView.vue";
+
 import Post from "@/views/post/PostView.vue";
 import PostWrite from "@/views/post/PostWrite.vue";
 import PostDiteil from "@/views/post/PostDiteil.vue";
+
+import Project from "@/views/project/ProjectView.vue";
+
+import User from "@/views/user/UserView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   // auth
   { path: "/", name: "Login", component: Login, meta: { layout: "empty" } },
   { path: "/sign-up",name: "SignUp",component: SignUp,meta: { layout: "empty" },},
-
+  
+  // 메인 페이지
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
 
   // 샘플
@@ -35,6 +45,15 @@ const routes: Array<RouteRecordRaw> = [
 
   // 팀
   { path: "/team", name: "Team", component: Team },
+
+  // 유저
+  { path: "/user", name: "User", component: User },
+
+  // 프로젝트
+  { path: "/project", name: "Project", component: Project },
+
+  // 쪽지
+  { path: "/message", name: "Message", component: Message },
 
   // 게시글
   { path: "/post", name: "Post", component: Post },
