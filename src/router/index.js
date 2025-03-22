@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 import { onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router'
 
+
 // import AuthLayout from '@/layout/AuthLayout.vue'
 // import BaseLayout from '@/layout/BaseLayout.vue'
 // import Login from '@/views/auth/Login.vue'
@@ -43,6 +44,19 @@ const Projects = () => import('@/views/project/Projects.vue');
 const AddTeam = () => import('@/views/team/AddTeam.vue');
 const TeamDetail = () => import('@/views/team/TeamDetail.vue');
 const Teams = () => import('@/views/team/Teams.vue');
+
+
+// Admin
+const AdminMain = () => import('@/views/admin/AdminMain.vue')
+const AdminLogin = () => import('@/views/admin/AdminLogin.vue')
+const AdminProjectList = () => import('@/views/admin/AdminProjectList.vue')
+const AllUserComments = () => import('@/views/admin/AllUserComments.vue')
+const AdminTechManage = () => import('@/views/admin/AdminTechManage.vue')
+const FeedbackList = () => import('@/views/admin/FeedbackList.vue')
+const UserAllPost = () => import('@/views/admin/UserAllPost.vue')
+const UserDetail = () => import('@/views/admin/UserDetail.vue')
+const UserAllProject = () => import('@/views/admin/UserAllProject.vue')
+const UserList = () => import('@/views/admin/UserList.vue')
 
 const router = createRouter({
   // 라우터가 사용할 라우팅 모드 지정 (HTML 5 모드)
@@ -136,6 +150,58 @@ const router = createRouter({
           name: 'teams/add',
           component: AddTeam
         },
+        // admin
+        {
+          path: 'admin',
+          name: 'admin',
+          component: AdminMain
+        },
+        {
+          path: 'admin/login',
+          name: 'admin-login',
+          component: AdminLogin
+        },
+        {
+          path: 'admin/projects',
+          name: 'admin-projects',
+          component: AdminProjectList
+        },
+        {
+          path: 'admin/comments',
+          name: 'admin-comments',
+          component: AllUserComments
+        },
+        {
+          path: 'admin/tech',
+          name: 'admin-tech',
+          component: AdminTechManage
+        },
+        {
+          path: 'admin/feedbacks',
+          name: 'admin-feedbacks',
+          component: FeedbackList
+        },
+        {
+          path: 'admin/user/:userNo/posts',
+          name: 'admin-user-posts',
+          component: UserAllPost
+        },
+        {
+          path: 'admin/user/:userNo/projects',
+          name: 'admin-user-projects',
+          component: UserAllProject
+        },
+        {
+          path: 'admin/user/:userNo',
+          name: 'admin-user-detail',
+          component: UserDetail
+        },
+        {
+          path: 'admin/users',
+          name: 'admin-users',
+          component: UserList
+        },
+        
       ]
     },
     {
@@ -171,6 +237,12 @@ router.beforeEach((to, form, next) => {
   } else {
     next();
   }
+  
+  if (to.path.startsWith('/admin') && authStore.user?.role !== 'ADMIN') {
+    alert('관리자 권한이 필요합니다.')
+    next({ name: 'home' })
+  }
 });
+
 
 export default router
