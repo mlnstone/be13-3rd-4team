@@ -54,8 +54,14 @@ export const useAuthStore = defineStore('auth', () => {
 
     // 새로고침 시 Pinia 상태가 초기화되므로 로그인 유지 위해 추가
     const checkLogin = () => {
-        if (localStorage.getItem('accessToken')) {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+
             isLoggedIn.value = true;
+            
+            const parseToken = parseJwt(accessToken);
+            userInfo.username = parseToken.username;
+            userInfo.role = parseToken.role;
         } else {
             isLoggedIn.value = false;
         }
