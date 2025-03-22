@@ -1,43 +1,11 @@
 <template>
-  <component :is="layout">
-    <router-view />
-  </component>
+    <RouterView></RouterView>
 </template>
-<script lang="ts" setup>
-import axios from "@/api/index";
-import { computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
 
-const defaultLayout = "default";
-const { currentRoute } = useRouter();
-const layout = computed(
-  () => `${currentRoute.value.meta.layout || defaultLayout}-layout`
-);
+<script setup>
+    import { useAuthStore } from './stores/auth';
 
-onMounted(() => {
-  const refreshToken = localStorage.getItem("refreshToken");
-  if (refreshToken) {
-    refreshAccessToken(refreshToken);
-  }
-});
+    const authStore = useAuthStore();
 
-async function refreshAccessToken(refreshToken: string) {
-  try {
-    const response = await axios.post(
-      "/auth/refresh",
-      { refreshToken },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("refreshToken")}`, // 기존 액세스 토큰 사용
-        },
-      }
-    );
-    const accessToken = response.data.accessToken;
-    sessionStorage.setItem("accessToken", accessToken);
-  } catch (error) {
-    console.error("리프레시 토큰 오류: error");
-    localStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("accessToken");
-  }
-}
+    authStore.checkLogin();
 </script>
