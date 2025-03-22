@@ -79,7 +79,6 @@ const fetchProjects = async () => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
     });
-
     projects.value = res.data.content;
     totalPages.value = Math.max(1, res.data.totalPages);
   } catch (error) {
