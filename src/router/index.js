@@ -206,10 +206,11 @@ const router = createRouter({
           component: AdminProjectList
         },
         {
-          path: 'admin/comments',
-          name: 'admin-comments',
+          path: 'admin/user/:userNo/comments',
+          name: 'admin-user-comments',
           component: AllUserComments
         },
+
         {
           path: 'admin/tech',
           name: 'admin-tech',
@@ -273,14 +274,14 @@ router.beforeEach((to, form, next) => {
   // 로그인 페이지가 아니고, 로그인 상태가 아니면 로그인 페이지로 리다이렉트한다.
   if(to.name !== 'login' && !authStore.isLoggedIn) {
     next({name: 'login'});
-  } else {
-    next();
-  }
+  } 
+  //
+  // if (to.path.startsWith('/admin') && authStore.user?.role !== 'ADMIN') {
+  //   alert('관리자 권한이 필요합니다.')
+  //   return next({ name: 'home' });
+  // }
   
-  if (to.path.startsWith('/admin') && authStore.user?.role !== 'ADMIN') {
-    alert('관리자 권한이 필요합니다.')
-    next({ name: 'home' })
-  }
+  next();
 });
 
 
