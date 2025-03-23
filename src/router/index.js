@@ -46,6 +46,15 @@ const TeamDetail = () => import('@/views/team/TeamDetail.vue');
 const Teams = () => import('@/views/team/Teams.vue');
 
 
+// Post
+const PostList = () => import('@/views/post/PostList.vue');
+const PostDetail = () => import('@/views/post/PostDetail.vue');
+const PostWrite = () => import('@/views/post/PostWrite.vue');
+
+// Comment
+const CommentList = () => import('@/views/post/comment/CommentList.vue');
+const CommentCreate = () => import('@/views/post/comment/CommentCreate.vue');
+
 // Admin
 const AdminMain = () => import('@/views/admin/AdminMain.vue')
 const AdminLogin = () => import('@/views/admin/AdminLogin.vue')
@@ -57,6 +66,7 @@ const UserAllPost = () => import('@/views/admin/UserAllPost.vue')
 const UserDetail = () => import('@/views/admin/UserDetail.vue')
 const UserAllProject = () => import('@/views/admin/UserAllProject.vue')
 const UserList = () => import('@/views/admin/UserList.vue')
+
 
 const router = createRouter({
   // 라우터가 사용할 라우팅 모드 지정 (HTML 5 모드)
@@ -86,6 +96,34 @@ const router = createRouter({
           name: 'home', 
           component: Home 
         },
+        // post
+        { 
+          path: 'post', 
+          name: 'post',
+          component: PostList 
+        },
+        { 
+          path: 'post/:postNo',
+          name: 'postDetail',
+          component: PostDetail 
+        },
+        { 
+          path: 'post/write', 
+          name: 'PostWrite', 
+          component: PostWrite 
+        },
+        // comment
+        {
+          path: 'posts/:postNo/comments', 
+          name: 'CommentList', 
+          component: CommentList
+        },
+        { 
+          path: 'posts/:postNo/comments/create', 
+          name: 'CommentCreate', 
+          component: CommentCreate 
+        },
+        
         // departments
         { 
           path: 'departments', 
@@ -150,6 +188,7 @@ const router = createRouter({
           name: 'teams/add',
           component: AddTeam
         },
+
         // admin
         {
           path: 'admin',

@@ -2,6 +2,7 @@ import apiClient from "@/api";
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { jwtDecode } from 'jwt-decode';
 
 export const useAuthStore = defineStore('auth', () => {
     // 페이지 이동하기 위해 router를 추가
@@ -135,5 +136,32 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
-    return { isLoggedIn, userInfo, login, checkLogin, logout };
+  const getUserInfo = () => {
+    let strUserInfo = window.localStorage.getItem('userInfo');
+    if (!strUserInfo) {
+      return { authenticated: false };
+    } else {
+      return JSON.parse(strUserInfo);
+    }
+  };
+
+  const getUsernameFromToken = () => {
+    const userInfo = getUserInfo();
+    const token = userInfo?.accessToken;
+
+    if (!token) {
+      console.warn("토큰이 존재하지 않습니다.");
+      return null;
+    }
+
+    try {
+      const decoded = jwtDecode(token);  // JWT 디코딩
+      return decoded.username || null;   // username 반환
+    } catch (error) {
+      console.warn("JWT 디코딩 실패:", error);
+      return null;
+    }
+  }
+
+    return { isLoggedIn, userInfo, login, checkLogin, logout,  getUsernameFromToken, getUserInfo};
 });

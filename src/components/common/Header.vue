@@ -33,6 +33,9 @@
                 <!-- <RouterLink class="nav-link" :to="{name: 'departments/add'}">학과 등록</RouterLink> -->
             <!-- </li> -->
             <!-- 쪽지 -->
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{name: 'post'}"> 게시판 </router-link>
+          </li>
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'messages'}">쪽지 목록 조회</RouterLink>
             </li>
