@@ -79,7 +79,7 @@ const goToUserComments = () => {
 };
 
 const goToUserPosts = () => {
-  router.push(`/admin/user/${userNo}/post`);
+  router.push(`/admin/user/${userNo}/posts`);
 };
 
 const goToUserProjects = () => {

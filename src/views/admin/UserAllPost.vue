@@ -88,11 +88,11 @@ const fetchPosts = async () => {
     const res = await axios.get(`http://localhost:8087/admin/user/${userNo}/posts`, {
       params: {
         boardType: boardType.value,
-        page: currentPage.value, // ✅ 현재 페이지 반영
+        page: currentPage.value,
       },
       headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
     });
-
+    
     posts.value = res.data.content;
     totalPages.value = Math.max(1, res.data.totalPages);
   } catch (error) {
