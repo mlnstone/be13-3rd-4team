@@ -62,6 +62,23 @@
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'teams/add'}">팀 등록</RouterLink>
             </li>
+            <!-- 신고 -->
+            <li class="nav-item">
+                <RouterLink class="nav-link" :to="{name: 'reports'}">신고 목록 조회</RouterLink>
+            </li>
+            <li class="nav-item">
+                <RouterLink class="nav-link" :to="{name: 'reports/add'}">신고 등록</RouterLink>
+            </li>
+            <!-- 게시글 -->
+            <li class="nav-item">
+                <RouterLink class="nav-link" :to="{name: 'posts'}">게시글 목록 조회</RouterLink>
+            </li>
+            <li class="nav-item">
+                <RouterLink class="nav-link" :to="{name: 'posts/add'}">게시글 등록</RouterLink>
+            </li>
+            <!-- 마이페이지 -->
+            <li class="nav-item">
+                <RouterLink class="nav-link" :to="{name: 'mypage'}">{{ userInfo.username }}</RouterLink>
             <li class="nav-item" > 
 <!--                       v-if="isAdmin">-->
               <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink>
@@ -74,15 +91,13 @@
 </template>
 
 <script setup>
-
     import { useAuthStore } from '@/stores/auth';
     import {computed} from "vue";
     const authStore = useAuthStore();
-    
+    const userInfo = authStore.userInfo;
     
     const logout = () => {
         if (confirm('정말로 로그아웃하시겠습니까?')) {
-            const authStore = useAuthStore();
 
             authStore.logout();
         }

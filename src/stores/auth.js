@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('auth', () => {
         if (accessToken) {
 
             isLoggedIn.value = true;
-            
+
             const parseToken = parseJwt(accessToken);
             userInfo.username = parseToken.username;
             userInfo.role = parseToken.role;
@@ -118,7 +118,7 @@ export const useAuthStore = defineStore('auth', () => {
         } catch (error) {
             return false;  // 토큰 디코딩에 실패하면 유효하지 않다고 판단
         }
-    }
+    };
 
     const parseJwt = (token) => {
         try {
@@ -134,7 +134,75 @@ export const useAuthStore = defineStore('auth', () => {
         } catch (e) {
             return null
         }
-    }
+    };
+
+    const signup = async (formData) => {
+        try {
+            const response = await apiClient.post('/auth/join', formData);
+
+            if(response.status === 200) {
+                alert('회원가입이 완료되었습니다.');
+                
+                console.log(response);
+
+                router.push({name: 'login'});
+            }
+        } catch (error) {
+            console.log(error);
+
+            // if (error.status === 401) {
+            if (error.response.data.code === 401) {
+                alert(error.response.data.message);
+            } else {
+                alert('에러가 발생했습니다.');
+            }
+        }
+    };
+
+    const authEmailSend = async (email) => {
+        try {
+            const response = await apiClient.post('/email/send', email);
+
+            if(response.status === 200) {
+                alert('인증 메일을 발송했습니다.');
+
+                console.log(response);
+            }
+        } catch (error) {
+            console.log(error);
+
+            alert('에러가 발생했습니다.');
+        }
+    };
+
+    const isCheckedEmail = ref(false);
+
+    const authEmailValidate = async (formData) => {
+        try {
+            const response = await apiClient.post('/email/validate?authCode=' + formData.validateCode, { email : formData.email });
+
+            if(response.data.success === true) {
+                isCheckedEmail.value = true;
+
+                alert('이메일 인증이 완료되었습니다.');
+
+                console.log(response);
+            } else {
+                isCheckedEmail.value = false;
+
+                alert('이메일 인증에 실패했습니다.');
+
+                console.log(response);
+            }
+        } catch (error) {
+            isCheckedEmail.value = false;
+
+            alert('에러가 발생했습니다.');
+
+            console.log(error);
+        }
+    };
+
 
   const getUserInfo = () => {
     let strUserInfo = window.localStorage.getItem('userInfo');
@@ -163,5 +231,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-    return { isLoggedIn, userInfo, login, checkLogin, logout,  getUsernameFromToken, getUserInfo};
+    return { isLoggedIn, userInfo, login, checkLogin, logout, signup, authEmailSend, authEmailValidate, isCheckedEmail, getUsernameFromToken, getUserInfo };
 });
