@@ -2,6 +2,9 @@
 import { useAuthStore } from '@/stores/auth'
 import { onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router'
+import UserFeedbackList from "@/views/feedback/UserFeedbackList.vue";
+import ProjectFeedbackList from "@/views/feedback/ProjectFeedbackList.vue";
+import FeedbackCreate from "@/views/feedback/FeedbackCreate.vue";
 
 
 // import AuthLayout from '@/layout/AuthLayout.vue'
@@ -172,6 +175,22 @@ const router = createRouter({
           name: 'projects/add',
           component: AddProject
         },
+        // feedbacks
+        {path: "/my-feedbacks", 
+          name: 'MyFeedbackList', 
+          component: UserFeedbackList 
+        },
+        {
+          path: '/project/:projectNo/feedbacks',
+          name: 'ProjectFeedbackList',
+          component: ProjectFeedbackList
+        },
+        {
+          path: '/project/:projectNo/feedbacks/create',
+          name: 'FeedbackCreate',
+          component: FeedbackCreate
+        },
+
         // teams
         {
           path: 'teams',

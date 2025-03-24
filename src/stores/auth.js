@@ -28,7 +28,6 @@ export const useAuthStore = defineStore('auth', () => {
                 // 토큰들을 로컬 스토리지에 저장
                 localStorage.setItem('accessToken', response.data.accessToken);
                 localStorage.setItem('refreshToken', response.data.refreshToken);
-
                 // 로그인 상태 변경
                 isLoggedIn.value = true;
 
@@ -36,6 +35,8 @@ export const useAuthStore = defineStore('auth', () => {
                 userInfo.username = parseToken.username;
                 userInfo.role = parseToken.role;
 
+                localStorage.setItem('user', JSON.stringify({ username: parseToken.username }));
+  
                 console.log('로그인 성공');
                 console.log('username: ', userInfo.username);
                 console.log('role: ', userInfo.role);
