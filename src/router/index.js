@@ -56,7 +56,7 @@ const Reports = () => import('@/views/report/Reports.vue');
 
 // Post
 const AddPost = () => import('@/views/post/AddPost.vue');
-const PostDetail = () => import('@/views/post/PostDetail.vue');
+// const PostDetail = () => import('@/views/post/PostDetail.vue');
 const Posts = () => import('@/views/post/Posts.vue');
 
 // MyPage
@@ -280,7 +280,6 @@ const router = createRouter({
           name: 'admin-users',
           component: UserList
         },
-       
       ]
     },
     {
