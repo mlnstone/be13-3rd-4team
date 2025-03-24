@@ -20,6 +20,9 @@
                 <option value="DELETED">삭제</option>
             </select>
         </div>
+        <button @click="userStore.goToUserComments" class="comment-btn">모든 댓글 가져오기</button>
+        <button @click="userStore.goToUserPosts" class="comment-btn">모든 게시글 가져오기</button>
+        <button @click="userStore.goToUserProjects" class="comment-btn">모든 프로젝트 가져오기</button>
         <!-- <button type="submit" class="btn btn-primary" v-text="submitButtonText"></button> -->
         <!-- <button type="submit" class="btn btn-danger">삭제</button> -->
         <hr>
@@ -50,7 +53,10 @@
 <script setup>
     import { reactive, toRaw, watch } from 'vue';
     import { useAuthStore } from '@/stores/auth';
+    import { useUserStore } from '@/stores/user';
     import apiClient from '@/api';
+
+    const userStore = useUserStore();
 
     const formData = reactive({
 
@@ -78,6 +84,8 @@
 
     let isSentCode = false;
 
+    const authStore = useAuthStore();
+
     const authEmailSend = () => {
         const valid_email = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 정규 표현식
         if (formData.email === '' || valid_email.test(formData.email) === false) {
@@ -87,14 +95,11 @@
         }
 
         isSentCode = true;
-        const authStore = useAuthStore();
 
         document.getElementById('isSentText').innerText = '인증코드 전송 완료';
         
         authStore.authEmailSend(toRaw(formData));
     };
-
-    const authStore = useAuthStore();
 
     const authEmailValidate = async () => {
         // 인증코드를 보냈는지 확인
@@ -124,11 +129,19 @@
 
         try {
             const data = {
-                newPassword: formData.newPassword,
+                newPassword: formData.password,
                 confirmPassword: formData.confirmPassword
             }
-            const response = apiClient.password('updatePassword', );
+            const response = await apiClient.post('/updatePassword', data);
             
+            if (response.status === 200) {
+                alert('비밀번호 변경이 성공적으로 이루어졌습니다. 재로그인이 필요합니다.');
+
+                authStore.logout();
+            } else {
+                alert('비밀번호 변경 실패');
+            }
+
         } catch (error) {
             console.log(error);
         }
