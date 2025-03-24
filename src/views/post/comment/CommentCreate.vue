@@ -35,7 +35,7 @@ export default {
     async submitComment() {
       console.log(' postNo 값:', this.postNo);
       console.log(' 댓글 내용:', this.commentContent);
-
+      
       if (!this.commentContent.trim()) {
         alert("댓글 내용을 입력하세요.");
         return;
