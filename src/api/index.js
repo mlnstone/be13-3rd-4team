@@ -6,7 +6,8 @@ import axios from "axios";
 //  - 브라우저 호환성, JSON 자동 변환 기능 등의 장점을 가지고 있다.
 const apiClient = axios.create({
     baseURL: import.meta.env.VITE_APP_API_BASE_URL,
-    timeout: 2000
+    "Content-Type": "application/json",
+    timeout: 10000
 });
 
 
@@ -57,7 +58,7 @@ apiClient.interceptors.response.use(
                 // 리프레시 토큰을 사용하여 새 액세스 토큰을 요청한다.
                 const refreshToken = localStorage.getItem('refreshToken');
                 const response = await apiClient.post(
-                    '/api/v1/auth/refresh',
+                    '/auth/refresh',
                     null,
                     {
                         headers: {
@@ -67,6 +68,9 @@ apiClient.interceptors.response.use(
                     }
                 );
 
+                console.log('새 액세스 토큰 발급 성공');
+                console.log(response);
+                
                 const accessToken = response.data.accessToken;
 
                 // 새 액세스 토큰을 로컬 스토리지에 저장
