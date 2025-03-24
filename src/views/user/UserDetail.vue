@@ -16,6 +16,7 @@
     const currentRoute = useRoute(); 
     const router = useRouter();
     const initFormData = reactive ({});
+    const initUserEmail = reactive({});
 
     const authStore = useAuthStore();
     const userInfo = authStore.userInfo;
