@@ -33,6 +33,9 @@
                 <!-- <RouterLink class="nav-link" :to="{name: 'departments/add'}">학과 등록</RouterLink> -->
             <!-- </li> -->
             <!-- 쪽지 -->
+          <li class="nav-item">
+            <router-link class="nav-link" :to="{name: 'post'}"> 게시판 </router-link>
+          </li>
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'messages'}">쪽지 목록 조회</RouterLink>
             </li>
@@ -76,6 +79,9 @@
             <!-- 마이페이지 -->
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'mypage'}">{{ userInfo.username }}</RouterLink>
+            <li class="nav-item" > 
+<!--                       v-if="isAdmin">-->
+              <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink>
             </li>
         </ul>
         <div class="col-md-3 text-end">
@@ -86,16 +92,20 @@
 
 <script setup>
     import { useAuthStore } from '@/stores/auth';
-
+    import {computed} from "vue";
     const authStore = useAuthStore();
     const userInfo = authStore.userInfo;
-
+    
     const logout = () => {
         if (confirm('정말로 로그아웃하시겠습니까?')) {
 
             authStore.logout();
         }
     };
+    
+    // 관리자일 때만 관리자페이지 탭 보이게 하기 위함 
+    const isAdmin = computed(() => authStore.user?.role === 'ADMIN'); 
+
 </script>
 
 <style scoped>

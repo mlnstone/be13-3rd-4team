@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 import { onMounted } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router'
 
+
 // import AuthLayout from '@/layout/AuthLayout.vue'
 // import BaseLayout from '@/layout/BaseLayout.vue'
 // import Login from '@/views/auth/Login.vue'
@@ -61,6 +62,28 @@ const Posts = () => import('@/views/post/Posts.vue');
 // MyPage
 const MyPage = () => import('@/views/user/MyPage.vue');
 
+// Post
+const PostList = () => import('@/views/post/PostList.vue');
+const PostDetail = () => import('@/views/post/PostDetail.vue');
+const PostWrite = () => import('@/views/post/PostWrite.vue');
+
+// Comment
+const CommentList = () => import('@/views/post/comment/CommentList.vue');
+const CommentCreate = () => import('@/views/post/comment/CommentCreate.vue');
+
+// Admin
+const AdminMain = () => import('@/views/admin/AdminMain.vue')
+const AdminLogin = () => import('@/views/admin/AdminLogin.vue')
+const AdminProjectList = () => import('@/views/admin/AdminProjectList.vue')
+const AllUserComments = () => import('@/views/admin/AllUserComments.vue')
+const AdminTechManage = () => import('@/views/admin/AdminTechManage.vue')
+const FeedbackList = () => import('@/views/admin/FeedbackList.vue')
+const UserAllPost = () => import('@/views/admin/UserAllPost.vue')
+const UserDetail = () => import('@/views/admin/UserDetail.vue')
+const UserAllProject = () => import('@/views/admin/UserAllProject.vue')
+const UserList = () => import('@/views/admin/UserList.vue')
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -74,6 +97,34 @@ const router = createRouter({
           name: 'home', 
           component: Home 
         },
+        // post
+        { 
+          path: 'post', 
+          name: 'post',
+          component: PostList 
+        },
+        { 
+          path: 'post/:postNo',
+          name: 'postDetail',
+          component: PostDetail 
+        },
+        { 
+          path: 'post/write', 
+          name: 'PostWrite', 
+          component: PostWrite 
+        },
+        // comment
+        {
+          path: 'posts/:postNo/comments', 
+          name: 'CommentList', 
+          component: CommentList
+        },
+        { 
+          path: 'posts/:postNo/comments/create', 
+          name: 'CommentCreate', 
+          component: CommentCreate 
+        },
+        
         // departments
         { 
           path: 'departments', 
@@ -176,6 +227,60 @@ const router = createRouter({
           name: 'mypage',
           component: MyPage
         },
+
+        // admin
+        {
+          path: 'admin',
+          name: 'admin',
+          component: AdminMain
+        },
+        {
+          path: 'admin/login',
+          name: 'admin-login',
+          component: AdminLogin
+        },
+        {
+          path: 'admin/projects',
+          name: 'admin-projects',
+          component: AdminProjectList
+        },
+        {
+          path: 'admin/user/:userNo/comments',
+          name: 'admin-user-comments',
+          component: AllUserComments
+        },
+
+        {
+          path: 'admin/tech',
+          name: 'admin-tech',
+          component: AdminTechManage
+        },
+        {
+          path: 'admin/feedbacks',
+          name: 'admin-feedbacks',
+          component: FeedbackList
+        },
+        {
+          path: 'admin/user/:userNo/posts',
+          name: 'admin-user-posts',
+          component: UserAllPost
+        },
+        {
+          path: 'admin/user/:userNo/projects',
+          name: 'admin-user-projects',
+          component: UserAllProject
+        },
+        {
+          path: 'admin/user/:userNo',
+          name: 'admin-user-detail',
+          component: UserDetail
+        },
+        {
+          path: 'admin/users',
+          name: 'admin-users',
+          component: UserList
+        },
+       
       ]
     },
     {
@@ -221,9 +326,15 @@ router.beforeEach((to, form, next) => {
   // 로그인 페이지가 아니고, 로그인 상태가 아니면 로그인 페이지로 리다이렉트한다.
   if(to.name !== 'login' && !authStore.isLoggedIn) {
     next({name: 'login'});
-  } else {
-    next();
-  }
+  } 
+  //
+  // if (to.path.startsWith('/admin') && authStore.user?.role !== 'ADMIN') {
+  //   alert('관리자 권한이 필요합니다.')
+  //   return next({ name: 'home' });
+  // }
+  
+  next();
 });
+
 
 export default router
