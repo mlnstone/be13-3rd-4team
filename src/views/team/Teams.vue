@@ -1,6 +1,6 @@
 <template>
     <main>
-        <TeamTable :teams="teams"/>
+        <TeamTable :teams="teams" @item-click="itemClick"/>
         <Pagination :pageInfo="pageInfo" 
             @change-page="changePage"/>
     </main>
@@ -25,24 +25,6 @@
         listLimit: 0 // 한 페이지에 표시될 리스트의 수
     });
 
-    // axios 사용법
-    // const fetchDepartments = (page) => {
-    //     apiClient.get(`/api/v1/university-service/departments?page=${page}&numOfRows=10`)
-    //             // 비동기 통신이 성공적으로 완료되었을 때 호출되는 함수를 지정한다.
-    //             .then((response) => {
-    //                 console.log(response);
-    //             })
-    //             // 비동기 통신이 실패했을 때 호출되는 함수를 지정한다.
-    //             .catch((error) => {
-    //                 console.log(error);
-    //             });
-    // }
-
-    // async / await 사용
-    //   - 자바스크립트에서 비동기 작업을 효과적으로 처리할 수 있다.
-    //   - 직접 axios를 사용할 때와 비교해 예외 처리가 간결해진다.
-    //   - async는 비동기 작업을 포함하는 함수의 앞부분에 작성한다.
-    //   - await는 async 함수 내에서만 작성할 수 있고 비동기 작업의 완료를 기다린다.
     const fetchTeams = async (page) => {
         try {
             const response = await apiClient.get(`/team?page=${page-1}&size=10&userNo=6`);

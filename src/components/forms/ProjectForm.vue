@@ -2,18 +2,18 @@
     <form @submit.prevent="submitClick">
         <div class="mb-3">
             <label for="name" class="form-label">프로젝트명</label>
-            <input type="text" class="form-control" id="name" v-model.trim ="formData.name">
+            <input type="text" class="form-control" id="name" v-model.trim ="formData.project.name">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">프로젝트 내용</label>
-            <input type="text" class="form-control" id="content" v-model.trim="formData.content">
+            <input type="text" class="form-control" id="content" v-model.trim="formData.project.content">
         </div>
         <div class="mb-3">
-            <input type="hidden" class="form-control" id="teamNo" v-model.trim="formData.teamNo">
+            <input type="hidden" class="form-control" id="teamNo" v-model.trim="formData.project.teamNo">
         </div>
         <div class="mb-3">
             <label for="projectStatus" class="form-label">프로젝트 상태</label>
-            <select class="form-select" id="projectStatus" v-model="formData.projectStatus">
+            <select class="form-select" id="projectStatus" v-model="formData.project.projectStatus">
                 <option value="OPEN">개설</option>
                 <option value="IN_PROGRESS">진행중</option>
                 <option value="COMPLETE">완료</option>
@@ -45,7 +45,7 @@ import { reactive, toRaw, watch } from 'vue';
 
     const props = defineProps({
         submitButtonText: String,
-        initFormData: Object
+        initProjectFormData: Object
     });
 
     const emit = defineEmits(['form-submit']);
@@ -55,7 +55,7 @@ import { reactive, toRaw, watch } from 'vue';
     };
 
     watch(
-        props.initFormData,
+        props.initProjectFormData,
         (newFormData) => {
             // formData의 속성만 newFormData의 속성의 값으로 변경한다.
             Object.assign(formData, newFormData)

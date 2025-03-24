@@ -15,7 +15,7 @@
 
     const router = useRouter();
     const initFormData = reactive({
-        receiverId: '',
+        receiverUsername: '',
         content: ''
     });
 

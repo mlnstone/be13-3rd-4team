@@ -2,15 +2,15 @@
     <form @submit.prevent="submitClick">
         <div class="mb-3">
             <label for="teamName" class="form-label">팀명</label>
-            <input type="text" class="form-control" id="teamName" v-model.trim ="formData.teamName">
+            <input type="text" class="form-control" id="teamName" v-model.trim ="initTeamFormData.teamName">
         </div>
         <div class="mb-3">
             <label for="teamIntroduce" class="form-label">팀 설명</label>
-            <input type="text" class="form-control" id="teamIntroduce" v-model.trim="formData.teamIntroduce">
+            <input type="text" class="form-control" id="teamIntroduce" v-model.trim="initTeamFormData.teamIntroduce">
         </div>
         <div class="mb-3">
             <label for="projectStatus" class="form-label">상태</label>
-            <select class="form-select" id="projectStatus" v-model="formData.projectStatus">
+            <select class="form-select" id="projectStatus" v-model="initTeamFormData.projectStatus">
                 <option value="OPEN">개설</option>
                 <option value="CLOSED">마감</option>
                 <option value="IN_PROGRESS">모집중</option>
@@ -28,13 +28,13 @@
 <script setup>
 import { reactive, toRaw, watch } from 'vue';
 
-    const formData = reactive({
+    const initTeamFormData = reactive({
 
     });
 
     const props = defineProps({
         submitButtonText: String,
-        initFormData: Object
+        initTeamFormData: Object
     });
 
     const emit = defineEmits(['form-submit']);
@@ -44,10 +44,10 @@ import { reactive, toRaw, watch } from 'vue';
     };
 
     watch(
-        props.initFormData,
+        props.initTeamFormData,
         (newFormData) => {
             // formData의 속성만 newFormData의 속성의 값으로 변경한다.
-            Object.assign(formData, newFormData)
+            Object.assign(initTeamFormData, newFormData)
         },
         {immediate: true} // watch가 등록될 때 즉시 한 번 실행된다.
     );

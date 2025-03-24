@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>쪽지 상세 보기</h2>
+        <h2>팀 상세 보기</h2>
 
         <!-- <p>{{ currentRoute.fullPath }}</p>
         <p>{{ currentRoute.path }}</p>
@@ -10,69 +10,53 @@
         <p>{{ currentRoute.query.name }}</p>
         <p>{{ parseInt(currentRoute.query.age) }}</p> -->
 
+
+
         <!-- <button @click="(e) => router.push('/')">홈으로</button> -->
         <!-- <button @click="(e) => router.push({name: 'home'})">홈으로</button> -->
         <!-- <button @click="(e) => router.replace({name: 'home'})">홈으로</button> -->
         <!-- <button @click="(e) => router.back()">뒤로가기</button> -->
         <!-- <button @click="(e) => router.forward()">앞으로가기</button> -->
+
+        <TeamForm :initTeamFormData="initTeamFormData" />
+        <hr>
+        <ProjectForm :initProjectFormData="initProjectFormData" submitButtonText="등록"/>
     </div>
 </template>
 
 <script setup>
-    import { reactive, onMounted } from 'vue';
+    import {reactive, onMounted} from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import TeamForm from '@/components/forms/TeamForm.vue';
+    import ProjectForm from '@/components/forms/ProjectForm.vue';
     import apiClient from '@/api';
 
-    const currentRoute = useRoute();
+    const currentRoute = useRoute(); 
     const router = useRouter();
-    const initFormData = reactive({});
+    const initTeamFormData = reactive ({});
+    const initProjectFormData = reactive ({});
 
     const fetchTeam = async (no) => {
         try {
-            const response = await apiClient(
-                `/api/v1/university-service/departments/${no}`
-            );
+            const response = await apiClient.get(`/team/${no}`);
 
-            Object.assign(initFormData, response.data.items[0]);
+            console.log('fetchTeam : ');
+            console.log(response.data);
+            Object.assign(initTeamFormData, response.data.team.team);
+            Object.assign(initProjectFormData, response.data.team);
         } catch (error) {
-            if (error.response.data.code === 404) {
-                alert(error.response.data.message);
+            if (error.response.status === 404) {
+                alert(error.response.message);
 
-                router.push({name: 'departments'});
+                router.push({name: 'messages'});
             } else {
                 alert('에러가 발생했습니다.');
             }
-        }
-    };
-
-    const formSubmit = async (formData) => {
-        try {
-            const response = await apiClient.put(
-                `/api/v1/university-service/departments/${formData.no}`,
-                formData
-            );
-
-            if (response.data.code === 200) {
-                alert('정상적으로 수정되었습니다.');
-
-                router.push({name: 'departments/no', params: {no: response.data.items[0].no}});
-            }
-        } catch (error) {
-            if (error.response.data.code === 400) {
-                alert('학과 정보를 모두 입력해 주세요')
-            } else if (error.response.data.code === 404) {
-                alert('error.response.data.message');
-            } else {
-                alert('에러가 발생했습니다.');
-            }
-
-
         }
     };
 
     onMounted(() => {
-        fetchDepartment(currentRoute.params.no);
+        fetchTeam(currentRoute.params.no);
     });
 </script>
 

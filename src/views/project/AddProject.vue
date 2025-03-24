@@ -24,7 +24,7 @@ import { useRouter } from 'vue-router';
     const formSubmit = async (formData) => {
         try {
             const response = await apiClient.post(
-                '/projects',
+                '/project',
                 formData
             );
 
