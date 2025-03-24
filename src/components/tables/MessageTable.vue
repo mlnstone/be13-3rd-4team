@@ -1,4 +1,8 @@
 <template>
+    <button type="button" class="btn btn-outline-danger"
+        @click.stop="emit('fetch-message', 1, 'received')">받은</button>
+    <button type="button" class="btn btn-outline-danger"
+        @click.stop="emit('fetch-message', 1, 'sent')">보낸</button>
     <table class="table table-striped table-hover text-center">
         <thead>
             <tr>
@@ -14,8 +18,8 @@
             <tr v-for="message in messages" :key="message.no"
                 @click.stop="emit('item-click', message.no)">
                 <td>{{ message.no }}</td>
-                <td>{{ message.senderId }}</td>
-                <td>{{ message.receiverId }}</td>
+                <td>{{ message.senderUsername }}</td>
+                <td>{{ message.receiverUsername }}</td>
                 <td>{{ message.sendAt }}</td>
                 <td>{{ message.content }}</td>
                 <td>
@@ -35,7 +39,7 @@
         }
     });
 
-    const emit = defineEmits(['item-click', 'delete-message']);
+    const emit = defineEmits(['item-click', 'delete-message', 'fetch-message']);
 
     const confirmDelete = (no) => {
         if (confirm('정말로 삭제하시겠습니까?')) {

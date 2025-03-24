@@ -13,9 +13,9 @@
             <tr v-for="team in teams" :key="team.no"
                 @click.stop="emit('item-click', team.no)">
                 <td>{{ team.no }}</td>
-                <td>{{ team.teamName }}</td>
-                <td>{{ team.teamIntroduce }}</td>
-                <td>{{ team.projectStatus }}</td>
+                <td>{{ team.team.teamName }}</td>
+                <td>{{ team.team.teamIntroduce }}</td>
+                <td>{{ team.team.projectStatus }}</td>
                 <td>
                     <button type="button" class="btn btn-outline-danger"
                         @click.stop="confirmDelete(team.no)">삭제</button>

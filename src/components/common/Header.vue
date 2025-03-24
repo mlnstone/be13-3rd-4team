@@ -77,12 +77,13 @@
                 <RouterLink class="nav-link" :to="{name: 'posts/add'}">게시글 등록</RouterLink>
             </li>
             <!-- 마이페이지 -->
-            <!-- <li class="nav-item">
+            <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'mypage'}">{{ userInfo.username }}</RouterLink>
-            <li class="nav-item" >  -->
+            </li>
+            <li class="nav-item" > 
 <!--                       v-if="isAdmin">-->
-              <!-- <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink> -->
-            <!-- </li> -->
+                <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink>
+            </li>
         </ul>
         <div class="col-md-3 text-end">
             <button type="button" class="btn btn-outline-secondary" @click="logout">Logout</button>

@@ -1,8 +1,8 @@
 <template>
     <form @submit.prevent="submitClick">
         <div class="mb-3">
-            <label for="receiverId" class="form-label">받는 사람 아이디</label>
-            <input type="text" class="form-control" id="receiverId" v-model.trim ="formData.receiverId">
+            <label for="receiverUsername" class="form-label">받는 사람 아이디</label>
+            <input type="text" class="form-control" id="receiverUsername" v-model.trim ="formData.receiverUsername">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">쪽지 내용</label>
