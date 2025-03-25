@@ -82,6 +82,11 @@
 <!--&lt;!&ndash;                       v-if="isAdmin">&ndash;&gt;-->
 <!--                <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink>-->
 <!--            </li>-->
+            <!-- 🔔 알림 버튼 & 알림 박스 -->
+            <li class="nav-item position-relative">
+                <button class="btn btn-warning" @click="showNoti = !showNoti">🔔</button>
+                <NotificationBox v-if="showNoti" class="position-absolute end-0 mt-2" />
+            </li>
         </ul>
         <div class="col-md-3 text-end">
             <button type="button" class="btn btn-outline-secondary" @click="logout">Logout</button>
@@ -91,7 +96,10 @@
 
 <script setup>
     import { useAuthStore } from '@/stores/auth';
-    import {computed} from "vue";
+    import { computed, ref, onMounted } from "vue";
+    import NotificationBox from '@/views/common/NotificationBox.vue';
+    import { eventBus } from '@/utils/eventBus'; 
+
     const authStore = useAuthStore();
     const userInfo = authStore.userInfo;
     
@@ -105,11 +113,38 @@
     // 관리자일 때만 관리자페이지 탭 보이게 하기 위함 
     const isAdmin = computed(() => authStore.user?.role === 'ADMIN'); 
 
+
+    // 알림
+    const isNavShow = ref(false);
+    const showNoti = ref(false);
+    const showAlert = ref(false);
+
+    // 🔔 NotificationBox.vue에서 알림이 오면 이벤트 수신
+    onMounted(() => {
+    eventBus.on('new-notification', () => {
+            showAlert.value = true;
+            setTimeout(() => {
+                showAlert.value = false;
+            }, 3000) // 3초 깜빡임
+        });
+    });
 </script>
 
 <style scoped>
     /* 현재 URL과 정확하게 일치하는 경우에만 스타일이 적용된다. */
     .router-link-exact-active {
         color: rgb(108, 117, 125);
+    }
+
+    /* 알림 스타일 */
+
+    @keyframes blink {
+        0%   { opacity: 1; }
+        50%  { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    .animate-blink {
+        animation: blink 0.7s ease-in-out 3;
     }
 </style>

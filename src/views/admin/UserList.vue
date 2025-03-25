@@ -5,7 +5,6 @@
     <!-- 🔽 정렬 기준 드롭다운 -->
     <div>
       <label for="sortOption">정렬 기준:</label>
-
       <select id="sortOption" v-model="sortOption" @change="fetchUsers">
         <option value="LATEST">최신 가입순</option>
         <option value="USERNAME">이름순</option>
@@ -15,215 +14,148 @@
 
     <table>
       <thead>
-      <tr>
-        <th>사용자명</th>
-        <th>이메일</th>
-        <th>역할</th>
-        <th>ban 여부</th>
-      </tr>
+        <tr>
+          <th>사용자명</th>
+          <th>이메일</th>
+          <th>역할</th>
+          <th>ban 여부</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="user in userList" :key="user.username" @click="goToUserDetail(user.userNo)">
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td><span :class="['role-badge', user.role.toLowerCase()]">{{ user.role }}</span></td>
-        <td>{{ user.banned }}</td>
-      </tr>
+        <tr v-for="user in userList" :key="user.username" @click="goToUserDetail(user.userNo)">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td><span :class="['role-badge', user.role.toLowerCase()]">{{ user.role }}</span></td>
+          <td>{{ user.banned }}</td>
+        </tr>
       </tbody>
     </table>
 
     <div class="pagination">
       <button @click="prevPageGroup" :disabled="pageGroupStart === 1">«</button>
-      <button v-for="page in pageNumbers"
-              :key="page"
-              @click="moveToPage(page)"
-              :class="{ active: currentPage === page }">
+      <button v-for="page in pageNumbers" :key="page" @click="moveToPage(page)" :class="{ active: currentPage === page }">
         {{ page }}
       </button>
       <button @click="nextPageGroup" :disabled="pageGroupEnd >= totalPages">»</button>
     </div>
   </div>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      userList: [],
-      currentPage: 1,
-      totalPages: 1,
-      pageGroupStart: 1,
-      pageGroupSize: 10,
-      sortOption: 'LATEST', // 🔥 정렬 기준 추가
-    };
-  },
-  computed: {
-    pageGroupEnd() {
-      return Math.min(this.pageGroupStart + this.pageGroupSize - 1, this.totalPages);
-    },
-    pageNumbers() {
-      return Array.from({ length: this.pageGroupEnd - this.pageGroupStart + 1 }, (_, i) => i + this.pageGroupStart);
-    }
-  },
-  mounted() {
-    const fromUserList = sessionStorage.getItem('fromUserList') === 'true';
-    const fromHistoryBack = performance.getEntriesByType("navigation")[0]?.type === 'back_forward';
 
-    if (fromUserList && fromHistoryBack) {
-      const savedPage = sessionStorage.getItem('userListPage');
-      this.currentPage = savedPage ? parseInt(savedPage) : 1;
-      sessionStorage.removeItem('fromUserList');
-    } else {
-      this.currentPage = 1;
-      sessionStorage.removeItem('userListPage');
-    }
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import apiClient from '@/api';
 
-    this.fetchUsers();
-  },
-  watch: {
-    sortOption() {
-      this.currentPage = 1;
-      this.pageGroupStart = 1;
-      this.fetchUsers();
-    }
-  },
-  methods: {
-    async fetchUsers() {
-      try {
-        const response = await fetch(`/admin/users?page=${this.currentPage - 1}&size=10&sortOption=${this.sortOption}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        });
-        const data = await response.json();
-        this.userList = data.content;
-        this.totalPages = data.totalPages;
+const userList = ref([]);
+const currentPage = ref(1);
+const totalPages = ref(1);
+const pageGroupStart = ref(1);
+const pageGroupSize = 10;
+const sortOption = ref('LATEST');
+const router = useRouter();
 
-      } catch (error) {
-        console.error("🚨 유저 목록 가져오기 실패:", error);
+const fetchUsers = async () => {
+  try {
+    const response = await apiClient.get(`/admin/users?page=${currentPage.value - 1}&size=10&sortOption=${sortOption.value}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }
-    },
-    moveToPage(page) {
-      this.currentPage = page;
-      sessionStorage.setItem('userListPage', page);
-      this.fetchUsers();
-    },
-    prevPageGroup() {
-      if (this.pageGroupStart > 1) {
-        this.pageGroupStart -= this.pageGroupSize;
-        this.currentPage = this.pageGroupStart;
-        this.fetchUsers();
-      }
-    },
-    nextPageGroup() {
-      if (this.pageGroupEnd < this.totalPages) {
-        this.pageGroupStart += this.pageGroupSize;
-        this.currentPage = this.pageGroupStart;
-        this.fetchUsers();
-      }
-    },
-    goToUserDetail(userNo) {
-      sessionStorage.setItem('fromUserList', 'true');
-      this.$router.push(`/admin/user/${userNo}`);
-    }
+    });
+
+    const data = await response.json();
+    userList.value = data.content;
+    totalPages.value = data.totalPages;
+  } catch (error) {
+    console.error('🚨 유저 목록 가져오기 실패:', error);
   }
 };
+
+const pageGroupEnd = computed(() => Math.min(pageGroupStart.value + pageGroupSize - 1, totalPages.value));
+const pageNumbers = computed(() => Array.from({ length: pageGroupEnd.value - pageGroupStart.value + 1 }, (_, i) => i + pageGroupStart.value));
+
+const moveToPage = (page) => {
+  currentPage.value = page;
+  fetchUsers();
+};
+
+const prevPageGroup = () => {
+  if (pageGroupStart.value > 1) {
+    pageGroupStart.value -= pageGroupSize;
+    currentPage.value = pageGroupStart.value;
+    fetchUsers();
+  }
+};
+
+const nextPageGroup = () => {
+  if (pageGroupEnd.value < totalPages.value) {
+    pageGroupStart.value += pageGroupSize;
+    currentPage.value = pageGroupStart.value;
+    fetchUsers();
+  }
+};
+
+const goToUserDetail = (userNo) => {
+  router.push(`/admin/user/${userNo}`);
+};
+
+onMounted(fetchUsers);
 </script>
 
 <style scoped>
-
-
-label {
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-select {
-  padding: 5px;
-  margin-bottom: 15px;
+.user-list-container {
+  padding: 20px;
 }
 
 h2 {
   text-align: center;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  font-weight: 700;
-  color: #343a40;
+  margin: 20px 0;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fafbfc;
-  overflow: hidden;
-  border-radius: 8px;
-  table-layout: fixed;
+label {
+  margin-right: 10px;
+}
+
+select {
+  margin-bottom: 15px;
 }
 
 th, td {
-  padding: 15px;
+  padding: 10px;
   text-align: center;
 }
 
 th {
   background-color: grey;
-  color: #ffffff;
-  font-weight: 600;
-  position: sticky; /* 헤더 고정 */
-}
-
-tbody tr {
-  border-bottom: 1px solid #dee2e6;
-  transition: background-color 0.3s;
-}
-
-tbody tr:hover {
-  background-color: #edf2ff;
-}
-
-.role-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
   color: white;
-  font-size: 12px;
-}
-
-.role-badge.admin {
-  background-color: #ff6b6b;
-}
-
-.role-badge.user {
-  background-color: #15aabf;
 }
 
 .pagination {
   display: flex;
-  justify-content: center;  /* 페이징 버튼을 정확히 중앙에 배치 */
-  align-items: center;
-  margin-top: 25px;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .pagination button {
-  padding: 6px 12px;
-  margin: 4px;
-  border: none;
-  background-color: #e9ecef;
-  position: sticky; /* 페이지네이션 고정 */
-  color: #495057;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: all 0.3s;
+  padding: 5px 10px;
+  margin: 0 5px;
 }
 
-.pagination button.active,
-.pagination button:hover:not(:disabled) {
+.pagination button.active {
   background-color: #4c6ef5;
-  color: #ffffff;
+  color: white;
 }
 
-.pagination button:disabled {
-  background-color: #ced4da;
-  cursor: not-allowed;
-  color: #868e96;
+.role-badge.admin {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.role-badge.user {
+  background-color: #15aabf;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 8px;
 }
 </style>
