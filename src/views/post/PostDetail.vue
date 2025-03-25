@@ -36,6 +36,7 @@
                 <button @click="toggleBookmark" :class="{bookmarked: post.bookmarked}" :disabled="post.postStatus === 'INACTIVE'" class="bookmark-btn">
                     <i class="fi fi-ss-bookmark-slash" :class="{'bookmark-icon': post.bookmarked}"></i>
                 </button>
+            </div>
 
             <!-- 수정 삭제 -->
             <div>

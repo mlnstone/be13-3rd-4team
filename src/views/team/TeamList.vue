@@ -110,11 +110,6 @@ const setPage = (newPage) => {
   fetchPostList();
 };
 
-const setPage = (pages) => {
-  page.value = pages;
-  fetchPostList();
-};
-
 const handleSearch = (searchParams) => {
   size.value = searchParams.size;
   postSortOption.value = searchParams.postSortOption;
