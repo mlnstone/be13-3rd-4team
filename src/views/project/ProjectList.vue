@@ -1,74 +1,75 @@
 <template>
-  <div>
+  <div class="project-wrapper">
+    <!-- 상단 카테고리 -->
     <div class="category-bar">
       <router-link to="/teams">
-        <button class="category-button">팀</button>
+        <button class="category-button" :class="{ active: isActive('/teams') }">팀</button>
       </router-link>
       <router-link to="/projects">
-        <button class="category-button">프로젝트</button>
+        <button class="category-button" :class="{ active: isActive('/projects') }">프로젝트</button>
       </router-link>
       <router-link to="/projects/write">
-        <button class="category-button">팀 생성</button>
+        <button class="category-button" :class="{ active: isActive('/projects/write') }">프로젝트 생성</button>
       </router-link>
     </div>
 
-    <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
-      @search="handleSearch" />
+    <!-- 검색 바 -->
+    <SearchBar
+      :size-options="sizeOptions"
+      :post-sort-options="postSortOptions"
+      :select-options="selectOptions"
+      @search="handleSearch"
+    />
 
-    <!-- 테이블 -->
-    <div class="main-container">
-      <div class="table-container">
-        <div class="table-wrapper">
-          <table class="custom-table">
-            <!-- 제목 -->
-            <thead class="table-header">
-              <tr>
-                <th>번호</th>
-                <th>프로젝트</th>
-                <th>팀</th>
-                <th>간단 소개</th>
-                <th>상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="post in paginatedPosts" :key="post.no" @click="ditailePage(post.no)" class="table-row">
-                <td>{{ post.no }}</td>
-                <td>{{ post.name }}</td>
-                <td>{{ post.teamName }}</td>
-                <td>{{ post.content }}</td>
-                <td>{{ post.projectStatus }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <!-- 프로젝트 카드 리스트 -->
+    <div class="project-list">
+      <div
+        v-for="project in paginatedProjects"
+        :key="project.no"
+        class="project-card"
+        @click="goToProjectDetail(project.no)"
+      >
+        <div class="project-meta">
+          <span class="meta-author">{{ project.teamName }}</span>
+          <span class="meta-dot">•</span>
+          <span class="meta-views">조회 {{ project.view || 0 }}</span>
+        </div>
+        <div class="project-title">{{ project.name }}</div>
+        <div class="project-desc">{{ project.content }}</div>
+        <div class="project-tags">
+          <span class="tag">{{ project.projectStatus }}</span>
         </div>
       </div>
     </div>
 
     <!-- 페이징 -->
-    <PageNav v-if="postList && postList.content && postList.content.length > 0" :current-page="page"
-      :items-per-page="parseInt(size)" :total-pages="postList.totalPages" @set-page="setPage" />
-
+    <PageNav
+      v-if="projectList && projectList.content && projectList.content.length > 0"
+      :current-page="page"
+      :items-per-page="parseInt(size)"
+      :total-pages="projectList.totalPages"
+      @set-page="setPage"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import apiClient from '@/api';
-import PageNav from "@/components/common/PageNav.vue";
+import PageNav from '@/components/common/PageNav.vue';
 import SearchBar from '@/components/common/SearchBar.vue';
 
-const route = useRoute();
 const router = useRouter();
+const route = useRoute();
 
-// 초기 페이지 설정
 const page = ref(1);
 const size = ref(10);
+const projectList = ref({ content: [] });
 
-const postList = ref({ content: [] });
 const postSortOption = ref('LATEST');
-const searchQuery = ref("");
-const selectOption = ref("");
+const searchQuery = ref('');
+const selectOption = ref('');
 
 const sizeOptions = ref([10, 20, 30]);
 const postSortOptions = ref([
@@ -82,16 +83,15 @@ const selectOptions = ref([
   { value: 'PROJECT_TECHS', label: '기술명' }
 ]);
 
-const paginatedPosts = computed(() => postList.value.content || []);
+const paginatedProjects = computed(() => projectList.value.content || []);
 
-const fetchPostList = async () => {
+const fetchProjectList = async () => {
   try {
     const params = {
-      projectSortOption: postSortOption.value,
-      page: page.value - 1, // 현재 페이지 번호 -1 (0 기반 인덱스)
-      size: size.value,
+      sortOption: postSortOption.value,
+      page: page.value - 1,
+      size: size.value
     };
-
     if (searchQuery.value && selectOption.value) {
       params.option = selectOption.value;
       params.keyword = searchQuery.value;
@@ -99,161 +99,129 @@ const fetchPostList = async () => {
 
     const response = await apiClient.get('/project', { params });
     if (response.status === 200) {
-          postList.value = response.data;
-      } else {
-          alert('데이터 조회 실패');
-      }
-  } catch (error) {
-    console.error('오류 발생:', error);
-    postList.value = { content: [] };
-    page.value = 1;
+      projectList.value = response.data;
+    } else {
+      alert('프로젝트 조회 실패');
+    }
+  } catch (err) {
+    console.error('프로젝트 로딩 오류:', err);
   }
 };
 
-const setPage = (pages) => {
-      page.value = pages; // 부모 컴포넌트에서 페이지 업데이트
-      fetchPostList();
-  };
+const setPage = (newPage) => {
+  page.value = newPage;
+  fetchProjectList();
+};
 
 const handleSearch = (searchParams) => {
   size.value = searchParams.size;
   postSortOption.value = searchParams.postSortOption;
   selectOption.value = searchParams.selectOption;
   searchQuery.value = searchParams.searchQuery;
-  page.value = 1; // 검색 시 페이지 초기화
-  fetchPostList();
+  page.value = 1;
+  fetchProjectList();
 };
 
-const ditailePage = (projectNo) => {
-  router.push(`/projects/${projectNo}`);
+const goToProjectDetail = (no) => {
+  router.push(`/projects/${no}`);
 };
 
-onMounted(() => {
-  fetchPostList();
-});
+const isActive = (path) => route.path === path;
+
+onMounted(fetchProjectList);
 </script>
 
 <style scoped>
+.project-wrapper {
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 1.5rem;
+  min-height: 100vh;
+}
 .category-bar {
   display: flex;
-  padding: 1rem;
-  gap: 1rem;
-  overflow-x: auto;
+  padding: 0.75rem 1rem;
+  gap: 0.5rem;
+  background-color: #f9f9f9;
 }
 
 .category-button {
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  text-transform: capitalize;
-  color: white;
-  background-color: #4f46e5;
-  /* indigo-600 */
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #ccc;
   border-radius: 0.375rem;
-  transition: background-color 0.2s ease;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .category-button:hover {
-  background-color: #4338ca;
-  /* indigo-500 */
+  background-color: #e9f3f9;
+  border-color: #0077b6;
+  color: #0077b6;
 }
 
-.select-box {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  border: 1px solid #cbd5e0;
-  /* gray-400 */
-  border-radius: 0.375rem;
-  background-color: white;
+.category-button.active {
+  background-color: #0077b6;
+  color: white;
+  border: 1px solid #0077b6;
 }
 
-.search-input {
-  width: 100%;
-  padding: 0.5rem 2rem 0.5rem 2.5rem;
-  border: 1px solid #cbd5e0;
-  /* gray-400 */
-  border-radius: 0.375rem;
+/* 프로젝트 카드 리스트 */
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: #f5f5f5;
 }
 
-.main-container {
-  margin-top: 1rem;
-}
-
-.table-container {
-  margin-top: 1.5rem;
-}
-
-.table-wrapper {
-  margin: 1.5rem 0;
-  overflow: hidden;
+.project-card {
   background-color: #ffffff;
-  border-radius: 0.375rem;
-  /* rounded-md */
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  /* shadow */
-}
-
-.custom-table {
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
-}
-
-.table-header {
-  border-bottom: 1px solid #e5e7eb;
-  /* border-b */
-}
-
-.width-350 {
-  width: 350px;
-  text-align: left;
-}
-
-.width-80 {
-  width: 80px;
-}
-
-.header-cell {
-  padding: 0.75rem 1.25rem;
-  /* px-5 py-3 */
-  font-size: 0.875rem;
-  /* text-sm */
-  font-weight: 500;
-  /* font-medium */
-  text-transform: uppercase;
-  color: #f3f4f6;
-  /* text-gray-100 */
-  background-color: #4f46e5;
-  /* indigo-800 */
-}
-
-.table-row {
+  color: #333;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e0e0e0;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: all 0.3s ease;
 }
 
-.table-row:hover {
-  background-color: #e5e7eb;
-  /* hover:bg-gray-200 */
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
 }
 
-.body-cell {
-  padding: 1rem 1.5rem;
-  /* px-6 py-4 */
+.project-meta {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+.meta-dot {
+  margin: 0 0.4rem;
+}
+
+.project-title {
   font-size: 1.125rem;
-  /* text-lg */
-  color: #6b7280;
-  /* text-gray-500 */
-  border-bottom: 1px solid #e5e7eb;
-  /* border-b */
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #222;
 }
 
-.body-cell:first-child {
-  font-weight: 500;
-  /* 강조를 위해 font 추가 */
+.project-desc {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 1rem;
+  line-height: 1.4;
 }
 
-.body-cell:hover {
-  color: #374151;
-  /* text-gray-700 */
+.project-tags .tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  background-color: #0077b6;
+  color: #ffffff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
 }
 </style>

@@ -26,17 +26,17 @@
                 </div>
             </div>
 
-            <div v-if="(team.status === 'OPEN') && !isLeader && !isMember">
+            <div v-if="(team.status === 'OPEN') && !isLeader || (team.status === 'OPEN') && !isMember">
                 <button
                     class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
                     @click="confirmJoin(team.no)">가입 신청</button>
             </div>
 
-            <!-- <div v-if="isMember">
-                <router-link :to="{ name: 'ScheduleList' }">
+            <div v-if="isMember">
+                <router-link :to="{ name: 'ScheduleList', params: { teamNo: team.no } }">
                     <button class="category-button">팀 스케줄</button>
                 </router-link>
-            </div> -->
+            </div>
 
             <div v-if="isLeader">
                 <br />

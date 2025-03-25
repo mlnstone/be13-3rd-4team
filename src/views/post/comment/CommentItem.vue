@@ -26,6 +26,7 @@
     <div class="like-bnt-box">
       <button @click="toggleLike" :class="{ liked: comment.liked }" :disabled="postStatus === 'INACTIVE'">
         좋아요 {{ comment.likeCount }}
+        <i class="fi fi-ts-heart"></i>
       </button>
     </div>
   </div>
