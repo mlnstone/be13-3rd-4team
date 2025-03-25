@@ -81,7 +81,10 @@ export const useAuthStore = defineStore('auth', () => {
                 return;
             }
 
-            const response = await apiClient.post('/auth/logout');
+            
+            const response = await apiClient.post('/auth/logout',{},{headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+              }});
 
             if (response.status === 204) {
                 logoutUser();
