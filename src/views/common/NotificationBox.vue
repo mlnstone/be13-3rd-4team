@@ -12,47 +12,60 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import apiClient from '@/api';
 import { eventBus } from '@/utils/eventBus';
-import { useAuthStore } from '@/stores/auth'
-import { jwtDecode } from 'jwt-decode'; // ✅ jwt-decode import
+import { useAuthStore } from '@/stores/auth';
 
-// ✅ accessToken에서 username 뽑기
+const notifications = ref([]);
 const authStore = useAuthStore();
+const userInfo = authStore.getUserInfo();
+const username = userInfo.username;
+let eventSource = null;
 
-const accessToken = authStore.getUserInfo().accessToken;
-const decoded = jwtDecode(accessToken);
-const username = decoded.username;
-
-const notifications = ref([])
-
-onMounted(async () => {
-  console.log(decoded);
+const fetchNotifications = async () => {
   try {
     const res = await apiClient.get(`/notifications?username=${username}`);
     notifications.value = res.data;
-
-    const eventSource = new EventSource(`${import.meta.env.VITE_APP_API_BASE_URL}/notifications/subscribe?username=${username}`);
-    eventSource.addEventListener('notification', (event) => {
-      const newNoti = JSON.parse(event.data);
-      notifications.value.push(newNoti)
-
-      eventBus.emit('new-notification');
-      console.log('📡 이벤트 전송됨: new-notification')
-    })
   } catch (error) {
-
-    console.log('에러 발생 : ');
-    console.log(error);
+    console.error('🔴 알림 가져오기 실패:', error);
   }
-});
+};
+
+const subscribeNotifications = () => {
+  if (eventSource) {
+    eventSource.close();
+  }
+  eventSource = new EventSource(`${import.meta.env.VITE_APP_API_BASE_URL}/notifications/subscribe?username=${username}`);
+  eventSource.addEventListener('notification', (event) => {
+    const newNoti = JSON.parse(event.data);
+    notifications.value.push(newNoti);
+    console.log('📩 새 알림:', newNoti);
+    eventBus.emit('new-notification');
+  });
+};
 
 const markAsRead = async (id) => {
-  await apiClient.post(`/notifications/${id}/read?username=${username}`);
-  notifications.value = notifications.value.filter(n => n.id !== id)
-}
+  try {
+    await apiClient.post(`/notifications/${id}/read?username=${username}`);
+    notifications.value = notifications.value.filter(n => n.id !== id);
+  } catch (error) {
+    console.error('🔴 알림 읽음 처리 실패:', error);
+  }
+};
+
+onMounted(() => {
+  fetchNotifications();
+  subscribeNotifications();
+});
+
+onUnmounted(() => {
+  if (eventSource) {
+    eventSource.close();
+  }
+});
 </script>
+
 
 <style scoped>
 .notification-box {

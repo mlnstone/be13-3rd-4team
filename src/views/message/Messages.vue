@@ -1,186 +1,148 @@
 <template>
-    <main>
-        <MessageTable :messages="messages"
-            @item-click="itemClick" @delete-message="deleteMessage" @fetch-message="fetchMessages"/>
-        <Pagination :pageInfo="pageInfo" 
-            @change-page="changePage"/>
-    </main>
+  <div class="message-list">
+    <h2>쪽지 목록</h2>
+    <div>
+      <button @click="loadMessages('received')" :class="{ active: currentTab === 'received' }">
+        받은 쪽지 <span v-if="unreadCount > 0" class="unread-badge">{{ unreadCount }}</span>
+      </button>
+      <button @click="loadMessages('sent')" :class="{ active: currentTab === 'sent' }">보낸 쪽지</button>
+      <router-link to="/messages/write">
+        <button>쪽지 보내기</button>
+      </router-link>
+    </div>
+
+    <div v-if="messages.length === 0">쪽지가 없습니다.</div>
+    <div v-else>
+      <div v-for="message in messages" :key="message.no" class="message-item">
+        <div class="message-header">
+          <span class="sender">보낸 사람: {{ message.senderId }}</span>
+          <span class="receiver">받은 사람: {{ message.receiverId }}</span>
+          <span class="date">{{ formatDate(message.sendAt) }}</span>
+          <div class="message-content">
+            <router-link :to="`/messages/${message.no}`">
+              <p :class="message.read ? 'read' : 'unread'">
+                {{ message.content.length > 50 ? message.content.substring(0, 50) + '...' : message.content }}
+              </p>
+            </router-link>
+          </div>
+        </div>
+        <div class="message-actions">
+          <button class="btn btn-danger" @click="deleteMessage(message.no)">삭제</button>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <button @click="loadMessages(currentTab, currentPage - 1)" :disabled="currentPage === 1">〈</button>
+        <button v-for="page in pageRange" :key="page" @click="loadMessages(currentTab, page)" :class="{ active: currentPage === page }">{{ page }}</button>
+        <button @click="loadMessages(currentTab, currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-    import apiClient from '@/api';
-    import { onMounted, reactive, ref, watch } from 'vue';
-    import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
-    import MessageTable from '@/components/tables/MessageTable.vue';
-    import Pagination from '@/components/common/Pagination.vue';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import apiClient from '@/api';
+import { useAuthStore } from '@/stores/auth';
 
-    const messages = ref([]);
-    const currentRoute = useRoute();
-    const router = useRouter();
-    const pageInfo = reactive({
-        // 값을 정수로 변환하고 실패하면 1을 기본값으로 사용
-        currentPage: parseInt(currentRoute.query.page) || 1,
-        currentTab: 'received',  // 기본적으로 받은 쪽지 목록
-        totalCount: 0, // 전체 데이터 수
-        pageLimit: 5, // 페이지네이션에 보이는 페이지의 수
-        listLimit: 0 // 한 페이지에 표시될 리스트의 수
-    });
+const router = useRouter();
+const route = useRoute();
 
-    const fetchMessages = async (page, tab) => {
-        console.log('fetchMessages');
-        console.log(page);
-        console.log(tab);
-        
-        try {
-            const response = await apiClient.get(`/messages?page=${page - 1}&size=10&sort=no,desc&type=${tab}`);
+const authStore = useAuthStore();
+const userInfo = authStore.userInfo;
 
-            console.log(response);
-            messages.value = response.data.content;
-            pageInfo.totalCount = response.data.totalElements;
-            pageInfo.currentTab = tab;
-            pageInfo.listLimit = 10;
-        } catch (error) {
-            if (error.response.data.code === 404) {
-                alert(error.response.data.message);
+const messages = ref([]);
+const currentPage = ref(1);
+const totalPages = ref(1);
+const currentTab = ref('received');
+const unreadCount = ref(0);
+const perPage = 10;
 
-                router.push({name: 'messages'});
-            } else {
-                alert('쪽지 목록을 불러오는 중에 오류가 발생했습니다.');
-            }
-        }
+const loadMessages = async (type = currentTab.value, page = 1) => {
+  try {
+    const response = await apiClient.get(`/messages?type=${type}&page=${page - 1}&size=${perPage}&sort=no,desc`);
+
+    if (response.status === 200) {
+      messages.value = response.data.content;
+      currentPage.value = response.data.pageable.pageNumber + 1;
+      totalPages.value = response.data.totalPages;
+      currentTab.value = type;
+
+      router.push({ query: { type: currentTab.value, page: currentPage.value } });
     }
+  } catch (error) {
+    console.error('쪽지 목록 불러오기 실패:', error);
+    alert('쪽지 목록을 불러오는 데 실패했습니다.');
+  }
+};
 
-    const changePage = ({page, totalPages}) => {
-        if (page >= 1 && page <= totalPages) {
-            router.push({name: 'messages', query: {page}});
-        }
-    };
+const deleteMessage = async (messageNo) => {
+  try {
+    const response = await apiClient.delete(`/messages/${messageNo}`);
 
-    const itemClick = (no) => {
-        console.log(no);
-        router.push({name: 'messages/no', params: {no}});
-    };
-
-    // 쪽지 삭제
-    const deleteMessage = async (no) => {
-        try {
-            const response = await apiClient.delete(`/messages/${no}`);
-
-            if (response.status === 200) {
-                alert('정상적으로 삭제되었습니다.');
-
-                fetchMessages(pageInfo.currentPage, pageInfo.currentTab);
-            }
-        } catch (error)  {
-
-        }
+    if (response.status === 200) {
+      alert('쪽지가 삭제되었습니다.');
+      loadMessages(currentTab.value, currentPage.value);
     }
+  } catch (error) {
+    console.error('쪽지 삭제 실패:', error);
+    alert('쪽지 삭제 실패');
+  }
+};
 
-    // 이미 마운트 된 컴포넌트는 URI가 변경되었다고 해서 다시 마운트 되지 않는다.
-    // 관찰 속성을 사용해서 currentRoute 변경이 감지되면 하위 컴포넌트를 다시 렌더링하도록 한다.
-    // watch(currentRoute, () => {
-    //     pageInfo.currentPage = parseInt(currentRoute.query.page) || 1;
+const getUnreadMessages = async () => {
+  try {
+    const response = await apiClient.get(`/messages-unread`);
+    
+    if (response.status === 200) {
+      unreadCount.value = response.data;
+    }
+  } catch (error) {
+    console.error('안 읽은 쪽지 개수 불러오기 실패:', error);
+  }
+};
 
-    //     fetchDepartments(pageInfo.currentPage);
-    // });
+const pageRange = computed(() => {
+  const range = [];
+  const start = Math.floor((currentPage.value - 1) / 5) * 5 + 1;
+  const end = Math.min(start + 4, totalPages.value);
+  for (let i = start; i <= end; i++) {
+    range.push(i);
+  }
+  return range;
+});
 
-    // 라우트가 변경될 때 특정 로직을 실행하는 훅(Hook)이다.
-    onBeforeRouteUpdate((to, form) => {
-        pageInfo.currentPage = parseInt(to.query.page) || 1;
+const formatDate = (date) => {
+  return new Date(date).toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
 
-        fetchMessages(pageInfo.currentPage, pageInfo.currentTab);
-    });
-
-    onMounted(() => {
-        fetchMessages(pageInfo.currentPage, pageInfo.currentTab);
-    });
+onMounted(() => {
+  currentPage.value = parseInt(route.query.page, 10) || 1;
+  currentTab.value = route.query.type || 'received';
+  loadMessages(currentTab.value, currentPage.value);
+  getUnreadMessages();
+});
 </script>
 
 <style scoped>
-/* 메인 컨테이너 */
-.main-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #f9f9f9; /* 연한 배경 */
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-}
-
-/* 공통 텍스트 색상 */
-h2, p, th, td, a {
-  color: #353535; /* 글씨 색상 */
-}
-
-/* 테이블 스타일 */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th {
-  background-color: #0077b6; /* 테이블 헤더 배경 */
-  color: white; /* 테이블 헤더 글씨 */
-  padding: 1rem;
-  font-size: 1rem;
-  text-align: left;
-}
-
-td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #ddd;
-  color: #353535; /* 셀 텍스트 색상 */
-}
-
-/* 테이블 행 hover 효과 */
-tr:hover {
-  background-color: #e0f4ff; /* 연한 파랑 음영 */
-}
-
-/* 버튼 스타일 */
-button {
-  background-color: #0077b6; /* 주요 버튼 배경 */
-  color: white; /* 버튼 텍스트 */
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out, transform 0.2s;
-}
-
-button:hover {
-  background-color: #005fa3; /* hover 버튼 음영 */
-  transform: translateY(-2px); /* 가벼운 부각 효과 */
-}
-
-button:active {
-  transform: translateY(0); /* 클릭하면 원래 위치로 */
-}
-
-/* 페이지네이션 스타일 */
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.pagination-container button {
-  margin: 0 0.25rem;
-  background-color: #0077b6; /* 페이지 버튼 색상 */
-  color: white;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
-  border-radius: 4px;
-}
-
-.pagination-container button:hover {
-  background-color: #005fa3;
-}
-
-/* 비활성화 버튼 */
-.pagination-container button:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-}
+.message-list { padding: 20px; }
+button.active { background-color: #007bff; color: white; }
+.message-item { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; display: flex; justify-content: space-between; }
+.message-header { display: flex; flex-direction: column; width: 100%; }
+.sender, .receiver, .date { font-weight: bold; }
+.message-content { margin-top: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.message-actions button { margin-right: 10px; padding: 10px 20px; font-size: 14px; }
+.pagination { text-align: center; margin-top: 20px; }
+.pagination button { padding: 10px 20px; margin: 0 5px; cursor: pointer; }
+.pagination button:disabled { background-color: #ccc; cursor: not-allowed; }
+.unread { color: blue; }
+.read { color: #6b6b6b; }
+.unread-badge { background-color: red; color: white; font-size: 12px; font-weight: bold; padding: 3px 6px; border-radius: 50%; margin-left: 5px; }
 </style>
