@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {computed, onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import axios from "axios";
+import apiClient from "@/api";
 import AdminUserList from "@/views/admin/UserList.vue";
 import FeedbackList from "@/views/admin/FeedbackList.vue";
 import AdminProjectList from "@/views/admin/AdminProjectList.vue";
@@ -16,7 +16,7 @@ export const adminAuthStore = defineStore('admin', () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`http://localhost:8087/admin/login`, {
+      const response = await apiClient.post(`/admin/login`, {
         username: username.value,
         password: password.value,
       });
@@ -59,7 +59,7 @@ export const adminAuthStore = defineStore('admin', () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get(`http://localhost:8087/admin/projects`, {
+      const res = await apiClient.get(`/admin/projects`, {
         params: {
           page: currentPage.value,
           size: 10,
@@ -79,7 +79,7 @@ export const adminAuthStore = defineStore('admin', () => {
   const deleteProject = async (projectNo) => {
     if (!confirm('정말 삭제하시겠습니까?')) return
     try {
-      await axios.delete(`http://localhost:8087/project/${projectNo}`, {
+      await apiClient.delete(`/project/${projectNo}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -118,7 +118,7 @@ export const adminAuthStore = defineStore('admin', () => {
 
   const fetchTechs = async () => {
     try {
-      const res = await axios.get('http://localhost:8087/techs/get', {
+      const res = await apiClient.get('/techs/get', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
@@ -133,8 +133,8 @@ export const adminAuthStore = defineStore('admin', () => {
   const createTech = async () => {
     if (!newTechName.value.trim()) return alert('기술명을 입력해주세요.')
     try {
-      await axios.post(
-        'http://localhost:8087/techs/create',
+      await apiClient.post(
+        '/techs/create',
         { techName: newTechName.value },
         {
           headers: {
@@ -155,7 +155,7 @@ export const adminAuthStore = defineStore('admin', () => {
   const deleteTech = async (techNo) => {
     if (!confirm('정말 삭제하시겠습니까?')) return
     try {
-      await axios.delete(`http://localhost:8087/techs/${techNo}`, {
+      await apiClient.delete(`/techs/${techNo}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
@@ -182,7 +182,7 @@ export const adminAuthStore = defineStore('admin', () => {
 
   const fetchUserName = async () => {
     try {
-      const res = await axios.get(`http://localhost:8087/admin/user/${userNo}`, { // ✅ 올바른 경로로 수정
+      const res = await apiClient.get(`/admin/user/${userNo}`, { // ✅ 올바른 경로로 수정
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -197,7 +197,7 @@ export const adminAuthStore = defineStore('admin', () => {
     try {
       await fetchUserName(); // ✅ 먼저 유저 정보를 가져옴
 
-      const res = await axios.get(`http://localhost:8087/admin/user/${userNo}/comments?page=${currentPage.value}&size=10`, {
+      const res = await apiClient.get(`/admin/user/${userNo}/comments?page=${currentPage.value}&size=10`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -218,7 +218,7 @@ export const adminAuthStore = defineStore('admin', () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`http://localhost:8087/comments/${commentNo}`, {
+      await apiClient.delete(`/comments/${commentNo}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -258,7 +258,7 @@ export const adminAuthStore = defineStore('admin', () => {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await axios.get(`http://localhost:8087/admin/feedbacks`, {
+      const res = await apiClient.get(`/admin/feedbacks`, {
         params: { page: currentPage.value, size: 10 },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -281,7 +281,7 @@ export const adminAuthStore = defineStore('admin', () => {
   const deleteFeedback = async (feedbackNo) => {
     if (!confirm('정말 삭제하시겠습니까?')) return
     try {
-      await axios.delete(`http://localhost:8087/feedback/${feedbackNo}`, {
+      await apiClient.delete(`/feedback/${feedbackNo}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
@@ -308,7 +308,7 @@ export const adminAuthStore = defineStore('admin', () => {
 
   const fetchUserName = async () => {
     try {
-      const res = await axios.get(`http://localhost:8087/admin/user/${userNo}`, {
+      const res = await apiClient.get(`/admin/user/${userNo}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
       });
       userName.value = res.data.username;
@@ -320,7 +320,7 @@ export const adminAuthStore = defineStore('admin', () => {
   const fetchPosts = async () => {
     try {
       await fetchUserName();
-      const res = await axios.get(`http://localhost:8087/admin/user/${userNo}/posts`, {
+      const res = await apiClient.get(`/admin/user/${userNo}/posts`, {
         params: {
           boardType: boardType.value,
           page: currentPage.value,
@@ -340,7 +340,7 @@ export const adminAuthStore = defineStore('admin', () => {
     if (!confirmed) return;
 
     try {
-      await axios.delete(`http://localhost:8087/posts/${postNo}`, {
+      await apiClient.delete(`/posts/${postNo}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -375,8 +375,8 @@ export const adminAuthStore = defineStore('admin', () => {
     if (!confirmAction) return;
 
     try {
-      const res = await axios.post(
-        `http://localhost:8087/${user.value.username}/ban`,
+      const res = await apiClient.post(
+        `/${user.value.username}/ban`,
         { username: user.value.username, ban: !user.value.banned }, // 현재 반대 상태로 전송
         {
           headers: {
@@ -399,7 +399,7 @@ export const adminAuthStore = defineStore('admin', () => {
     if (!confirmed) return;
 
     try {
-      const res = await axios.post(`http://localhost:8087/admin/delete/${userNo}`, null, {
+      const res = await apiClient.post(`/admin/delete/${userNo}`, null, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }

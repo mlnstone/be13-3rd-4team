@@ -1,4 +1,3 @@
-<!-- 📄 src/components/NotificationBox.vue -->
 <template>
   <div class="notification-box">
     <h6>🔔 알림 목록</h6>
@@ -16,27 +15,41 @@
 import { ref, onMounted } from 'vue';
 import apiClient from '@/api';
 import { eventBus } from '@/utils/eventBus';
+import { useAuthStore } from '@/stores/auth'
+import { jwtDecode } from 'jwt-decode'; // ✅ jwt-decode import
 
-const username = 'cc'
+// ✅ accessToken에서 username 뽑기
+const authStore = useAuthStore();
+
+const accessToken = authStore.getUserInfo().accessToken;
+const decoded = jwtDecode(accessToken);
+const username = decoded.username;
+
 const notifications = ref([])
 
 onMounted(async () => {
-  const res = await apiClient.get(`/api/notifications?username=${username}`)
-  notifications.value = res.data
+  console.log(decoded);
+  try {
+    const res = await apiClient.get(`/notifications?username=${username}`);
+    notifications.value = res.data;
 
-  const eventSource = new EventSource(`/api/notifications/subscribe?username=${username}`)
-  eventSource.addEventListener('notification', (event) => {
-    const newNoti = JSON.parse(event.data)
-    notifications.value.push(newNoti)
+    const eventSource = new EventSource(`${import.meta.env.VITE_APP_API_BASE_URL}/notifications/subscribe?username=${username}`);
+    eventSource.addEventListener('notification', (event) => {
+      const newNoti = JSON.parse(event.data);
+      notifications.value.push(newNoti)
 
-    // 🔔 Header에 알림 이벤트 전달
-    eventBus.emit('new-notification');
-    console.log('📡 이벤트 전송됨: new-notification') // 이거 추가!
-  })
-})
+      eventBus.emit('new-notification');
+      console.log('📡 이벤트 전송됨: new-notification')
+    })
+  } catch (error) {
+
+    console.log('에러 발생 : ');
+    console.log(error);
+  }
+});
 
 const markAsRead = async (id) => {
-  await apiClient.post(`/notifications/${id}/read?username=${username}`)
+  await apiClient.post(`/notifications/${id}/read?username=${username}`);
   notifications.value = notifications.value.filter(n => n.id !== id)
 }
 </script>

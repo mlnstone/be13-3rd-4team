@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {ref, watch} from "vue";
 import {useRoute} from "vue-router";
+import apiClient from "@/api";
 
 export const feedbackAuthStore = defineStore('feedback', () => {
   
@@ -30,7 +31,7 @@ export const feedbackAuthStore = defineStore('feedback', () => {
     loading.value = true
     error.value = ''
     try {
-      const res = await axios.get(`http://localhost:8087/feedback/list/${projectNo}`, {
+      const res = await apiClient.get(`/feedback/list/${projectNo}`, {
         params: { page: currentPage.value, size: pageSize },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -51,7 +52,7 @@ export const feedbackAuthStore = defineStore('feedback', () => {
   const deleteFeedback = async (feedbackNo) => {
     if (!confirm('정말 삭제하시겠습니까?')) return
     try {
-      await axios.delete(`http://localhost:8087/feedback/${feedbackNo}`, {
+      await apiClient.delete(`/feedback/${feedbackNo}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
