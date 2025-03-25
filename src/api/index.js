@@ -24,6 +24,7 @@ apiClient.interceptors.request.use(
 
         // 로컬 스토리지에서 accessToken을 가져온다.
         const accessToken = localStorage.getItem('accessToken');
+        
 
         // accessToken 확인 후 Authorization 해더에 accessToken을 추가한다.
         if (accessToken) {
@@ -45,37 +46,48 @@ apiClient.interceptors.response.use(
         return response;
     },
     async (error) => {
+      console.log('🔹 401 발생 여부:', error.response?.status);
         // 이전 요청에 대한 config 객체를 얻어온다.
         const originalRequest = error.config;
-
-        console.log(error);
+        console.log('에러 응답 구조: ', error.response);
 
         // 토큰이 만료되어 401 에러가 발생한 경우
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
             try {
                 // 리프레시 토큰을 사용하여 새 액세스 토큰을 요청한다.
+              
                 const refreshToken = localStorage.getItem('refreshToken');
+                console.log('refreshToken: '+ refreshToken);
                 const response = await apiClient.post(
                     '/auth/refresh',
                     null,
                     {
-                        headers: {
-                            'Authorization': `Bearer ${refreshToken}`
-                        },
-                        _skipInterceptor: true
+                      headers: {'Authorization': `Bearer ${refreshToken}`},
+                      _skipInterceptor: true
                     }
                 );
 
                 console.log('새 액세스 토큰 발급 성공');
                 console.log(response);
                 
-                const accessToken = response.data.accessToken;
+                const accessToken = response.data?.accessToken;
+              if (!accessToken) {
+                throw new Error('새 액세스 토큰 발급 실패');
+              }
 
                 // 새 액세스 토큰을 로컬 스토리지에 저장
                 localStorage.setItem('accessToken', accessToken);
 
+              //originalRequest의 headers가 undefined인 경우 강제 초기화
+              if (!originalRequest.headers) {
+                originalRequest.headers = {};
+              }
+              // 원래 요청에 새 액세스 토큰 추가
+              // Authroization 헤더가 없으면 요청 시 액세스 토큰을 발급하지 않음
+              originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+              
                 // 원래 요청을 재시도
                 return apiClient(originalRequest);
             } catch (error) {
