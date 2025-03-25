@@ -97,5 +97,90 @@
 </script>
 
 <style scoped>
+/* 메인 컨테이너 */
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f9f9f9; /* 연한 배경 */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+}
 
+/* 공통 텍스트 색상 */
+h2, p, th, td, a {
+  color: #353535; /* 글씨 색상 */
+}
+
+/* 테이블 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #0077b6; /* 테이블 헤더 배경 */
+  color: white; /* 테이블 헤더 글씨 */
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: left;
+}
+
+td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+  color: #353535; /* 셀 텍스트 색상 */
+}
+
+/* 테이블 행 hover 효과 */
+tr:hover {
+  background-color: #e0f4ff; /* 연한 파랑 음영 */
+}
+
+/* 버튼 스타일 */
+button {
+  background-color: #0077b6; /* 주요 버튼 배경 */
+  color: white; /* 버튼 텍스트 */
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s;
+}
+
+button:hover {
+  background-color: #005fa3; /* hover 버튼 음영 */
+  transform: translateY(-2px); /* 가벼운 부각 효과 */
+}
+
+button:active {
+  transform: translateY(0); /* 클릭하면 원래 위치로 */
+}
+
+/* 페이지네이션 스타일 */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination-container button {
+  margin: 0 0.25rem;
+  background-color: #0077b6; /* 페이지 버튼 색상 */
+  color: white;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+}
+
+.pagination-container button:hover {
+  background-color: #005fa3;
+}
+
+/* 비활성화 버튼 */
+.pagination-container button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
 </style>
