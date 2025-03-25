@@ -44,13 +44,9 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import apiClient from '@/api';
-import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
 const route = useRoute();
-
-const authStore = useAuthStore();
-const userInfo = authStore.userInfo;
 
 const messages = ref([]);
 const currentPage = ref(1);
