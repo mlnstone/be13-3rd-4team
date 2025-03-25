@@ -20,6 +20,18 @@
                 -->
                 <RouterLink class="nav-link" :to="{name: 'home'}">HOME</RouterLink>
             </li>
+            <!-- <li class="nav-item"> -->
+                <!-- <RouterLink to="/departments">학과 목록 조회</RouterLink> -->
+                <!-- <RouterLink class="nav-link" :to="{name: 'postDetail'}">학과 목록 조회</RouterLink> -->
+            <!-- </li> -->
+            <!-- <li class="nav-item"> -->
+                <!-- <RouterLink to="/departments/1">학과 상세 조회</RouterLink> -->
+                <!-- <RouterLink class="nav-link" :to="{name: 'departments/no', params: {no: '033'}}">학과 상세 조회</RouterLink> -->
+            <!-- </li> -->
+            <!-- <li class="nav-item"> -->
+                <!-- <RouterLink to="/departments/add">학과 등록</RouterLink> -->
+                <!-- <RouterLink class="nav-link" :to="{name: 'departments/add'}">학과 등록</RouterLink> -->
+            <!-- </li> -->
             <!-- 쪽지 -->
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'posts'}"> 게시판 </RouterLink>
@@ -59,9 +71,6 @@
                 <RouterLink class="nav-link" :to="{name: 'reports/add'}">신고 등록</RouterLink>
             </li>
             <!-- 게시글 -->
-<!--            <li class="nav-item">-->
-<!--                <RouterLink class="nav-link" :to="{name: 'posts'}">게시글 상세 조회</RouterLink>-->
-<!--            </li>-->
 <!--            <li class="nav-item">-->
 <!--                <RouterLink class="nav-link" :to="{name: 'posts/add'}">게시글 등록</RouterLink>-->
 <!--            </li>-->
