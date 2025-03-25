@@ -25,7 +25,7 @@
       <tr v-for="(project, index) in projects" :key="project.no">
         <td>{{ currentPage * 10 + index + 1 }}</td>
         <td>
-          <RouterLink :to="`/project/${project.no}`" class="project-title-link">
+          <RouterLink :to="`/projects/${project.no}`" class="project-title-link">
             {{ project.name }}
           </RouterLink>
         </td>

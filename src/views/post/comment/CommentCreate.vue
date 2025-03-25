@@ -19,6 +19,32 @@ const props = defineProps({
 const emit = defineEmits(['commentAdded', 'updateTotalPages']);
 
 const commentContent = ref("");
+  // postNo를 부모로부터 받음
+  props: {
+    postNo: {
+      type: Number,
+      required: true
+    }
+  },
+  data() {
+    return {
+
+      commentContent: ""
+
+    };
+  },
+
+  methods: {
+
+
+    async submitComment() {
+      console.log(' postNo 값:', this.postNo);
+      console.log(' 댓글 내용:', this.commentContent);
+      
+      if (!this.commentContent.trim()) {
+        alert("댓글 내용을 입력하세요.");
+        return;
+      }
 
 const submitComment = async () => {
   if (!commentContent.value.trim()) {
