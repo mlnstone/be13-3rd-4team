@@ -47,3 +47,12 @@
         }
     }
 </script>
+
+<style scoped>
+th{
+  color: #353535;
+  font-weight: bold;
+  
+
+}
+</style>
