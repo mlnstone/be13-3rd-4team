@@ -49,7 +49,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import apiClient from "@/api";
 
 const projects = ref([])
 const currentPage = ref(0)
@@ -58,7 +58,7 @@ const sortOption = ref('LATEST')
 
 const fetchProjects = async () => {
   try {
-    const res = await axios.get(`http://localhost:8087/admin/projects`, {
+    const res = await apiClient.get(`/admin/projects`, {
       params: {
         page: currentPage.value,
         size: 10,
@@ -78,7 +78,7 @@ const fetchProjects = async () => {
 const deleteProject = async (projectNo) => {
   if (!confirm('정말 삭제하시겠습니까?')) return
   try {
-    await axios.delete(`http://localhost:8087/project/${projectNo}`, {
+    await apiClient.delete(`/project/${projectNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }

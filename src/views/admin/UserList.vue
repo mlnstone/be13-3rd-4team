@@ -89,7 +89,7 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await fetch(`http://localhost:8087/admin/users?page=${this.currentPage - 1}&size=10&sortOption=${this.sortOption}`, {
+        const response = await fetch(`/admin/users?page=${this.currentPage - 1}&size=10&sortOption=${this.sortOption}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`

@@ -42,7 +42,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
+import apiClient from "@/api";
 
 const route = useRoute();
 const router = useRouter();
@@ -55,7 +55,7 @@ const totalPages = ref(1);
 
 const fetchUserName = async () => {
   try {
-    const res = await axios.get(`http://localhost:8087/admin/user/${userNo}`, { // ✅ 올바른 경로로 수정
+    const res = await apiClient.get(`/admin/user/${userNo}`, { // ✅ 올바른 경로로 수정
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
@@ -70,7 +70,7 @@ const fetchComments = async () => {
   try {
     await fetchUserName(); // ✅ 먼저 유저 정보를 가져옴
 
-    const res = await axios.get(`http://localhost:8087/admin/user/${userNo}/comments?page=${currentPage.value}&size=10`, {
+    const res = await apiClient.get(`/admin/user/${userNo}/comments?page=${currentPage.value}&size=10`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
@@ -91,7 +91,7 @@ const deleteComment = async (commentNo) => {
   if (!confirmed) return;
 
   try {
-    await axios.delete(`http://localhost:8087/comments/${commentNo}`, {
+    await apiClient.delete(`/comments/${commentNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }

@@ -53,8 +53,8 @@ watch(() => props.initialType, val => (feedbackType.value = val))
 const onSubmit = async () => {
   const token = localStorage.getItem('accessToken')
   const url = props.isEditMode
-    ? `http://localhost:8087/feedback/project/${props.projectNo}/update/${props.feedbackNo}?feedbackType=${feedbackType.value}`
-    : `http://localhost:8087/feedback/project/${props.projectNo}/createFeedback?feedbackType=${feedbackType.value}`
+    ? `/feedback/project/${props.projectNo}/update/${props.feedbackNo}?feedbackType=${feedbackType.value}`
+    : `/feedback/project/${props.projectNo}/createFeedback?feedbackType=${feedbackType.value}`
 
   try {
     await fetch(url, {

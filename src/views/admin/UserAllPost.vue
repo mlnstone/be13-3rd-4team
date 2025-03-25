@@ -29,7 +29,7 @@
       <tr v-for="(post, index) in posts" :key="post.postNo">
         <td>{{ currentPage * 10 + index + 1 }}</td>
         <td>
-          <router-link :to="`/post/${post.postNo}`" class="post-title-link">
+          <router-link :to="`/posts/${post.postNo}`" class="post-title-link">
             {{ post.title }}
           </router-link>
         </td>
@@ -59,7 +59,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
+import apiClient from '@/api';
 
 const route = useRoute();
 const router = useRouter();
@@ -73,7 +73,7 @@ const boardType = ref(localStorage.getItem("boardType") || 'FREE'); // 기본값
 
 const fetchUserName = async () => {
   try {
-    const res = await axios.get(`http://localhost:8087/admin/user/${userNo}`, {
+    const res = await apiClient.get(`/admin/user/${userNo}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
     });
     userName.value = res.data.username;
@@ -85,7 +85,7 @@ const fetchUserName = async () => {
 const fetchPosts = async () => {
   try {
     await fetchUserName();
-    const res = await axios.get(`http://localhost:8087/admin/user/${userNo}/posts`, {
+    const res = await apiClient.get(`/admin/user/${userNo}/posts`, {
       params: {
         boardType: boardType.value,
         page: currentPage.value,
@@ -105,7 +105,7 @@ const deletePost = async (postNo) => {
   if (!confirmed) return;
 
   try {
-    await axios.delete(`http://localhost:8087/posts/${postNo}`, {
+    await apiClient.delete(`/posts/${postNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
