@@ -40,8 +40,8 @@
 </template>
 
 <script setup>
+import apiClient from "@/api";
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -51,7 +51,7 @@ const totalPages = ref(1)
 
 const fetchFeedbacks = async () => {
   try {
-    const res = await axios.get(`http://localhost:8087/admin/feedbacks`, {
+    const res = await apiClient.get(`/admin/feedbacks`, {
       params: { page: currentPage.value, size: 10 },
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -74,7 +74,7 @@ const changePage = (page) => {
 const deleteFeedback = async (feedbackNo) => {
   if (!confirm('정말 삭제하시겠습니까?')) return
   try {
-    await axios.delete(`http://localhost:8087/feedback/${feedbackNo}`, {
+    await apiClient.delete(`/feedback/${feedbackNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },

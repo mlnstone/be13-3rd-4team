@@ -33,8 +33,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from 'vue';
+import apiClient from "@/api";
 
 const techs = ref([])
 const newTechName = ref('')
@@ -42,7 +42,7 @@ const showForm = ref(false)
 
 const fetchTechs = async () => {
   try {
-    const res = await axios.get('http://localhost:8087/techs/get', {
+    const res = await apiClient.get('/techs/get', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -57,8 +57,8 @@ const fetchTechs = async () => {
 const createTech = async () => {
   if (!newTechName.value.trim()) return alert('기술명을 입력해주세요.')
   try {
-    await axios.post(
-        'http://localhost:8087/techs/create',
+    await apiClient.post(
+        '/techs/create',
         { techName: newTechName.value },
         {
           headers: {
@@ -79,7 +79,7 @@ const createTech = async () => {
 const deleteTech = async (techNo) => {
   if (!confirm('정말 삭제하시겠습니까?')) return
   try {
-    await axios.delete(`http://localhost:8087/techs/${techNo}`, {
+    await apiClient.delete(`/techs/${techNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },

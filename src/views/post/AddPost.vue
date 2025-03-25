@@ -1,47 +1,118 @@
 <template>
-    <div>
-        <h2>쪽지 추가</h2>
+  <div>
+    <div class="mt-8">
+      <div class="mt-4">
+        <div class="p-6 bg-white rounded-md shadow-md">
+          <h2 class="text-lg font-semibold text-gray-700 capitalize">
+            {{ isEditMode ? "게시글 수정" : "게시글 작성" }}
+          </h2>
 
-        <MessageForm submitButtonText="등록" :init-form-data="initFormData"
-            @form-submit="formSubmit"/>
+          <form @submit.prevent="submitPostData">
+            <div class="grid grid-cols-1 gap-6 mt-4">
+              <div>
+                <label class="text-gray-700" for="title">제목</label>
+                <input class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" type="text" v-model="title" />
+              </div>
+
+              <div>
+                <label class="text-gray-700" for="content">내용</label>
+                <textarea class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" v-model="content"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="boardType" class="text-gray-700">게시글 타입</label>
+                <select id="boardType" class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500" v-model="boardType">
+                  <option value="FREE">자유게시판</option>
+                  <option value="NOTICE">공지사항</option>
+                  <option value="PROJECT_RECRUIT">프로젝트 구인</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex justify-end mt-4">
+              <button type="submit" class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                {{ isEditMode ? "수정" : "저장" }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-    import apiClient from '@/api';
-    import MessageForm from '@/components/forms/MessageForm.vue';
-    import { reactive } from 'vue';
-    import { useRouter } from 'vue-router';
+import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import apiClient from '@/api';
 
-    const router = useRouter();
-    const initFormData = reactive({
-        receiverId: '',
-        content: ''
-    });
+const route = useRoute();
+const router = useRouter();
 
-    const formSubmit = async (formData) => {
-        try {
-            const response = await apiClient.post(
-                '/messages',
-                formData
-            );
+const title = ref("");
+const content = ref("");
+const boardType = ref("FREE");
+const postNo = ref(null);
+const postStatus = ref("ACTIVE");
 
-            console.log(response);
-            if (response.status === 200) {
-                alert('정상적으로 등록되었습니다.');
+const isEditMode = computed(() => !!postNo.value);
 
-                router.push({ name: 'messages' });
-            }
-        } catch (error) {
-            if (error.response.status === 400) {
-                alert('쪽지 정보를 모두 입력해 주세요');
-            } else {
-                alert('에러가 발생했습니다');
-            }
-        }
+onMounted(() => {
+  if (route.query.postNo) {
+    postNo.value = route.query.postNo;
+    title.value = route.query.title || "";
+    content.value = route.query.content || "";
+    boardType.value = route.query.boardType || "FREE";
+  }
+});
+
+const submitPostData = async () => {
+  const params = {
+    title: title.value,
+    content: content.value,
+    boardType: boardType.value,
+    postStatus: postStatus.value,
+  };
+
+  try {
+    if (isEditMode.value) {
+      await apiClient.post(`/posts/${postNo.value}`, params);
+      alert("게시글이 수정되었습니다.");
+      router.push(`/posts/${postNo.value}`);
+    } else {
+      const response = await apiClient.post("/posts", params);
+      alert("게시글이 작성되었습니다.");
+      router.push(`/posts/${response.data.postNo}`);
     }
+  } catch (error) {
+    console.log(error);
+    alert(error.response.data.message);
+  }
+};
 </script>
 
 <style scoped>
+.mt-8 {
+  margin-top: 2rem;
+}
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
 </style>

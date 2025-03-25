@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import axios from "axios";
+import apiClient from "@/api";
 import {RouterLink} from "vue-router";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -57,7 +57,7 @@ const totalPages = ref(1);
 
 const fetchUserName = async () => {
   try {
-    const res = await axios.get(`http://localhost:8087/admin/user/${userNo}`, {
+    const res = await apiClient.get(`/admin/user/${userNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
@@ -71,7 +71,7 @@ const fetchUserName = async () => {
 const fetchProjects = async () => {
   try {
     fetchUserName();
-    const res = await axios.get(`http://localhost:8087/admin/user/${userNo}/projects`, {
+    const res = await apiClient.get(`/admin/user/${userNo}/projects`, {
       params: {
         page: currentPage.value,
         size: 10

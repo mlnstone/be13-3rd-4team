@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <!-- 댓글 정렬 기능 -->
     <div class="sort-option">
@@ -23,115 +22,77 @@
     </div>
     <Pagination
       v-if="comments.length > 0"
-      :pageInfo="{
-        currentPage: pageInfo.currentPage, 
-        listLimit: pageInfo.listLimit,     
-        pageLimit: pageInfo.pageLimit,      
-        totalCount: pageInfo.totalCount     
-          }"
+      :pageInfo="pageInfo"
       @change-page="setPage"
     />
   </div>
 </template>
 
-<script>
-import axios from "axios";
-import CommentItem from "@/views/post/comment/CommentItem.vue";
-import Pagination from "@/components/common/Pagination.vue";
-import {ref} from "vue";
+<script setup>
+import { ref, onMounted } from 'vue';
+import apiClient from '@/api';
+import CommentItem from '@/views/post/comment/CommentItem.vue';
+import Pagination from '@/components/common/Pagination.vue';
 
+const props = defineProps({
+  postNo: Number,
+  postStatus: String
+});
 
-export default {
-  name: "CommentList",
-  components: {Pagination, CommentItem },
-  props: {
-    postNo: {
-      type: Number,
-      required: true
-    },
-    postStatus: {  // 게시글 상태
-      type: String,
-      required: true
+const comments = ref([]);
+const sortOption = ref('NEW');
+const pageInfo = ref({
+  currentPage: 1,
+  totalCount: 0,
+  pageLimit: 10,
+  listLimit: 10
+});
+
+const fetchComments = async () => {
+  const params = {
+    commentSortOption: sortOption.value,
+    page: pageInfo.value.currentPage - 1,
+    size: pageInfo.value.listLimit
+  };
+
+  try {
+    const response = await apiClient.get(`/posts/${props.postNo}/comments`, { params });
+    if (response.status === 200) {
+      comments.value = response.data.content || [];
+      pageInfo.value.totalCount = response.data.totalElements || 0;
+
+      comments.value.forEach(comment => {
+        const likeState = localStorage.getItem(`like_${comment.commentNo}`);
+        if (likeState !== null) {
+          comment.liked = likeState === 'true';
+        }
+      });
     }
-  },
-  data() {
-    return {
-      comments: [],
-      sortOption: "NEW",  // 기본 정렬 옵션(최신순)
-
-      pageInfo: {    
-      currentPage: 1,
-      totalCount: 0,
-      pageLimit: 10,
-      listLimit: 10
-      }
-    };
-  },
-  mounted() {
-    console.log('postNo 확인:', this.postNo);
-    this.fetchComments();
-  },
-  methods: {
-    // 댓글 가져오기 메소드 (정렬 기능 추가)
-    async fetchComments() {
-      const params = {
-        commentSortOption: this.sortOption || "NEW",  // 기본 정렬 옵션 추가
-        page: this.pageInfo.currentPage - 1, // 첫 페이지 초기화
-        size: this.pageInfo.listLimit// 페이지당 댓글 수
-      };
-
-      await axios
-          .get(`http://localhost:8087/posts/${this.postNo}/comments`, { params })
-          .then((response) => {
-         
-
-            if (response.status === 200) {
-              this.comments = response.data.content || [];
-              this.pageInfo.totalCount = response.data.totalElements || 0;
-              //  사용자가 좋아요 누를 상태 복원
-              this.comments.forEach(comment => {
-                const likeState = localStorage.getItem(`like_${comment.commentNo}`);
-                if (likeState !== null) {
-                  comment.liked = likeState === "true";
-                }
-              });
-
-            } else {
-              alert("댓글 조회 실패");
-            }
-          })
-          .catch((error) => {
-            console.error("댓글 불러오기 실패:", error);
-            this.comments= [];
-            this.pageInfo.totalCount = 0;
-          });
-    },
-
-    // 페이지 설정
-    setPage({ page, totalPages }) {
-      
-      if (page >= 1 && page <= totalPages) {
-        this.pageInfo.currentPage = page;
-        this.$router.push({ name: 'postDetail', params: { postNo: this.postNo }, query: { page } }); 
-        this.fetchComments();  // 페이지 변경 시 댓글 새로 불러옴
-      }
-    },
-
-    // 댓글 추가 시 페이지 계산 로직
-    handleCommentAdded(newComment) {
-     
-      this.comments.unshift(newComment);  // 추가된 댓글을 최상단에 추가
-      this.pageInfo.totalCount += 1;  
-      this.fetchComments();
-    },
-    // 댓글 삭제 시 리스트에서 제거하고 부모 컴포넌트에 이벤트 전달
-    handleCommentDeleted(deletedCommentNo) {
-     
-      this.comments = this.comments.filter(comment => comment.commentNo !== deletedCommentNo);
-      this.pageInfo.totalCount -= 1;  // totalCount 감소 
-      this.$emit('commentDeleted');
-    }
+  } catch (error) {
+    console.error('댓글 불러오기 실패:', error);
+    comments.value = [];
+    pageInfo.value.totalCount = 0;
   }
 };
+
+const setPage = ({ page }) => {
+  if (page >= 1 && page <= Math.ceil(pageInfo.value.totalCount / pageInfo.value.listLimit)) {
+    pageInfo.value.currentPage = page;
+    fetchComments();
+  }
+};
+
+const handleCommentDeleted = (deletedCommentNo) => {
+  comments.value = comments.value.filter(comment => comment.commentNo !== deletedCommentNo);
+  pageInfo.value.totalCount -= 1;
+  fetchComments();
+};
+
+onMounted(fetchComments);
 </script>
 
+<style scoped>
+.sort-option {
+  margin-bottom: 10px;
+}
+</style>

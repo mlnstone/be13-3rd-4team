@@ -66,9 +66,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import axios from 'axios'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, watch } from 'vue';
+import apiClient from "@/api";
+import { useRoute } from 'vue-router';
 import FeedbackCreate from "@/views/feedback/FeedbackCreate.vue";
 
 const route = useRoute()
@@ -94,7 +94,7 @@ const fetchProjectFeedbacks = async () => {
   loading.value = true
   error.value = ''
   try {
-    const res = await axios.get(`http://localhost:8087/feedback/list/${projectNo}`, {
+    const res = await apiClient.get(`/feedback/list/${projectNo}`, {
       params: { page: currentPage.value, size: pageSize },
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -115,7 +115,7 @@ const fetchProjectFeedbacks = async () => {
 const deleteFeedback = async (feedbackNo) => {
   if (!confirm('정말 삭제하시겠습니까?')) return
   try {
-    await axios.delete(`http://localhost:8087/feedback/${feedbackNo}`, {
+    await apiClient.delete(`/feedback/${feedbackNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },

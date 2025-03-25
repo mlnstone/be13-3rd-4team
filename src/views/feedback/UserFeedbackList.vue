@@ -34,8 +34,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from 'vue';
+import apiClient from "@/api";
 
 const feedbacks = ref([])
 const currentPage = ref(0)
@@ -48,7 +48,7 @@ const fetchFeedbacks = async () => {
   loading.value = true
   error.value = ''
   try {
-    const res = await axios.get(`http://localhost:8087/feedback/list`, {
+    const res = await apiClient.get(`/feedback/list`, {
       params: { page: currentPage.value, size: pageSize },
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

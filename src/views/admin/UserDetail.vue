@@ -52,9 +52,9 @@
 </template>
 
 <script setup>
+import apiClient from "@/api";
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
 
 const route = useRoute();
 const router = useRouter();
@@ -63,7 +63,7 @@ const user = ref(null);
 
 onMounted(async () => {
   try {
-    const res = await axios.get(`http://localhost:8087/admin/user/${userNo}`, {
+    const res = await apiClient.get(`/admin/user/${userNo}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
@@ -95,8 +95,8 @@ const toggleBanUser = async () => {
   if (!confirmAction) return;
 
   try {
-    const res = await axios.post(
-        `http://localhost:8087/${user.value.username}/ban`,
+    const res = await apiClient.post(
+        `/${user.value.username}/ban`,
         { username: user.value.username, ban: !user.value.banned }, // 현재 반대 상태로 전송
         {
           headers: {
@@ -119,7 +119,7 @@ const deleteUser = async () => {
   if (!confirmed) return;
 
   try {
-    const res = await axios.post(`http://localhost:8087/admin/delete/${userNo}`, null, {
+    const res = await apiClient.post(`/admin/delete/${userNo}`, null, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }

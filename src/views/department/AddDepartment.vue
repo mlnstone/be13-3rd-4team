@@ -9,9 +9,9 @@
 
 <script setup>
     import apiClient from '@/api';
-import DepartmentForm from '@/components/forms/DepartmentForm.vue';
-import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
+    import DepartmentForm from '@/components/forms/DepartmentForm.vue';
+    import { reactive } from 'vue';
+    import { useRouter } from 'vue-router';
 
     const router = useRouter();
     const initFormData = reactive({

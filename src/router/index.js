@@ -57,18 +57,13 @@ const AddReport = () => import('@/views/report/AddReport.vue');
 const ReportDetail = () => import('@/views/report/ReportDetail.vue');
 const Reports = () => import('@/views/report/Reports.vue');
 
-// Post
-const AddPost = () => import('@/views/post/AddPost.vue');
-// const PostDetail = () => import('@/views/post/PostDetail.vue');
-const Posts = () => import('@/views/post/Posts.vue');
-
 // MyPage
 const MyPage = () => import('@/views/user/MyPage.vue');
 
 // Post
 const PostList = () => import('@/views/post/PostList.vue');
 const PostDetail = () => import('@/views/post/PostDetail.vue');
-const PostWrite = () => import('@/views/post/PostWrite.vue');
+const AddPost = () => import('@/views/post/AddPost.vue');
 
 // Comment
 const CommentList = () => import('@/views/post/comment/CommentList.vue');
@@ -102,19 +97,19 @@ const router = createRouter({
         },
         // post
         { 
-          path: 'post', 
-          name: 'post',
+          path: 'posts', 
+          name: 'posts',
           component: PostList 
         },
         { 
-          path: 'post/:postNo',
+          path: 'posts/:postNo',
           name: 'postDetail',
           component: PostDetail 
         },
         { 
-          path: 'post/write', 
-          name: 'PostWrite', 
-          component: PostWrite 
+          path: 'posts/add', 
+          name: 'posts/add', 
+          component: AddPost 
         },
         // comment
         {
@@ -191,7 +186,6 @@ const router = createRouter({
           name: 'FeedbackCreate',
           component: FeedbackCreate
         },
-
         // teams
         {
           path: 'teams',
@@ -224,29 +218,12 @@ const router = createRouter({
           name: 'reports/add',
           component: AddReport
         },
-        // posts
-        {
-          path: 'posts',
-          name: 'posts',
-          component: Posts
-        },
-        {
-          path: 'posts/:no',
-          name: 'posts/no',
-          component: PostDetail
-        },
-        {
-          path: 'posts/add',
-          name: 'posts/add',
-          component: AddPost
-        },
         // mypage
         {
           path: 'mypage',
           name: 'mypage',
           component: MyPage
         },
-
         // admin
         {
           path: 'admin',

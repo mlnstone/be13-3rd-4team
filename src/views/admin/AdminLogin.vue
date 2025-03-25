@@ -32,8 +32,8 @@
 </template>
 
 <script setup>
+import apiClient from "@/api";
 import { ref } from 'vue'
-import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const username = ref('')
@@ -43,7 +43,7 @@ const router = useRouter()
 
 const handleLogin = async () => {
   try {
-    const response = await axios.post(`http://localhost:8087/admin/login`, {
+    const response = await apiClient.post(`/admin/login`, {
       username: username.value,
       password: password.value,
     });
