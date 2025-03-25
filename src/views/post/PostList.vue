@@ -154,6 +154,113 @@ watch(
 
 <style scoped>
 .category-bar {
+
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  overflow-x: auto;
+}
+
+.category-button {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: white;
+  background-color: #0077b6; /* 적용된 색상 */
+  border-radius: 0.375rem;
+  transition: background-color 0.2s ease;
+}
+
+.category-button:hover {
+  background-color: #005fa3; /* 조금 더 어두운 음영 */
+}
+
+.select-box {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #0077b6; /* 테두리에 색상 적용 */
+  border-radius: 0.375rem;
+  background-color: white;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 2.5rem;
+  border: 1px solid #0077b6; /* 테두리에 색상 적용 */
+  border-radius: 0.375rem;
+}
+
+.main-container {
+  margin-top: 1rem;
+}
+
+.table-container {
+  margin-top: 1.5rem;
+}
+
+.table-wrapper {
+  margin: 1.5rem 0;
+  overflow: hidden;
+  background-color: #ffffff;
+  border-radius: 0.375rem; /* rounded-md */
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1); /* shadow */
+}
+
+.custom-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.table-header {
+  border-bottom: 1px solid #0077b6; /* 테두리에 색상 적용 */
+}
+
+.width-350 {
+  width: 350px;
+  text-align: left;
+}
+
+.width-80 {
+  width: 80px;
+}
+
+.header-cell {
+  padding: 0.75rem 1.25rem; /* px-5 py-3 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  text-transform: uppercase;
+  color: white;
+  background-color: #0077b6; /* 적용된 색상 */
+}
+
+.table-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.table-row:hover {
+  background-color: #e0f3ff; /* 연한 파랑 음영 */
+}
+
+.body-cell {
+  padding: 1rem 1.5rem; /* px-6 py-4 */
+  font-size: 1.125rem; /* text-lg */
+  color: #353535; /* 텍스트에 색상 적용 */
+  border-bottom: 1px solid #0077b6; /* 테두리에 색상 적용 */
+}
+
+.body-cell:first-child {
+  font-weight: 500; /* 강조를 위해 font 추가 */
+  color: #353535; /* 어두운 음영 */
+}
+
+.body-cell:hover {
+  color: #353535; /* 텍스트에 어두운 음영 적용 */
+}
+</style>
+=======
     display: flex;
     padding: 1rem;
     gap: 1rem;
@@ -276,3 +383,4 @@ watch(
     /* text-gray-700 */
 }
 </style>
+

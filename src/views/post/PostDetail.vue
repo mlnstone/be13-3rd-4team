@@ -19,7 +19,7 @@
                 <h1 class="text-3xl font-bold text-black">
                     {{ post.title }}
                 </h1>
-
+                
                 <!-- 내용 -->
                 <div class="prose max-w-none text-black">
                     <p class="text-gray-500 leading-relaxed">
@@ -32,15 +32,10 @@
 
             <!-- 북마크 버튼 -->
             <div class="bookmark-section">
-
                 {{ post.bookmarkCount }}
-                <button @click="toggleBookmark" :class="{ 'bookmarked': post.bookmarked }"
-                    :disabled="post.postStatus === 'INACTIVE'" class="bookmark-btn">
-
-                    북마크
+                <button @click="toggleBookmark" :class="{bookmarked: post.bookmarked}" :disabled="post.postStatus === 'INACTIVE'" class="bookmark-btn">
+                    <i class="fi fi-ss-bookmark-slash" :class="{'bookmark-icon': post.bookmarked}"></i>
                 </button>
-
-            </div>
 
             <!-- 수정 삭제 -->
             <div>
@@ -158,132 +153,146 @@
     onMounted(fetchPostDetail);
 </script>
 
-<style scoped>
-/* Author Section */
+<style>
+
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
+/* 작성자 섹션 */
 .flex {
-    display: flex;
+  display: flex;
 }
 
 .items-center {
-    align-items: center;
+  align-items: center;
 }
 
-.space-x-4>*+* {
-    margin-left: 1rem;
+.space-x-4 > * + * {
+  margin-left: 1rem; /* 작성자 이름 간격 */
 }
 
 .mb-6 {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem; /* 작성자 섹션 하단 여백 */
 }
 
 .w-12,
 .h-12 {
-    width: 3rem;
-    height: 3rem;
+  width: 3rem;
+  height: 3rem; /* 프로필 이미지 크기 */
 }
 
 .rounded-full {
-    border-radius: 9999px;
+  border-radius: 50%; /* 이미지 둥근 처리 */
 }
 
 .font-semibold {
-    font-weight: 600;
-}
-
-.text-gray-500 {
-    color: #6b7280;
+  font-weight: 600;
+  color: #353535; /* 작성자 이름 색상 */
 }
 
 .text-sm {
-    font-size: 0.875rem;
+  font-size: 0.875rem;
+  color: #6b7280; /* 작성자 날짜 색상 */
 }
 
-/* Main Content */
-.space-y-6>*+* {
-    margin-top: 1.5rem;
+/* 본문 섹션 */
+.space-y-6 > * + * {
+  margin-top: 1.5rem; /* 섹션 간 간격 */
 }
 
 .text-3xl {
-    font-size: 1.875rem;
-}
-
-.font-bold {
-    font-weight: 700;
-}
-
-.text-black {
-    color: #000;
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #353535; /* 제목 색상 */
 }
 
 .prose p {
-    color: #6b7280;
-    line-height: 1.625;
+  color: #6b7280;
+  line-height: 1.625; /* 본문 내용 간격 */
 }
 
 .max-w-none {
-    max-width: none;
+  max-width: none; /* 본문 폭 제한 제거 */
 }
 
-/* 수정 삭제 버튼 */
-.mt-4 {
-    margin-top: 1rem;
-}
-
-.px-3,
-.py-1 {
-    padding: 0.25rem 0.75rem;
-}
-
-.text-white {
-    color: #fff;
-}
-
-.bg-indigo-600 {
-    background-color: #4f46e5;
-}
-
-.rounded-md {
-    border-radius: 0.375rem;
-}
-
-.hover\:bg-indigo-500:hover {
-    background-color: #4338ca;
-}
-
-.focus\:outline-none:focus {
-    outline: none;
-}
-
-.text-gray-700 {
-    color: #374151;
-}
-
-.bg-gray-200 {
-    background-color: #e5e7eb;
-}
-
-.hover\:bg-gray-300:hover {
-    background-color: #d1d5db;
-}
-
-
-/* 북마크 버튼 스타일 추가 */
+/* 북마크 버튼 */
 .bookmark-section {
-    margin-top: 1rem;
-    text-align: right;
+  
+  margin-top: 1rem;
+  text-align: right; /* 북마크 버튼 오른쪽 정렬 */
 }
 
 .bookmark-btn {
-    background-color: #e5e7eb;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
+  color: #d9d9d9; /* 북마크 버튼 테마 색상 */
+  background-color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  border-radius: 5px; /* 버튼 라운드 */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
 }
 
+/* 북마크 활성화 */
 .bookmark-btn.bookmarked {
-    color: #fff;
-    background-color: #e6d44b;
+  color: #ffd60a; /* 북마크 활성화 시 색상 */
+  animation: bookmark-bounce 0.4s ease;
+
+}
+
+
+
+@keyframes bookmark-bounce {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* 수정 버튼 */
+.bg-indigo-600 {
+  background-color: #0077b6; /* 수정 버튼 테마 */
+  color: white; /* 수정 버튼 글씨 */
+  border-radius: 0.375rem; /* 버튼 둥근 처리 */
+  padding: 0.6rem 1rem; /* 수정 버튼 여백 */
+  font-size: 0.875rem;
+  border: none;
+}
+
+.hover\:bg-indigo-500:hover {
+  background-color: #005fa3; /* 수정 버튼 hover */
+}
+
+/* 삭제 버튼 */
+.bg-gray-200 {
+  background-color: #e5e7eb; /* 삭제 버튼 회색 */
+  color: #353535; /* 삭제 버튼 텍스트 색상 */
+  padding: 0.6rem 1rem; /* 삭제 버튼 여백 */
+  font-size: 0.875rem;
+  border-radius: 0.375rem; /* 덜 둥근 모양 */
+  border: none;
+}
+
+.hover\:bg-gray-300:hover {
+  background-color: #d1d5db; /* 삭제 버튼 hover 시 색상 */
+}
+
+/* 카드 배경 */
+.bg-white {
+  background-color: #ffffff; /* 흰색 카드 배경 */
+  padding: 1.5rem;
+  border-radius: 1rem; /* 부드러운 둥근 처리 */
 }
 </style>

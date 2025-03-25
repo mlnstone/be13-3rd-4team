@@ -8,7 +8,7 @@
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
             <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-            <span class="fs-4">University</span>
+            <span class="fs-4">MOYO</span>
         </a>
 
         <ul class="nav nav-pills">
@@ -39,9 +39,9 @@
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'messages'}">쪽지</RouterLink>
             </li>
-<!--            <li class="nav-item">-->
-<!--                <RouterLink class="nav-link" :to="{name: 'messages/add'}">쪽지 등록</RouterLink>-->
-<!--            </li>-->
+            <li class="nav-item">
+                <RouterLink class="nav-link" :to="{name: 'messages/add'}">쪽지 등록</RouterLink>
+            </li>
             <!-- 프로젝트 -->
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'projects'}">프로젝트</RouterLink>
@@ -78,10 +78,11 @@
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'mypage'}">{{ userInfo.username }}</RouterLink>
             </li>
-<!--            <li class="nav-item" > -->
-<!--&lt;!&ndash;                       v-if="isAdmin">&ndash;&gt;-->
-<!--                <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink>-->
-<!--            </li>-->
+          
+          <!-- 관리자 페이지 : 관리자에게만 탭이 보이게 설정 -->
+            <li class="nav-item" v-if="isAdmin">
+                <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink>
+            </li>
             <!-- 🔔 알림 버튼 & 알림 박스 -->
             <li class="nav-item position-relative">
                 <button class="btn btn-warning" @click="showNoti = !showNoti">🔔</button>
@@ -111,13 +112,13 @@
     };
     
     // 관리자일 때만 관리자페이지 탭 보이게 하기 위함 
-    const isAdmin = computed(() => authStore.user?.role === 'ADMIN'); 
+    const isAdmin = computed(() => authStore.userInfo?.role === 'ADMIN'); 
 
 
     // 알림
     const isNavShow = ref(false);
     const showNoti = ref(false);
-    const showAlert = ref(false);
+    const showAlert = ref(false); 
 
     // 🔔 NotificationBox.vue에서 알림이 오면 이벤트 수신
     onMounted(() => {

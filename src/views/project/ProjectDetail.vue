@@ -1,30 +1,53 @@
 <template>
-    <div>
-        <div class="max-w-7xl w-full mx-auto p-4 bg-white">
-            <div class="flex items-center space-x-4 mb-6">
-                <img src="https://cdn.startupful.io/img/app_logo/no_img.png" alt="Author Avatar"
-                    class="w-12 h-12 rounded-full" />
-                <div>
-                    <h3 class="font-semibold">팀 / {{ project.name }}</h3>
-                    <p class="text-gray-500 text-sm">번호 {{ project.no }}, 상태 {{ project.projectStatus }}</p>
-                </div>
+  <div class="container py-4">
+    <div class="card border-0 shadow-sm">
+      <!-- 헤더 섹션 -->
+      <div class="card-header border-0 bg-gradient">
+        <div class="d-flex align-items-center gap-3 p-2">
+          <img src="https://cdn.startupful.io/img/app_logo/no_img.png"
+               alt="Author Avatar"
+               class="rounded-circle border border-2 border-light"
+               style="width: 64px; height: 64px; object-fit: cover;" />
+          <div class="flex-grow-1 text-white">
+            <h3 class="h5 mb-1">
+              <span class="custom-badge-primary me-2">팀</span>
+              {{ project.value.teamName }}
+            </h3>
+            <div class="d-flex align-items-center small gap-3">
+              <span class="opacity-75">번호 {{ project.value.no }}</span>
+              <span class="custom-badge-secondary">
+                {{ project.value.projectStatus }}
+              </span>
+              <span class="opacity-75">
+                <i class="bi bi-eye me-1"></i>{{ project.value.view }}
+              </span>
             </div>
-
-            <div>
-                <ProjectInfo :project="project" :team="teamNo" v-if="project.name" />
-            </div>
-
-            <div v-if="leader">
-                <br />
-                <button @click="goToEditPage"
-                    class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none">수정</button>
-                <button @click="confirmDelete(project.no)"
-                    class="px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none">삭제</button>
-            </div>
-            <span>조회수: {{ project.view }}</span>
+          </div>
         </div>
+      </div>
+
+      <!-- 본문 섹션 -->
+      <div class="card-body bg-light-blue">
+        <ProjectInfo :project="project.value" v-if="project.value.name" />
+      </div>
+
+      <!-- 푸터 섹션 -->
+      <div class="card-footer border-0 bg-white" v-if="leader.value">
+        <div class="d-flex gap-2 justify-content-end">
+          <button @click="goToEditPage"
+                  class="custom-btn-primary">
+            <i class="bi bi-pencil-square me-1"></i>수정
+          </button>
+          <button @click="confirmDelete"
+                  class="custom-btn-outline">
+            <i class="bi bi-trash me-1"></i>삭제
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -35,7 +58,7 @@ import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
-const projectNo = Number(route.params.no);
+const projectNo = route.params.projectNo;
 
 const project = ref({});
 const leader = ref(false);
@@ -46,14 +69,17 @@ const fetchProjectDetails = async () => {
         const response = await apiClient.get(`/project/${projectNo}`);
         if (response.status === 200) {
             project.value = response.data;
-            console.log(response);
         }
 
         const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`
+            },
             params: { projectNo }
         };
 
-        const leaderResponse = await apiClient.get(`/team/leader-role` ,config);
+        const leaderResponse = await apiClient.get(`/team/leader-role`, config);
         if (leaderResponse.data.isLeader) {
             leader.value = true;
         }
@@ -66,7 +92,7 @@ const fetchProjectDetails = async () => {
 
 const goToEditPage = () => {
     router.push({
-        name: 'projects/add',
+        name: 'ProjectWrite',
         query: {
             teamNo: teamNo.value,
             projectNo,
@@ -82,9 +108,16 @@ const confirmDelete = async () => {
     if (!confirm('정말로 삭제하시겠습니까?')) return;
 
     try {
-        await apiClient.delete(`/project/${projectNo}`);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`
+            }
+        };
+
+        await apiClient.delete(`/project/${projectNo}`, config);
         alert('프로젝트가 삭제되었습니다.');
-        router.push('/projects');
+        router.push('/project');
     } catch (error) {
         console.error('삭제 실패:', error.response?.data?.message || error.message);
     }
@@ -94,62 +127,115 @@ onMounted(fetchProjectDetails);
 </script>
 
 <style scoped>
-.max-w-7xl {
-    max-width: 80rem;
+:root {
+  --primary-dark: #03045e;
+  --primary: #0077b6;
+  --secondary: #00b4d8;
+  --light-blue: #90e0ef;
+  --pale-blue: #caf0f8;
 }
 
-.w-full {
-    width: 100%;
+/* 배경 그라데이션 */
+.bg-gradient {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
 }
 
-.mx-auto {
-    margin: 0 auto;
+.bg-light-blue {
+  background-color: var(--pale-blue);
 }
 
-.p-4 {
+/* 커스텀 버튼 스타일 */
+.custom-btn-primary {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.custom-btn-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-btn-outline:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* 커스텀 뱃지 스타일 */
+.custom-badge-primary {
+  background-color: var(--secondary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.custom-badge-secondary {
+  background-color: var(--light-blue);
+  color: var(--primary-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+/* 카드 스타일 */
+.card {
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.15)!important;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .card-header {
     padding: 1rem;
-}
+  }
 
-.bg-white {
-    background-color: white;
-}
+  .card-body {
+    padding: 1rem;
+  }
 
-.flex {
-    display: flex;
-}
+  h3 {
+    font-size: 1rem;
+  }
 
-.items-center {
-    align-items: center;
-}
-
-.mb-6 {
-    margin-bottom: 1.5rem;
-}
-
-.w-12,
-.h-12 {
-    width: 3rem;
-    height: 3rem;
-}
-
-.rounded-full {
-    border-radius: 9999px;
-}
-
-.font-semibold {
-    font-weight: 600;
-}
-
-.text-gray-500 {
-    color: #6b7280;
-}
-
-.text-sm {
+  .custom-btn-primary,
+  .custom-btn-outline {
+    padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
-    line-height: 1.25rem;
+  }
+
+  .custom-badge-primary,
+  .custom-badge-secondary {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+  }
 }
 
-.text-black {
-    color: black;
+/* 애니메이션 효과 */
+.card-header,
+.custom-btn-primary,
+.custom-btn-outline,
+.custom-badge-primary,
+.custom-badge-secondary {
+  transition: all 0.2s ease-in-out;
 }
 </style>
+
