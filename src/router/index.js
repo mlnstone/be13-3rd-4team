@@ -32,25 +32,20 @@ const BaseLayout = () => import('@/layout/BaseLayout.vue');
 // Home
 const Home = () => import('@/views/Home.vue');
 
-// Department
-const AddDepartment = () => import('@/views/department/AddDepartment.vue');
-const DepartmentDetail = () => import('@/views/department/DepartmentDetail.vue');
-const Departments = () => import('@/views/department/Departments.vue');
-
 // Message
 const AddMessage = () => import('@/views/message/AddMessage.vue');
 const MessageDetail = () => import('@/views/message/MessageDetail.vue');
 const Messages = () => import('@/views/message/Messages.vue');
 
 // Project
-const AddProject = () => import('@/views/project/AddProject.vue');
+const ProjectList = () => import('@/views/project/ProjectList.vue')
 const ProjectDetail = () => import('@/views/project/ProjectDetail.vue');
-const Projects = () => import('@/views/project/Projects.vue');
+const ProjectWrite = () => import('@/views/project/ProjectWrite.vue');
 
 // Team
-const AddTeam = () => import('@/views/team/AddTeam.vue');
-const TeamDetail = () => import('@/views/team/TeamDetail.vue');
-const Teams = () => import('@/views/team/Teams.vue');
+const TeamList = () => import('@/views/team/TeamList.vue');
+const TeamDetail = () => import('@/views/team/TeamDeteil.vue');
+const TeamWrite = () => import('@/views/team/TeamWrite.vue');
 
 // Report
 const AddReport = () => import('@/views/report/AddReport.vue');
@@ -142,7 +137,7 @@ const router = createRouter({
         {
           path: 'projects',
           name: 'projects',
-          component: Projects
+          component: ProjectList
         },
         {
           path: 'projects/:no',
@@ -152,7 +147,7 @@ const router = createRouter({
         {
           path: 'projects/add',
           name: 'projects/add',
-          component: AddProject
+          component: ProjectWrite
         },
         // feedbacks
         {path: "/my-feedbacks", 
@@ -173,7 +168,7 @@ const router = createRouter({
         {
           path: 'teams',
           name: 'teams',
-          component: Teams
+          component: TeamList
         },
         {
           path: 'teams/:no',
@@ -183,7 +178,7 @@ const router = createRouter({
         {
           path: 'teams/add',
           name: 'teams/add',
-          component: AddTeam
+          component: TeamWrite
         },
         // reports
         {
