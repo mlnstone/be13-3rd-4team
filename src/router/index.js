@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import UserFeedbackList from "@/views/feedback/UserFeedbackList.vue";
 import ProjectFeedbackList from "@/views/feedback/ProjectFeedbackList.vue";
 import FeedbackCreate from "@/views/feedback/FeedbackCreate.vue";
-
+import UpdatePasswordForm from '@/components/common/UpdatePasswordForm.vue';
 
 // import AuthLayout from '@/layout/AuthLayout.vue'
 // import BaseLayout from '@/layout/BaseLayout.vue'
@@ -28,6 +28,7 @@ const NotFound = () => import('@/views/common/NotFound.vue');
 
 // Layout
 const BaseLayout = () => import('@/layout/BaseLayout.vue');
+const AdminLayout = () => import('@/layout/AdminLayout.vue');
 
 // Home
 const Home = () => import('@/views/Home.vue');
@@ -202,58 +203,6 @@ const router = createRouter({
           name: 'mypage',
           component: MyPage
         },
-        // admin
-        {
-          path: 'admin',
-          name: 'admin',
-          component: AdminMain
-        },
-        {
-          path: 'admin/login',
-          name: 'admin-login',
-          component: AdminLogin
-        },
-        {
-          path: 'admin/projects',
-          name: 'admin-projects',
-          component: AdminProjectList
-        },
-        {
-          path: 'admin/user/:userNo/comments',
-          name: 'admin-user-comments',
-          component: AllUserComments
-        },
-
-        {
-          path: 'admin/tech',
-          name: 'admin-tech',
-          component: AdminTechManage
-        },
-        {
-          path: 'admin/feedbacks',
-          name: 'admin-feedbacks',
-          component: FeedbackList
-        },
-        {
-          path: 'admin/user/:userNo/posts',
-          name: 'admin-user-posts',
-          component: UserAllPost
-        },
-        {
-          path: 'admin/user/:userNo/projects',
-          name: 'admin-user-projects',
-          component: UserAllProject
-        },
-        {
-          path: 'admin/user/:userNo',
-          name: 'admin-user-detail',
-          component: UserDetail
-        },
-        {
-          path: 'admin/users',
-          name: 'admin-users',
-          component: UserList
-        },
       ]
     },
     {
@@ -273,6 +222,70 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: '/admin',
+      component: AdminLayout,
+      children: [
+        // admin
+        {
+          path: '/',
+          name: 'admin',
+          component: AdminMain
+        },
+        {
+          path: 'login',
+          name: 'admin-login',
+          component: AdminLogin
+        },
+        {
+          path: 'projects',
+          name: 'admin-projects',
+          component: AdminProjectList
+        },
+        {
+          path: 'user/:userNo/comments',
+          name: 'admin-user-comments',
+          component: AllUserComments
+        },
+
+        {
+          path: 'tech',
+          name: 'admin-tech',
+          component: AdminTechManage
+        },
+        {
+          path: 'feedbacks',
+          name: 'admin-feedbacks',
+          component: FeedbackList
+        },
+        {
+          path: 'user/:userNo/posts',
+          name: 'admin-user-posts',
+          component: UserAllPost
+        },
+        {
+          path: 'user/:userNo/projects',
+          name: 'admin-user-projects',
+          component: UserAllProject
+        },
+        {
+          path: 'user/:userNo',
+          name: 'admin-user-detail',
+          component: UserDetail
+        },
+        {
+          path: 'users',
+          name: 'admin-users',
+          component: UserList
+        },
+      ]
+    },
+    // updatePassword
+    {
+      path: '/updatePassword',
+      name: 'updatePassword',
+      component: UpdatePasswordForm
+    },
     // 404 라우트
     { 
       path: '/:paths(.*)*', 
@@ -287,13 +300,19 @@ const router = createRouter({
 //  - 네비게이션 가드는 라우트하는 경로가 바뀔 때 반응한다.
 router.beforeEach((to, form, next) => {
   const authStore = useAuthStore();
+  const userInfo = authStore.userInfo;
 
   console.log('to: ', to);
   console.log('from: ', form);
 
   // 로그인 페이지에서 회원가입 페이지로 이동할 때는 그대로 이동한다. => 무한 리다이렉트 방지
-  if (to.name === 'signup') {
+  if (to.name === 'signup' || to.name === 'updatePassword' || to.name === 'admin-login') {
     next();
+  }
+
+  const adminPathName = ['admin', 'admin-login', 'admin-projects', 'admin-user-comments', 'admin-tech', 'admin-feedbacks', 'admin-user-posts', 'admin-user-projects', 'admin-user-detail', 'admin-users'];
+  if (adminPathName.includes(to.name) && userInfo.role === 'ADMIN') { 
+      console.log('jhweqhe jqwhe jkqwhe kqwhke hqwjke hqwkehkjq');
   }
 
   // 로그인 페이지가 아니고, 로그인 상태가 아니면 로그인 페이지로 리다이렉트한다.

@@ -82,7 +82,7 @@
 
     const goToEditPage = () => {
     router.push({
-        name: 'PostWrite',
+        name: 'posts/add',
         query: {
         postNo: post.value.postNo,
         title: post.value.title,
