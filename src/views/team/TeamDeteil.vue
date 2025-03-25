@@ -9,7 +9,9 @@
                     <p class="text-gray-500 text-sm">
                         {{ team.info }}
                         {{ team.status }}
+
                     </p>
+                    <h3>팀장: {{ leaderUsername }}</h3>
                 </div>
             </div>
 
@@ -65,6 +67,7 @@ const team = ref({});
 const project = ref({});
 const isLeader = ref(false);
 const isMember = ref(false);
+const leaderUsername = ref("");
 const authStore = useAuthStore();
 
 const fetchTeamDetails = async () => {
@@ -89,7 +92,12 @@ const fetchTeamDetails = async () => {
         } else if (roleResponse.data.isMember) {
             isMember.value = true;
         }
-    } catch (error) {
+
+        const leaderRes = await apiClient.get(`/team/${teamNo}/leader-username`, config);
+            leaderUsername.value = leaderRes.data;
+            console.log(leaderUsername.value);
+        }
+        catch (error) {
         console.error('데이터를 불러오는 중 오류 발생', error);
     }
 };
@@ -120,14 +128,24 @@ const confirmDelete = async (teamNo) => {
   }
 };
 
-// 팀 가입 신청
 const confirmJoin = async (teamNo) => {
-  if (confirm('해당 팀에 가입을 신청하시겠습니까?')) {
+  if (confirm("해당 팀에 가입을 신청하시겠습니까?")) {
     try {
-      await apiClient.post(`/team/${teamNo}/join-request`);
-      alert('가입 신청이 완료되었습니다!');
-    } catch (error) {
-      alert(error.response?.data?.message || '가입 신청 중 오류가 발생했습니다.');
+      await apiClient.post(`/team/${teamNo}/join-request`, teamNo);
+      alert("가입 신청이 완료되었습니다!");
+
+      const messageData = {
+        receiverUsername: leaderUsername.value,
+        content: `${team.value.no} 팀에 가입 신청했습니다. 검토 부탁드립니다.`,
+      };
+      await apiClient.post("/messages", messageData);
+      alert("쪽지가 자동으로 전송되었습니다!");
+    } catch (err) {
+        if(err.status === 500){
+            alert('로그인 후 이용해주세요!');
+        } else{
+            alert(err.response?.data?.message || err.message);
+        }
     }
   }
 };
@@ -139,6 +157,7 @@ defineExpose({
   project,
   isLeader,
   isMember,
+  leaderUsername,
   goToEditPage,
   confirmDelete,
   confirmJoin,

@@ -106,9 +106,9 @@ const fetchPostList = async () => {
 };
 
 const setPage = (pages) => {
-      page.value = pages; // 부모 컴포넌트에서 페이지 업데이트
-      fetchPostList();
-  };
+  page.value = pages;
+  fetchPostList();
+};
 
 const handleSearch = (searchParams) => {
     size.value = searchParams.size;

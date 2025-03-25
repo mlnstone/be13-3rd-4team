@@ -28,6 +28,9 @@
         <router-link :to="`/projects/${project.teamNo}`" v-if="project.teamNo">
             <button class="view-more-button">프로젝트 자세히 보기</button>
         </router-link>
+        <router-link :to="`/teams/${team}`" v-else>
+            <button class="view-more-button">팀 정보 보기</button>
+        </router-link>
     </div>
 </template>
 
