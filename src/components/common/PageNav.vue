@@ -1,21 +1,23 @@
 <template>
-  <div class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between">
-    <div class="flex mr-4 rounded">
-      <a href="#" @click="prevPage"
-        class="px-3 py-2 ml-0 leading-tight text-indigo-700 bg-white border border-r-0 border-gray-200 rounded-l hover:bg-indigo-500 hover:text-white">
-        <span>Previous</span>
-      </a>
-      <a v-for="page in totalPages" :key="page" @click="() => setPage(page)"
-        :class="page === currentPage.value ? 'bg-indigo-500 text-white' : 'text-indigo-700'"
-        class="px-3 py-2 leading-tight bg-white border border-r-0 border-gray-200 hover:bg-indigo-500 hover:text-white">
-        <span>{{ page }}</span>
-      </a>
-      <a href="#" @click="nextPage"
-        class="px-3 py-2 leading-tight text-indigo-700 bg-white border border-gray-200 rounded-r hover:bg-indigo-500 hover:text-white">
-        <span>Next</span>
-      </a>
-    </div>
-  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous" @click="prevPage">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li v-for="page in totalPages" :key="page" @click="() => setPage(page)">
+        <a class="page-link" :class="{ active: currentPage.valueOf === page }" href="#">
+          {{ page }}
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next" @click="nextPage">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script setup>

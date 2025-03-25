@@ -25,7 +25,7 @@
                 </span>
             </div>
         </div>
-        <router-link :to="`/project/${project.teamNo}`" v-if="project.teamNo">
+        <router-link :to="`/projects/${project.teamNo}`" v-if="project.teamNo">
             <button class="view-more-button">프로젝트 자세히 보기</button>
         </router-link>
     </div>
