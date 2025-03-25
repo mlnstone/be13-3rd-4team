@@ -61,6 +61,7 @@
         router.push({name: 'messages/no', params: {no}});
     };
 
+    // 쪽지 삭제
     const deleteMessage = async (no) => {
         try {
             const response = await apiClient.delete(`/messages/${no}`);
