@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import axios from 'axios';
+import apiClient from "@/api";
 import { ref, reactive } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
 import dayjs from 'dayjs';
@@ -32,7 +32,7 @@ export const useCommentStore = defineStore('comment', () => {
     };
 
     try {
-      const response = await axios.get(`http://localhost:8087/posts/${postNo}/comments`, { params });
+      const response = await apiClient.get(`/posts/${postNo}/comments`, { params });
 
       if (response.status === 200) {
         comments.value = response.data.content || [];
@@ -98,8 +98,8 @@ export const useCommentStore = defineStore('comment', () => {
         return;
       }
 
-      const response = await axios.post(
-        `http://localhost:8087/posts/${this.postNo}/comments`,
+      const response = await apiClient.post(
+        `/posts/${this.postNo}/comments`,
         { postNo: this.postNo,
           content: this.commentContent },
         { headers: { Authorization: `Bearer ${token}` } });
@@ -163,7 +163,7 @@ export const useCommentStore = defineStore('comment', () => {
 
     try {
       const authStore = useAuthStore();
-      const response = await axios.post(`http://localhost:8087/comments/${comment.commentNo}/like`,
+      const response = await apiClient.post(`/comments/${comment.commentNo}/like`,
         { postNo },
         {
           headers: {

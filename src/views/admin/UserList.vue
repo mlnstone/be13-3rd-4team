@@ -62,7 +62,7 @@ const fetchUsers = async () => {
       }
     });
 
-    const data = await response.json();
+    const data = await response.data;
     userList.value = data.content;
     totalPages.value = data.totalPages;
   } catch (error) {
