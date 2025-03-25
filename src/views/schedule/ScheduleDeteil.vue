@@ -5,21 +5,21 @@
                 <img src="https://cdn.startupful.io/img/app_logo/no_img.png" alt="Author Avatar"
                     class="w-12 h-12 rounded-full" />
                 <div>
-                    <h3 class="font-semibold">{{ schedules.value.createdBy }}</h3>
+                    <h3 class="font-semibold">{{ schedules.createdBy }}</h3>
                 </div>
             </div>
             <div class="space-y-6">
-                <h1 class="text-3xl font-bold text-black">{{ schedules.value.title }}</h1>
+                <h1 class="text-3xl font-bold text-black">{{ schedules.title }}</h1>
 
                 <div class="prose max-w-none text-black">
-                    <p class="text-gray-500 leading-relaxed">{{ schedules.value.description }}</p>
+                    <p class="text-gray-500 leading-relaxed">{{ schedules.description }}</p>
                 </div>
             </div>
 
             <div>
-                상태 {{ schedules.value.status }} <br />
-                시작 {{ schedules.value.startDate }} <br />
-                끝 {{ schedules.value.endDate }} <br />
+                상태 {{ schedules.status }} <br />
+                시작 {{ schedules.startDate }} <br />
+                끝 {{ schedules.endDate }} <br />
             </div>
 
             <div>
@@ -55,13 +55,7 @@ const schedules = ref({});
 
 const fetchSchedule = async () => {
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${authStore.getUserInfo().accessToken}`,
-            }
-        };
-        const response = await apiClient.get(`/schedules/${scheduleNo}`, config);
+        const response = await apiClient.get(`/schedules/${scheduleNo}`);
         schedules.value = response.data;
     } catch (error) {
         alert(error.response.data.message);
@@ -87,15 +81,9 @@ const confirmDelete = async () => {
     if (!confirm('정말로 삭제하시겠습니까?')) return;
 
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`,
-            }
-        };
-        await apiClient.delete(`/schedules/${scheduleNo}`, config);
+        await apiClient.delete(`/schedules/${scheduleNo}`);
         alert('스케줄이 삭제되었습니다.');
-        router.push(`/schedule/team/${teamNo}`);
+        router.push(`/teams/${teamNo}/schedule`);
     } catch (error) {
         alert(error.response.data.message);
     }
@@ -108,37 +96,49 @@ onMounted(fetchSchedule);
 .flex {
     display: flex;
 }
+
 .items-center {
     align-items: center;
 }
-.space-x-4 > * + * {
+
+.space-x-4>*+* {
     margin-left: 1rem;
 }
+
 .mb-6 {
     margin-bottom: 1.5rem;
 }
-.w-12, .h-12 {
+
+.w-12,
+.h-12 {
     width: 3rem;
     height: 3rem;
 }
+
 .rounded-full {
     border-radius: 9999px;
 }
+
 .font-semibold {
     font-weight: 600;
 }
+
 .text-gray-500 {
     color: #6b7280;
 }
-.space-y-6 > * + * {
+
+.space-y-6>*+* {
     margin-top: 1.5rem;
 }
+
 .text-3xl {
     font-size: 1.875rem;
 }
+
 .font-bold {
     font-weight: 700;
 }
+
 .text-black {
     color: #000;
 }

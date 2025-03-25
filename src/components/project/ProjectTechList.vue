@@ -1,14 +1,14 @@
 <template>
     <div>
-        <input type="text" v-model="searchQuery.value" placeholder="기술 검색" @keyup.enter="selectFirstTech"
+        <input type="text" v-model="searchQuery" placeholder="기술 검색" @keyup.enter="selectFirstTech"
             @input="filterTechs" />
-        <ul v-if="filteredTechs.value.length > 0">
-            <li v-for="tech in filteredTechs.value" :key="tech.no" @click="selectTech(tech)">
+        <ul v-if="filteredTechs.length > 0">
+            <li v-for="tech in filteredTechs" :key="tech.no" @click="selectTech(tech)">
                 {{ tech.techName }}
             </li>
         </ul>
         <div>
-            <span v-for="tech in selectedTechs.value" :key="tech.no">
+            <span v-for="tech in selectedTechs" :key="tech.no">
                 {{ tech.techName }}
                 <button @click="removeTech(tech)">X</button>
             </span>
@@ -37,13 +37,7 @@ const selectedTechs = ref([]);
 
 const fetchTechs = async () => {
     try {
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`,
-            },
-        };
-        const response = await apiClient.get("/techs/get", config);
+        const response = await apiClient.get("/techs/get");
         techs.value = response.data;
         selectedTechs.value = techs.value.filter((tech) => props.initialTechs.includes(tech.techName));
     } catch (error) {
