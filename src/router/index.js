@@ -122,23 +122,6 @@ const router = createRouter({
           name: 'CommentCreate', 
           component: CommentCreate 
         },
-        
-        // departments
-        { 
-          path: 'departments', 
-          name: 'departments', 
-          component: Departments 
-        },
-        { 
-          path: 'departments/:no', 
-          name: 'departments/no', 
-          component: DepartmentDetail 
-        },
-        { 
-          path: 'departments/add', 
-          name: 'departments/add', 
-          component: AddDepartment 
-        },
         // messages
         {
           path: 'messages',
