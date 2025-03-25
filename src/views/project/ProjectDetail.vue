@@ -82,8 +82,8 @@ const fetchProjectDetails = async () => {
         const leaderResponse = await apiClient.get(`/team/leader-role`, config);
         if (leaderResponse.data.isLeader) {
             leader.value = true;
-            teamNo.value = leaderResponse.data.teamNo;
         }
+        teamNo.value = leaderResponse.data.teamNo;
 
     } catch (error) {
         console.error('오류 발생:', error.response?.data?.message || error.message);
