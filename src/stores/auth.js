@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
                 userInfo.role = parseToken.role;
 
                 localStorage.setItem('user', JSON.stringify({ username: parseToken.username }));
-  
+
                 console.log('로그인 성공');
                 console.log('username: ', userInfo.username);
                 console.log('role: ', userInfo.role);
@@ -46,10 +46,16 @@ export const useAuthStore = defineStore('auth', () => {
             console.log(error);
 
             // if (error.status === 401) {
-            if (error.response.data.code === 401) {
+            if (error.response.data.code === 401 || error.response.data.code === 403) {
                 alert(error.response.data.message);
+            } else if (error.response.data.code === 400 || error.response.data.code === 423) {
+                alert(error.response.data.message);
+                if (confirm('이메일 인증 후 비밀번호를 변경하시겠습니까?')) {
+                    router.push({name: 'updatePassword'});
+                }
             } else {
                 alert('에러가 발생했습니다.');
+                
             }
         }
     };
@@ -88,7 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
 
             if (response.status === 204) {
                 logoutUser();
-            }
+            } 
         } catch (error) {
             console.log(error);
 
