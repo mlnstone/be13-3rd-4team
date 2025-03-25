@@ -6,17 +6,6 @@ import ProjectFeedbackList from "@/views/feedback/ProjectFeedbackList.vue";
 import FeedbackCreate from "@/views/feedback/FeedbackCreate.vue";
 import UpdatePasswordForm from '@/components/common/UpdatePasswordForm.vue';
 
-// import AuthLayout from '@/layout/AuthLayout.vue'
-// import BaseLayout from '@/layout/BaseLayout.vue'
-// import Login from '@/views/auth/Login.vue'
-// import NotFound from '@/views/common/NotFound.vue'
-// import AddDepartment from '@/views/department/AddDepartment.vue'
-// import DepartmentDetail from '@/views/department/DepartmentDetail.vue'
-// import Departments from '@/views/department/Departments.vue'
-// import Home from '@/views/Home.vue'
-
-// 지연 로딩(Lazy Loading) 적용
-// 지연 로딩은 컴포넌트가 이용되는 시점에 컴포넌트 및 관련된 모듈을 웹 서버로부터 로딩하는 방법이다.
 // Auth
 const AuthLayout = () => import("@/layout/AuthLayout.vue");
 const Login = () => import("@/views/auth/Login.vue");
