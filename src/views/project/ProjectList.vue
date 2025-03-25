@@ -87,13 +87,13 @@ const paginatedPosts = computed(() => postList.value.content || []);
 const fetchPostList = async () => {
   try {
     const params = {
-      projectSortOption: postSortOption.value,
+      sortOption: postSortOption.value,
       page: page.value - 1, // 현재 페이지 번호 -1 (0 기반 인덱스)
       size: size.value,
     };
 
     if (searchQuery.value && selectOption.value) {
-      params.option = selectOption.value;
+      params.searchOption = selectOption.value;
       params.keyword = searchQuery.value;
     }
 
