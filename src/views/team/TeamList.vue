@@ -7,15 +7,13 @@
             <router-link to="/projects">
                 <button class="category-button">프로젝트</button>
             </router-link>
-            <router-link to="/teams/write">
+            <router-link to="/teams/add">
                 <button class="category-button">팀 생성</button>
-            </router-link>
-            <router-link to="/teams/write">
-                <button class="category-button">내 팀</button>
             </router-link>
         </div>
 
-        <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions" @search="handleSearch" />
+        <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
+            @search="handleSearch" />
 
         <div class="main-container">
             <div class="table-container">
@@ -30,7 +28,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="post in paginatedPosts" :key="post.no" @click="detailePage(post.no)" class="table-row">
+                            <tr v-for="post in paginatedPosts" :key="post.no" @click="detailePage(post.no)"
+                                class="table-row">
                                 <td>{{ post.no }}</td>
                                 <td>{{ post.team.teamName }}</td>
                                 <td>{{ post.team.teamIntroduce }}</td>
@@ -42,22 +41,28 @@
             </div>
         </div>
 
-        <!-- <PageNav v-if="postList.value.content.length > 0" :current-page="page.value" :items-per-page="parseInt(size.value)" :total-pages="postList.value.totalPages" @set-page="setPage" /> -->
+        <!-- 페이징 -->
+        <PageNav v-if="postList && postList.content && postList.content.length > 0" :current-page="page"
+            :items-per-page="parseInt(size)" :total-pages="postList.totalPages" @set-page="setPage" />
+
     </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';
-import PageNav from '@/components/common/PageNav.vue';
+import PageNav from "@/components/common/PageNav.vue";
 import SearchBar from '@/components/common/SearchBar.vue';
 
+const route = useRoute();
 const router = useRouter();
 
-const postList = ref({ content: [] });
+// 초기 페이지 설정
 const page = ref(1);
 const size = ref(10);
+
+const postList = ref({ content: [] });
 const searchQuery = ref("");
 const selectOption = ref("");
 const boardType = ref("FREE");
@@ -79,7 +84,7 @@ const fetchPostList = async () => {
         const params = {
             boardType: boardType.value,
             postSortOption: postSortOption.value,
-            page: page.value - 1,
+            page: page.value - 1, // 현재 페이지 번호 -1 (0 기반 인덱스)
             size: size.value,
         };
 
@@ -88,32 +93,41 @@ const fetchPostList = async () => {
         }
 
         const response = await apiClient.get("/team", { params });
-        postList.value = response.data;
+        if (response.status === 200) {
+            postList.value = response.data;
+        } else {
+            alert('데이터 조회 실패');
+        }
     } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생", error);
         postList.value = { content: [] };
+        page.value = 1;
     }
 };
 
-const setPage = (newPage) => {
-    page.value = newPage;
-    fetchPostList();
-};
+const setPage = (pages) => {
+      page.value = pages; // 부모 컴포넌트에서 페이지 업데이트
+      fetchPostList();
+  };
 
 const handleSearch = (searchParams) => {
     size.value = searchParams.size;
     postSortOption.value = searchParams.postSortOption;
     selectOption.value = searchParams.selectOption;
     searchQuery.value = searchParams.searchQuery;
-    page.value = 1;
+    page.value = 1; // 검색 시 페이지 초기화
     fetchPostList();
 };
 
 const detailePage = (no) => {
-    router.push(`/team/${no}`);
+    router.push(`/teams/${no}`);
 };
 
-onMounted(fetchPostList);
+onMounted(() => {
+  fetchPostList();
+});
+
+watch(() => route.path, fetchPostList);
 </script>
 
 <style scoped>
