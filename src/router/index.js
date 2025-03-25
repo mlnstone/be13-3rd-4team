@@ -43,9 +43,9 @@ const ProjectDetail = () => import('@/views/project/ProjectDetail.vue');
 const ProjectWrite = () => import('@/views/project/ProjectWrite.vue');
 
 // Team
-const AddTeam = () => import('@/views/team/AddTeam.vue');
-const TeamDetail = () => import('@/views/team/TeamDetail.vue');
-const Teams = () => import('@/views/team/Teams.vue');
+const TeamList = () => import('@/views/team/TeamList.vue');
+const TeamDetail = () => import('@/views/team/TeamDeteil.vue');
+const TeamWrite = () => import('@/views/team/TeamWrite.vue');
 
 // Report
 const AddReport = () => import('@/views/report/AddReport.vue');
@@ -168,7 +168,7 @@ const router = createRouter({
         {
           path: 'teams',
           name: 'teams',
-          component: Teams
+          component: TeamList
         },
         {
           path: 'teams/:no',
@@ -178,7 +178,7 @@ const router = createRouter({
         {
           path: 'teams/add',
           name: 'teams/add',
-          component: AddTeam
+          component: TeamWrite
         },
         // reports
         {
