@@ -8,7 +8,7 @@
       </select>
     </div>
 
-    <div v-if="comments.length === 0">댓글이 없습니다.</div>
+    <div v-if="comments.length === 0" class="comment-none">작성된 댓글이 없습니다.</div>
     <div v-else>
       <CommentItem
           v-for="comment in comments"
@@ -49,6 +49,11 @@ const pageInfo = ref({
 });
 
 const fetchComments = async () => {
+
+  if (!props.postNo) {
+    console.error('postNo가 존재하지 않습니다.');
+    return;
+  }
   const params = {
     commentSortOption: sortOption.value,
     page: pageInfo.value.currentPage - 1,
@@ -92,7 +97,17 @@ onMounted(fetchComments);
 </script>
 
 <style scoped>
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
 .sort-option {
   margin-bottom: 10px;
+}
+
+.comment-none{
+  display: flex;
+  height: 100px;
+  margin-top: 30px;
+  justify-content: center;
+  align-items: center;
+  color: #353535;
 }
 </style>
