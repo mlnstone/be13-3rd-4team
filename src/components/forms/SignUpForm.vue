@@ -36,7 +36,7 @@
                 v-model.trim="formData.phoneNum">
             <label for="floatingPhoneNum">PhoneNum</label>
         </div>
-        <button class="btn btn-primary w-100 py-2" type="submit" style="background-color: green; margin-top: 5px">Sign up</button>
+        <button class="btn btn-primary w-100 py-2" type="button" @click.stop="validateSignUp" style="background-color: green; margin-top: 5px">Sign up</button>
         <p class="mt-5 mb-3 text-body-secondary">&copy; 2024–2025</p>
     </form>
 </template>
@@ -44,6 +44,8 @@
 <script setup>
     import { reactive, toRaw } from 'vue';
     import { useAuthStore } from '@/stores/auth';
+
+    const authStore = useAuthStore();
 
     const formData = reactive({
         username: '',
@@ -96,7 +98,7 @@
         }
 
         // 인증코드 확인
-        const authStore = useAuthStore();
+        
 
         await authStore.authEmailValidate(toRaw(formData));
 
@@ -108,5 +110,16 @@
             document.getElementById('isValidText').style.color = 'red';
             document.getElementById('isValidText').innerText = '인증 실패';
         }
+    };
+
+    const validateSignUp = () => {
+        console.log(authStore.isCheckedEmail);
+
+        if (authStore.isCheckedEmail === false) {
+            alert('이메일 인증을 해주세요');
+            return;
+        }
+
+        authStore.signup(toRaw(formData));
     };
 </script>
