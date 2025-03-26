@@ -30,6 +30,10 @@
             </div>
 
             <div class="flex justify-end mt-4">
+              <button type="button" @click="router.back()"
+                    class="px-4 py-2 ml-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                    취소
+                </button>
               <button type="submit" class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
                 {{ isEditMode ? "수정" : "저장" }}
               </button>
@@ -160,5 +164,9 @@ button[type="submit"]:hover {
 button[type="submit"]:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(55, 65, 81, 0.3);
+}
+.justify-end {
+    justify-content: flex-end;
+    display: flex;
 }
 </style>

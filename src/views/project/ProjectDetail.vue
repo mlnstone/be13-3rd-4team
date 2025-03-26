@@ -9,7 +9,7 @@
             class="rounded-circle border border-2 border-light" style="width: 64px; height: 64px; object-fit: cover;" />
           <div class="flex-grow-1">
             <h3 class="h5 mb-1">
-              <span class="custom-badge-primary me-2">팀</span>
+              <span class=" me-2">팀</span>
               {{ project.teamName }}
             </h3>
             <div class="d-flex align-items-center small gap-3">
