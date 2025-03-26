@@ -8,18 +8,18 @@
                alt="Author Avatar"
                class="rounded-circle border border-2 border-light"
                style="width: 64px; height: 64px; object-fit: cover;" />
-          <div class="flex-grow-1 text-white">
+          <div class="flex-grow-1">
             <h3 class="h5 mb-1">
               <span class="custom-badge-primary me-2">팀</span>
-              {{ project.value.teamName }}
+              {{ project.teamName }}
             </h3>
             <div class="d-flex align-items-center small gap-3">
-              <span class="opacity-75">번호 {{ project.value.no }}</span>
+              <span class="opacity-75">번호 {{ project.no }}</span>
               <span class="custom-badge-secondary">
-                {{ project.value.projectStatus }}
+                {{ project.projectStatus }}
               </span>
               <span class="opacity-75">
-                <i class="bi bi-eye me-1"></i>{{ project.value.view }}
+                <i class="bi bi-eye me-1"></i>{{ project.view }}
               </span>
             </div>
           </div>
@@ -28,7 +28,7 @@
 
       <!-- 본문 섹션 -->
       <div class="card-body bg-light-blue">
-        <ProjectInfo :project="project.value" v-if="project.value.name" />
+        <ProjectInfo :project="project" v-if="project" />
       </div>
 
       <!-- 푸터 섹션 -->
@@ -58,7 +58,7 @@ import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
-const projectNo = route.params.projectNo;
+const projectNo = route.params.no;
 
 const project = ref({});
 const leader = ref(false);
@@ -67,23 +67,20 @@ const teamNo = ref(null);
 const fetchProjectDetails = async () => {
     try {
         const response = await apiClient.get(`/project/${projectNo}`);
+        console.log('fetchProjectDetails : ');
+        console.log(response);
         if (response.status === 200) {
             project.value = response.data;
+            teamNo.value = response.data.teamNo;
         }
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`
-            },
-            params: { projectNo }
-        };
-
-        const leaderResponse = await apiClient.get(`/team/leader-role`, config);
+        const leaderResponse = await apiClient.get(`/team/leader-role?teamNo=${teamNo.value}&projectNo=${projectNo}`);
         if (leaderResponse.data.isLeader) {
             leader.value = true;
         }
         teamNo.value = leaderResponse.data.teamNo;
+        console.log('project : ');
+        console.log(project.value);
 
     } catch (error) {
         console.error('오류 발생:', error.response?.data?.message || error.message);
