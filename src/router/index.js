@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import UserFeedbackList from "@/views/feedback/UserFeedbackList.vue";
 import ProjectFeedbackList from "@/views/feedback/ProjectFeedbackList.vue";
 import FeedbackCreate from "@/views/feedback/FeedbackCreate.vue";
-import UpdatePasswordForm from '@/components/common/UpdatePasswordForm.vue';
+import UpdatePasswordForm from "@/components/common/UpdatePasswordForm.vue";
 
 // Auth
 const AuthLayout = () => import("@/layout/AuthLayout.vue");
@@ -15,8 +15,8 @@ const SignUp = () => import("@/views/auth/SignUp.vue");
 const NotFound = () => import("@/views/common/NotFound.vue");
 
 // Layout
-const BaseLayout = () => import('@/layout/BaseLayout.vue');
-const AdminLayout = () => import('@/layout/AdminLayout.vue');
+const BaseLayout = () => import("@/layout/BaseLayout.vue");
+const AdminLayout = () => import("@/layout/AdminLayout.vue");
 
 // Home
 const Home = () => import("@/views/Home.vue");
@@ -35,6 +35,7 @@ const ProjectWrite = () => import("@/views/project/ProjectWrite.vue");
 const TeamList = () => import("@/views/team/TeamList.vue");
 const TeamDetail = () => import("@/views/team/TeamDeteil.vue");
 const TeamWrite = () => import("@/views/team/TeamWrite.vue");
+const TeamMembers = () => import("@/views/team/TeamMembers.vue");
 
 // Schedule
 const ScheduleList = () => import("@/views/schedule/ScheduleList.vue");
@@ -174,6 +175,11 @@ const router = createRouter({
           name: "teams/add",
           component: TeamWrite,
         },
+        {
+          path: "teams/:teamNo/members",
+          name: "TeamMembers",
+          component: TeamMembers,
+        },
         // schedule
         {
           path: "teams/:teamNo/schedule/",
@@ -212,88 +218,88 @@ const router = createRouter({
           name: "mypage",
           component: MyPage,
         },
-      ]
+      ],
     },
     {
-      path: '/auth',
-      name: 'auth',
+      path: "/auth",
+      name: "auth",
       component: AuthLayout,
       children: [
         {
-          path: 'login',
-          name: 'login',
-          component: Login
+          path: "login",
+          name: "login",
+          component: Login,
         },
         {
-          path: 'signup',
-          name: 'signup',
-          component: SignUp
-        }
-      ]
+          path: "signup",
+          name: "signup",
+          component: SignUp,
+        },
+      ],
     },
     {
-      path: '/admin',
+      path: "/admin",
       component: AdminLayout,
       children: [
         // admin
         {
-          path: '',
-          name: 'admin',
-          component: AdminMain
+          path: "",
+          name: "admin",
+          component: AdminMain,
         },
         {
-          path: 'login',
-          name: 'admin-login',
-          component: AdminLogin
+          path: "login",
+          name: "admin-login",
+          component: AdminLogin,
         },
         {
-          path: 'projects',
-          name: 'admin-projects',
-          component: AdminProjectList
+          path: "projects",
+          name: "admin-projects",
+          component: AdminProjectList,
         },
         {
-          path: 'user/:userNo/comments',
-          name: 'admin-user-comments',
-          component: AllUserComments
+          path: "user/:userNo/comments",
+          name: "admin-user-comments",
+          component: AllUserComments,
         },
 
         {
-          path: 'tech',
-          name: 'admin-tech',
-          component: AdminTechManage
+          path: "tech",
+          name: "admin-tech",
+          component: AdminTechManage,
         },
         {
-          path: 'feedbacks',
-          name: 'admin-feedbacks',
-          component: FeedbackList
+          path: "feedbacks",
+          name: "admin-feedbacks",
+          component: FeedbackList,
         },
         {
-          path: 'user/:userNo/posts',
-          name: 'admin-user-posts',
-          component: UserAllPost
+          path: "user/:userNo/posts",
+          name: "admin-user-posts",
+          component: UserAllPost,
         },
         {
-          path: 'user/:userNo/projects',
-          name: 'admin-user-projects',
-          component: UserAllProject
+          path: "user/:userNo/projects",
+          name: "admin-user-projects",
+          component: UserAllProject,
         },
         {
-          path: 'user/:userNo',
-          name: 'admin-user-detail',
-          component: UserDetail
+          path: "user/:userNo",
+          name: "admin-user-detail",
+          component: UserDetail,
         },
         {
-          path: 'users',
-          name: 'admin-users',
-          component: UserList
+          path: "users",
+          name: "admin-users",
+          component: UserList,
         },
       ],
     },
     // updatePassword
     {
-      path: '/updatePassword',
-      name: 'updatePassword',
-      component: UpdatePasswordForm
+      path: "/updatePassword",
+      name: "updatePassword",
+      component: UpdatePasswordForm,
     },
     // 404 라우트
     {
@@ -315,7 +321,11 @@ router.beforeEach((to, form, next) => {
   console.log("from: ", form);
 
   // 로그인 페이지에서 회원가입 페이지로 이동할 때는 그대로 이동한다. => 무한 리다이렉트 방지
-  if (to.name === 'signup' || to.name === 'updatePassword' || to.name === 'admin-login') {
+  if (
+    to.name === "signup" ||
+    to.name === "updatePassword" ||
+    to.name === "admin-login"
+  ) {
     next();
   }
 
@@ -323,10 +333,10 @@ router.beforeEach((to, form, next) => {
   if (to.name !== "login" && !authStore.isLoggedIn) {
     next({ name: "login" });
   }
-  
-  if (to.path.startsWith('/admin') && userInfo.role !== 'ADMIN') {
-    alert('관리자 권한이 필요합니다.')
-    return next({ name: 'home' });
+
+  if (to.path.startsWith("/admin") && userInfo.role !== "ADMIN") {
+    alert("관리자 권한이 필요합니다.");
+    return next({ name: "home" });
   }
 
   next();
