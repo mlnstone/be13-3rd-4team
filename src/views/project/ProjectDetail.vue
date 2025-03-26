@@ -73,11 +73,7 @@ const fetchProjectDetails = async () => {
             teamNo.value = response.data.teamNo;
         }
 
-        const config = {
-            params: { projectNo }
-        };
-
-        const leaderResponse = await apiClient.get(`/team/leader-role`, config);
+        const leaderResponse = await apiClient.get(`/team/leader-role`, {params: { projectNo }});
         if (leaderResponse.data.isLeader) {
             leader.value = true;
         }

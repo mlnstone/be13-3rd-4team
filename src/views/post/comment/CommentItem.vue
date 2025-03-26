@@ -1,36 +1,47 @@
 <template>
-  <div class="comment-item">
-    <div class="comment-list-box">
-      <div class="comment-info-box">
-        <p>{{ comment.userName }}</p>
-        <p>{{ formatDate(comment.updatedAt || comment.createdAt) }}</p>
+    <div class="comment-item">
+      <div class="comment-list-box">
+        <div class="comment-info-box">
+          <div class="comment-info-nad">
+            <p>{{ comment.userName }}</p>
+            <p>{{ formatDate(comment.updatedAt || comment.createdAt) }}</p>
+          </div>
+          <div class="comment-info-like">
+            <div class="like-bnt-box">
+              <span>좋아요 {{ comment.likeCount }}</span>
+              <button
+                @click="toggleLike"
+                :class="{ liked: comment.liked }"
+                :disabled="postStatus === 'INACTIVE'">
+                <i class="fi fi-ss-heart" :class="{ liked: comment.liked }"></i>
+              </button>
+            </div>
+          </div>
+        
+        </div>
+
+        
+
+        <div v-if="editMode">
+          <textarea v-model="editedContent" class="edited-content-box"></textarea>
+        </div>
+        <p v-else class="comment-content">{{ comment.content }}</p>
       </div>
 
-      <div v-if="editMode">
-        <textarea v-model="editedContent" class="edited-content-box"></textarea>
-      </div>
-      <p v-else>{{ comment.content }}</p>
-    </div>
+     
 
-    <div v-if="isEditable || isDeletable">
-      <div v-if="editMode">
-        <button @click="updateComment">수정 완료</button>
-        <button @click="cancelEdit">수정 취소</button>
-      </div>
-      <div v-else>
-        <button v-if="isEditable" @click="toggleEdit">수정</button>
-        <button v-if="isDeletable" @click="deleteComment">삭제</button>
+      <div v-if="isEditable || isDeletable" class="edit-delete-box">
+        <div v-if="editMode">
+          <button @click="updateComment">수정 완료</button>
+          <button @click="cancelEdit">수정 취소</button>
+        </div>
+        <div v-else>
+          <button v-if="isEditable" @click="toggleEdit">수정</button>
+          <button v-if="isDeletable" @click="deleteComment">삭제</button>
+        </div>
       </div>
     </div>
-
-    <div class="like-bnt-box">
-      <button @click="toggleLike" :class="{ liked: comment.liked }" :disabled="postStatus === 'INACTIVE'">
-        좋아요 {{ comment.likeCount }}
-        <i class="fi fi-ts-heart"></i>
-      </button>
-    </div>
-  </div>
-</template>
+  </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
@@ -150,7 +161,141 @@ const formatDate = (dateString) => {
 </script>
 
 <style scoped>
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
 .comment-item {
-  margin-bottom: 1rem;
+  padding: 12px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+ height: 180px;
+}
+
+.comment-info-box {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.comment-info-box p:first-child {
+  font-weight: bold;
+  color: #353535;
+}
+
+.comment-content {
+  margin: 6px 0;
+  color: #353535;
+  line-height: 1.5;
+  font-size: 14px;
+}
+.comment-info-box {
+  display: flex;
+  justify-content: space-between;
+}
+.comment-info-nad{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.comment-info-like{
+  display: flex;
+  align-items: center;
+}
+
+/* 수정 textarea */
+.edited-content-box {
+  width: 100%;
+  min-height: 60px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+/* 좋아요 박스 - 오른쪽 정렬 */
+.like-bnt-box {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  border: 1px solid #d9d9d9;
+  width: 100px;
+}
+
+.like-bnt-box span {
+  font-size: 13px;
+  color: #353535;
+}
+
+.like-bnt-box button {
+
+  border: none;
+  background-color: white;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.like-bnt-box button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+
+}
+
+.like-bnt-box i {
+  font-size: 16px;
+  color: #d9d9d9;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.like-bnt-box button:hover i {
+  color: #ff7b89;
+}
+.like-bnt-box i.liked {
+    color: #ff3e60; /* 빨간색 하트 */
+    animation: heart-pop 0.3s ease;
+}
+
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.4);
+  }
+  60% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+/* 수정/삭제 버튼 */
+.edit-delete-box {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-delete-box button {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #353535;
+  cursor: pointer;
+}
+
+.edit-delete-box button:hover {
+  background-color: #e2e2e2;
 }
 </style>

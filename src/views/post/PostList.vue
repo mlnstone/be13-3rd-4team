@@ -1,56 +1,61 @@
 <template>
-  <div>
-    <!-- 분류바 -->
-    <div class="category-bar">
-      <button @click="changeBoardType('NOTICE')" class="category-button">공지</button>
-      <button @click="changeBoardType('PROJECT_RECRUIT')" class="category-button">프로젝트</button>
-      <button @click="changeBoardType('FREE')" class="category-button">자유</button>
-      <router-link to="/posts/add">
-        <button class="category-button">글 작성</button>
-      </router-link>
-    </div>
-
-    <!-- 검색바 -->
-    <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
-      @search="handleSearch" />
-
-    <!-- 테이블 -->
-    <div class="main-container">
-      <div class="table-container">
-        <div class="table-wrapper">
-          <table class="custom-table">
-            <!-- 제목 -->
-            <thead class="table-header">
-              <tr>
-                <th class="header-cell width-80">번호</th>
-                <th class="header-cell width-350">제목</th>
-                <th class="header-cell">글쓴이</th>
-                <th class="header-cell">작성일</th>
-              </tr>
-            </thead>
-            <!-- 내용 -->
-            <tbody>
-              <tr v-for="post in paginatedPosts" :key="post.postNo" @click="detailPage(post.postNo)" class="table-row">
-                <td class="body-cell">{{ post.postNo }}</td>
-                <td class="body-cell">{{ post.title }}</td>
-                <td class="body-cell">{{ post.userName }}</td>
-                <td class="body-cell">{{ new Date(post.createdAt).toLocaleDateString() }}</td>
-              </tr>
-            </tbody>
-          </table>
+    <div>
+        <!-- 분류바 -->
+        <div class="category-bar">
+            <button @click="changeBoardType('NOTICE')" class="category-button">공지</button>
+            <button @click="changeBoardType('PROJECT_RECRUIT')" class="category-button">프로젝트</button>
+            <button @click="changeBoardType('FREE')" class="category-button">자유</button>
+            <router-link to="/posts/add">
+                <button class="category-button">글 작성</button>
+            </router-link>
         </div>
-      </div>
-    </div>
 
-    <!-- 페이징 -->
-    <PageNav v-if="postList && postList.content && postList.content.length > 0" :current-page="page"
-      :items-per-page="parseInt(size)" :total-pages="postList.totalPages" @set-page="setPage" />
-  </div>
+        <!-- 검색바 -->
+        <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
+            @search="handleSearch" />
+
+        <!-- 테이블 -->
+        <div class="main-container">
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table class="custom-table">
+                        <!-- 제목 -->
+                        <thead class="table-header">
+                            <tr>
+                                <th class="header-cell width-80">번호</th>
+                                <th class="header-cell width-350">제목</th>
+                                <th class="header-cell">글쓴이</th>
+                                <th class="header-cell">작성일</th>
+                                <th class="header-cell">조회수</th>
+                            </tr>
+                        </thead>
+                        <!-- 내용 -->
+                        <tbody>
+                            <tr v-for="post in paginatedPosts" :key="post.postNo" @click="detailPage(post.postNo)"
+                                class="table-row">
+                                <td class="body-cell">{{ post.postNo }}</td>
+                                <td class="body-cell">{{ post.title }}</td>
+                                <td class="body-cell">{{ post.userName }}</td>
+                                <td class="body-cell"> {{ formatDate(post.createdAt)}}</td>
+                                <td class="body-cell"> {{ post.viewCount }}</td>
+                          
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 페이징 -->
+        <PageNav v-if="postList && postList.content && postList.content.length > 0" :current-page="page"
+            :items-per-page="parseInt(size)" :total-pages="postList.totalPages" @set-page="setPage" />
+    </div>
 </template>
 
 <script setup>
   import { ref, computed, onMounted, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
+  import dayjs from 'dayjs';
   import apiClient from '@/api';
   import PageNav from "@/components/common/PageNav.vue";
   import SearchBar from '@/components/common/SearchBar.vue';
@@ -149,6 +154,10 @@ watch(
     }
   }
 );
+
+  const formatDate = (dateString) => {
+    return dayjs(dateString).format('YYYY-MM-DD');
+  };
 </script>
 
 <style scoped>
@@ -166,22 +175,19 @@ watch(
   font-weight: 500;
   text-transform: capitalize;
   color: white;
-  background-color: #0077b6;
-  /* 적용된 색상 */
+  background-color: #0077b6; /* 적용된 색상 */
   border-radius: 0.375rem;
   transition: background-color 0.2s ease;
 }
 
 .category-button:hover {
-  background-color: #005fa3;
-  /* 조금 더 어두운 음영 */
+  background-color: #005fa3; /* 조금 더 어두운 음영 */
 }
 
 .select-box {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: 1px solid #0077b6;
-  /* 테두리에 색상 적용 */
+  border: 1px solid #0077b6; /* 테두리에 색상 적용 */
   border-radius: 0.375rem;
   background-color: white;
 }
@@ -189,8 +195,7 @@ watch(
 .search-input {
   width: 100%;
   padding: 0.5rem 2rem 0.5rem 2.5rem;
-  border: 1px solid #0077b6;
-  /* 테두리에 색상 적용 */
+  border: 1px solid #0077b6; /* 테두리에 색상 적용 */
   border-radius: 0.375rem;
 }
 
@@ -206,10 +211,8 @@ watch(
   margin: 1.5rem 0;
   overflow: hidden;
   background-color: #ffffff;
-  border-radius: 0.375rem;
-  /* rounded-md */
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  /* shadow */
+  border-radius: 0.375rem; /* rounded-md */
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1); /* shadow */
 }
 
 .custom-table {
@@ -219,8 +222,7 @@ watch(
 }
 
 .table-header {
-  border-bottom: 1px solid #0077b6;
-  /* 테두리에 색상 적용 */
+  border-bottom: 1px solid #0077b6; /* 테두리에 색상 적용 */
 }
 
 .width-350 {
@@ -233,16 +235,12 @@ watch(
 }
 
 .header-cell {
-  padding: 0.75rem 1.25rem;
-  /* px-5 py-3 */
-  font-size: 0.875rem;
-  /* text-sm */
-  font-weight: 500;
-  /* font-medium */
+  padding: 0.75rem 1.25rem; /* px-5 py-3 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
   text-transform: uppercase;
   color: white;
-  background-color: #0077b6;
-  /* 적용된 색상 */
+  background-color: #0077b6; /* 적용된 색상 */
 }
 
 .table-row {
@@ -251,30 +249,22 @@ watch(
 }
 
 .table-row:hover {
-  background-color: #e0f3ff;
-  /* 연한 파랑 음영 */
+  background-color: #e0f3ff; /* 연한 파랑 음영 */
 }
 
 .body-cell {
-  padding: 1rem 1.5rem;
-  /* px-6 py-4 */
-  font-size: 1.125rem;
-  /* text-lg */
-  color: #353535;
-  /* 텍스트에 색상 적용 */
-  border-bottom: 1px solid #0077b6;
-  /* 테두리에 색상 적용 */
+  padding: 1rem 1.5rem; /* px-6 py-4 */
+  font-size: 1.125rem; /* text-lg */
+  color: #353535; /* 텍스트에 색상 적용 */
+  border-bottom: 1px solid #0077b6; /* 테두리에 색상 적용 */
 }
 
 .body-cell:first-child {
-  font-weight: 500;
-  /* 강조를 위해 font 추가 */
-  color: #353535;
-  /* 어두운 음영 */
+  font-weight: 500; /* 강조를 위해 font 추가 */
+  color: #353535; /* 어두운 음영 */
 }
 
 .body-cell:hover {
-  color: #353535;
-  /* 텍스트에 어두운 음영 적용 */
+  color: #353535; /* 텍스트에 어두운 음영 적용 */
 }
 </style>

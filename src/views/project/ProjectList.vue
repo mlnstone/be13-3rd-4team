@@ -87,7 +87,7 @@ const fetchProjectList = async () => {
       size: size.value
     };
     if (searchQuery.value && selectOption.value) {
-      params.option = selectOption.value;
+      params.searchOption = selectOption.value;
       params.keyword = searchQuery.value;
     }
 
