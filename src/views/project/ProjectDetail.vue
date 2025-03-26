@@ -4,9 +4,11 @@
       <!-- 헤더 섹션 -->
       <div class="card-header border-0 bg-gradient">
         <div class="d-flex align-items-center gap-3 p-2">
-          <img src="https://cdn.startupful.io/img/app_logo/no_img.png" alt="Author Avatar"
-            class="rounded-circle border border-2 border-light" style="width: 64px; height: 64px; object-fit: cover;" />
-          <div class="flex-grow-1 text-white">
+          <img src="https://cdn.startupful.io/img/app_logo/no_img.png"
+               alt="Author Avatar"
+               class="rounded-circle border border-2 border-light"
+               style="width: 64px; height: 64px; object-fit: cover;" />
+          <div class="flex-grow-1">
             <h3 class="h5 mb-1">
               <span class="custom-badge-primary me-2">팀</span>
               {{ project.teamName }}
@@ -27,6 +29,7 @@
       <!-- 본문 섹션 -->
       <div class="card-body bg-light-blue">
         <ProjectInfo :project="project" :team="teamNo" v-if="project.name" />
+
       </div>
 
       <!-- 푸터 섹션 -->
@@ -63,8 +66,11 @@ const teamNo = ref(null);
 const fetchProjectDetails = async () => {
     try {
         const response = await apiClient.get(`/project/${projectNo}`);
+        console.log('fetchProjectDetails : ');
+        console.log(response);
         if (response.status === 200) {
             project.value = response.data;
+            teamNo.value = response.data.teamNo;
         }
 
         const config = {
@@ -76,6 +82,8 @@ const fetchProjectDetails = async () => {
             leader.value = true;
         }
         teamNo.value = leaderResponse.data.teamNo;
+        console.log('project : ');
+        console.log(project.value);
 
     } catch (error) {
         console.error('오류 발생:', error.response?.data?.message || error.message);
