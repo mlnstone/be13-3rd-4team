@@ -56,6 +56,7 @@ const markAsRead = async (id) => {
     await apiClient.post(`/notifications/${id}/read?username=${username}`);
     notifications.value = notifications.value.filter(n => n.id !== id);
   } catch (error) {
+    console.log('알림');
     console.error('🔴 알림 읽음 처리 실패:', error);
   }
 };
