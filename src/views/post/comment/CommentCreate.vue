@@ -10,7 +10,7 @@
 <script setup>
 import { ref } from 'vue';
 import apiClient from '@/api';
-import { useAuthStore } from '@/stores/auth';
+
 
 const props = defineProps({
   postNo: {
@@ -30,18 +30,12 @@ const submitComment = async () => {
   }
 
   try {
-    const authStore = useAuthStore();
-    const token = authStore.getUserInfo()?.accessToken;
-
-    if (!token) {
-      alert("로그인 상태를 확인해주세요.");
-      return;
-    }
-
+ 
     const response = await apiClient.post(
       `/posts/${props.postNo}/comments`,
-      { postNo: props.postNo, content: commentContent.value },
-      { headers: { Authorization: `Bearer ${token}` } }
+      {postNo: props.postNo,
+      content: commentContent.value
+     }
     );
 
     emit("commentAdded", response.data);
