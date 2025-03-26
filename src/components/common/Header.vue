@@ -83,10 +83,6 @@
                 <RouterLink class="nav-link" :to="{ name: 'mypage' }">{{ userInfo.username }}</RouterLink>
             </li>
 
-            <!-- 관리자 페이지 : 관리자에게만 탭이 보이게 설정 -->
-            <li class="nav-item" v-if="isAdmin">
-                <RouterLink class="nav-link" :to="{ name: 'admin' }">관리자 페이지</RouterLink>
-            </li>
             <!-- 🔔 알림 버튼 & 알림 박스 -->
             <li class="nav-item position-relative">
                 <button class="btn" :class="[{ 'btn-warning': !showAlert, 'btn-danger animate-blink': showAlert }]"
