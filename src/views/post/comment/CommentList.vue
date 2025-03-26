@@ -120,8 +120,24 @@ onMounted(fetchComments);
 
 <style scoped>
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
-.sort-option {
+.sort-option select{
+  border: none;
   margin-bottom: 10px;
+  border: 1px solid #d9d9d9;
+  box-shadow: none;
+  font-size:15px;
+  
+}
+
+.sort-option>select:focus {
+  outline: none;
+  border: 1px solid #d9d9d9;
+  box-shadow: none;
+  colort:#353535;
+}
+
+comment-item {
+  height: 90px;
 }
 
 .comment-none{

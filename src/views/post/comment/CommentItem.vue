@@ -194,7 +194,8 @@ const formatDate = (dateString) => {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-height: 180px;
+  min-height: 160px;
+  margin-bottom: 30px;
 }
 
 .comment-info-box {
@@ -202,6 +203,7 @@ const formatDate = (dateString) => {
   gap: 12px;
   font-size: 13px;
   color: #6b7280;
+  margin-bottom: 5px;
 }
 
 .comment-info-box p:first-child {
@@ -252,6 +254,8 @@ const formatDate = (dateString) => {
   margin-top: 6px;
   border: 1px solid #d9d9d9;
   width: 100px;
+  height: 30px;
+  user-select:none;
 }
 
 .like-bnt-box span {
@@ -262,7 +266,7 @@ const formatDate = (dateString) => {
 .like-bnt-box button {
 
   border: none;
-  background-color: white;
+  background-color: transparent;
   padding: 6px;
   cursor: pointer;
   display: flex;
@@ -272,7 +276,7 @@ const formatDate = (dateString) => {
 }
 
 .like-bnt-box button:disabled {
-  opacity: 0.5;
+  opacity: 0.1;
   cursor: not-allowed;
 
 }
@@ -282,9 +286,7 @@ const formatDate = (dateString) => {
   color: #d9d9d9;
   transition: transform 0.3s ease, color 0.3s ease;
 }
-.like-bnt-box button:hover i {
-  color: #ff7b89;
-}
+
 .like-bnt-box i.liked {
     color: #ff3e60; /* 빨간색 하트 */
     animation: heart-pop 0.3s ease;
@@ -320,6 +322,7 @@ const formatDate = (dateString) => {
   padding: 4px 10px;
   border-radius: 4px;
   font-size: 12px;
+  margin-right: 10px;
   color: #353535;
   cursor: pointer;
 }
