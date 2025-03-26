@@ -34,6 +34,9 @@
                     @click="confirmDelete">
                     삭제
                 </button>
+                <button type="button" @click="router.back()" class="px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none">
+                    취소
+                </button>
             </div>
         </div>
     </div>
