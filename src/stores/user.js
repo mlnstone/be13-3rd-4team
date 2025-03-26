@@ -25,39 +25,15 @@ export const useUserStore = defineStore('user', () => {
     };
 
     const goToUserComments = async () => {
-        try {
-            const response = await apiClient.get(`/user/${username}`);            
-
-            const userNo = response.data.userNo;
-
-            router.push(`/admin/user/${userNo}/comments`);
-        } catch (error) {
-
-        }
+        router.push(`/my/comments`);
     };
 
-    const goToUserPosts = async () => {
-        try {
-            const response = await apiClient.get(`/user/${username}`);            
-
-            const userNo = response.data.userNo;
-
-            router.push(`/admin/user/${userNo}/posts`);
-        } catch (error) {
-
-        }
+    const goToUserPosts = () => {
+      router.push(`/my/posts`);
     };
 
     const goToUserProjects = async () => {
-        try {
-            const response = await apiClient.get(`/user/${username}`);   
-
-            const userNo = response.data.userNo;
-
-            router.push(`/admin/user/${userNo}/projects`);
-        } catch (error) {
-
-        }
+        router.push(`/my/projects`)
     };
 
     return { getUser, goToUserComments, goToUserPosts, goToUserProjects };
