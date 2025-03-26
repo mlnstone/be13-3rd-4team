@@ -15,19 +15,6 @@
                 </div>
             </div>
 
-            <div>
-                <ProjectInfo :project="project" v-if="project.name" />
-                <div class="space-y-6" v-else>
-                    <h2>아직 프로젝트가 생성되지 않았습니다.</h2>
-                    <div v-if="isLeader">
-                        <router-link
-                            :to="{ name: 'projects/add', query: { teamNo: team.no, projectNo: project && project.no } }">
-                            <button class="category-button">프로젝트 생성</button>
-                        </router-link>
-                    </div>
-                </div>
-            </div>
-
             <div v-if="(team.status === 'OPEN') && !isLeader || (team.status === 'OPEN') && !isMember">
                 <button
                     class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
@@ -57,14 +44,12 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';
-import ProjectInfo from '@/components/project/ProjectInfo.vue';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const teamNo = route.params.no;
 const team = ref({});
-const project = ref({});
 const isLeader = ref(false);
 const isMember = ref(false);
 const leaderUsername = ref("");
@@ -79,7 +64,6 @@ const fetchTeamDetails = async () => {
             info: teamResponse.data.team.team.teamIntroduce,
             status: teamResponse.data.team.team.projectStatus,
         };
-        project.value = teamResponse.data.project;
 
         const config = {
             params: { teamNo }
@@ -150,7 +134,6 @@ onMounted(fetchTeamDetails);
 
 defineExpose({
   team,
-  project,
   isLeader,
   isMember,
   leaderUsername,
