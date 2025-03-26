@@ -1,5 +1,6 @@
 <template>
   <div class="feedback-list-container">
+    <BackButton />
     <h2 class="text-xl font-bold mb-4">팀 피드백 목록</h2>
 
     <div class="mb-4" v-if="isTeamMember">
@@ -28,7 +29,8 @@
         >
           <div class="feedback-header">
             <span class="feedback-index">#{{ currentPage * pageSize + index + 1 }}</span>
-            <span class="feedback-type">{{ item.feedbackType }}</span>
+            <!-- <span class="feedback-type">{{ item.feedbackType }}</span> -->
+            <span class="feedback-type">{{ statusLabels[item.feedbackType] }}</span>
           </div>
 
           <div v-if="editingFeedback?.feedbackNo === item.feedbackNo">
@@ -66,6 +68,7 @@
 </template>
 
 <script setup>
+import BackButton from '@/components/common/BackButton.vue';
 import { ref, onMounted, watch } from 'vue';
 import apiClient from "@/api";
 import { useRoute } from 'vue-router';
@@ -161,6 +164,13 @@ const changePage = (page) => {
     fetchProjectFeedbacks()
   }
 }
+
+const statusLabels = {
+  TROUBLESHOOTING: '트러블슈팅',
+  LESSON: '배운점',
+  WEAKNESS: '아쉬운점',
+  RETROSPECTIVE: '회고록',
+};
 
 onMounted(fetchProjectFeedbacks)
 watch(currentPage, fetchProjectFeedbacks)

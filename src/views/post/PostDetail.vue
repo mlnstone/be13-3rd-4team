@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BackButton />
+    <BackButton target="/posts"/>
     <div class="max-w-7xl w-full mx-auto p-4 bg-white">
 
       <div class="flex items-center space-x-4 mb-6">
@@ -37,12 +37,12 @@
             {{ post.content }}
           </p>
         </div>
-
-        <ProjectInfo :project="project" v-if="post.boardType === 'PROJECT_RECRUIT'" />
       </div>
 
       <!-- 수정 삭제 -->
+
       <div v-if="post.userName === currentUsername || currentUser.value?.role === 'ADMIN'">
+
         <br />
         <button class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
           @click="goToEditPage">수정</button>
@@ -51,7 +51,9 @@
       </div>
 
       <!-- 댓글 부분 -->
+
       <div v-if="post.boardType === 'FREE'" class="comment-section">
+
         <br />
         <span>댓글 {{ post.commentCount }} 개</span>
         <br />
@@ -98,6 +100,7 @@
     const project = ref({}); // 프로젝트 정보
    
     
+
     const fetchPostDetail = async () => {
     try {
         const response = await apiClient.get(`/posts/${postNo}/with-comments`);
@@ -120,17 +123,6 @@
         console.error('게시글 불러오기 실패:', error);
     }
 };
-    const projectInfo = async () => {
-        try{
-            const response = await apiClient.get(`/project/37`);
-            if (response.status === 200) {
-                project.value = response.data;
-            }
-
-        }catch(error){
-            console.error('프로젝트 정보 불러오기 실패',error);
-        }
-    }
 
     const goToEditPage = () => {
     router.push({

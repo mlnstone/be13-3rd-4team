@@ -46,9 +46,9 @@ export const useAuthStore = defineStore('auth', () => {
             console.log(error);
 
             // if (error.status === 401) {
-            if (error.response.data.code === 401 || error.response.data.code === 403) {
+            if (error.response.data.code === 401 || error.response.data.code === 403 || error.response.data.code === 400) {
                 alert(error.response.data.message);
-            } else if (error.response.data.code === 400 || error.response.data.code === 423) {
+            } else if (error.response.data.code === 423) {
                 alert(error.response.data.message);
                 if (confirm('이메일 인증 후 비밀번호를 변경하시겠습니까?')) {
                     router.push({name: 'updatePassword'});
@@ -171,6 +171,37 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
+    const isValidEmail = ref(false);
+
+    const validateEmail = async (formData) => {
+        try {
+
+            const username = formData.username;
+            const email = formData.email;
+
+            const data = {
+                username,
+                email
+            };
+            const response = await apiClient.post('/matchEmail', data);
+
+            if(response.status === 200) {
+                isValidEmail.value = true;
+
+                alert('이메일 확인이 완료되었습니다.');
+            } else {
+                isValidEmail.value = false;
+
+                alert('이메일 확인에 실패했습니다.');
+            }
+
+        } catch(error)  {
+            console.log(error);
+
+            alert('에러가 발생했습니다.');
+        }
+    }
+
     const authEmailSend = async (email) => {
         try {
             const response = await apiClient.post('/email/send', email);
@@ -242,5 +273,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-    return { isLoggedIn, userInfo, login, checkLogin, logout, signup, authEmailSend, authEmailValidate, isCheckedEmail, getUsernameFromToken, getUserInfo };
+    return { isLoggedIn, userInfo, login, checkLogin, logout, signup, authEmailSend, authEmailValidate, isCheckedEmail, getUsernameFromToken, getUserInfo, validateEmail, isValidEmail };
 });

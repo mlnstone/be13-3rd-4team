@@ -8,6 +8,10 @@
         <input type="text" class="form-control" id="email" v-model.trim ="formData.email">
     </div>
     <div class="form-floating">
+        <p id="isValidEmailText" style="color: green;"></p>
+    </div>
+    <button class="btn btn-primary py-2" type="button" @click.stop="validateEmail" style="background-color: green; margin-top: 5px;">이메일 확인</button>
+    <div class="form-floating">
         <p id="isSentText" style="color: green;"></p>
     </div>
     <button class="btn btn-primary py-2" type="button" @click.stop="authEmailSend" style="background-color: green; margin-top: 5px;">인증코드 보내기</button>
@@ -44,11 +48,26 @@ import router from '@/router';
         confirmPassword: ''
     };
 
-    const userStore = useUserStore();
-
     let isSentCode = false;
 
     const authStore = useAuthStore();
+
+    const validateEmail = async () => {
+        if (formData.username === '') {
+            alert('유저 아이디를 입력해주세요');
+            return;
+        }
+
+        await authStore.validateEmail(toRaw(formData));
+
+        if (authStore.isValidEmail === true) {
+            document.getElementById('isValidEmailText').style.color = 'green';
+            document.getElementById('isValidEmailText').innerText = '유효한 이메일';
+        } else {
+            document.getElementById('isValidEmailText').style.color = 'red';
+            document.getElementById('isValidEmailText').innerText = '유효하지 않은 이메일';
+        }
+    };
 
     const authEmailSend = () => {
         const valid_email = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 정규 표현식
@@ -73,7 +92,7 @@ import router from '@/router';
         }
 
         // 인증코드 확인
-        await authStore.authEmailValidate(toRaw(formData));
+        await authStore.authEmailValidate((formData));
 
         console.log(authStore.isCheckedEmail);
         if (authStore.isCheckedEmail) {
