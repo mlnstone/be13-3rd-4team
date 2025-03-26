@@ -9,12 +9,12 @@
             <div class="feature-card">
                 <h2>👥 프로젝트 구인</h2>
                 <p>함께할 팀원을 찾고, 최고의 팀을 구성하세요.</p>
-                <router-link to="/recruit" class="btn">팀원 모집</router-link>
+                <router-link to="/teams" class="btn">팀원 모집</router-link>
             </div>
             <div class="feature-card">
                 <h2>📋 프로젝트 관리</h2>
                 <p>진행 중인 프로젝트를 체계적으로 관리하세요.</p>
-                <router-link to="/manage" class="btn">프로젝트 관리</router-link>
+                <router-link to="/projects" class="btn">프로젝트 관리</router-link>
             </div>
         </section>
     </main>
