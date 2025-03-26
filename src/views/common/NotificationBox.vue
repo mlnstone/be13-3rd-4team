@@ -19,13 +19,15 @@ import { useAuthStore } from '@/stores/auth';
 
 const notifications = ref([]);
 const authStore = useAuthStore();
-const userInfo = authStore.getUserInfo();
+const userInfo = authStore.userInfo;
 const username = userInfo.username;
 let eventSource = null;
 
 const fetchNotifications = async () => {
   try {
     const res = await apiClient.get(`/notifications?username=${username}`);
+    console.log('fetchNotifications : ');
+    console.log(res);
     notifications.value = res.data;
   } catch (error) {
     console.error('🔴 알림 가져오기 실패:', error);
