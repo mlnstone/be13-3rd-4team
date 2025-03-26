@@ -15,9 +15,7 @@
             </div>
             <div class="detail-item content-item">
                 <span class="detail-label">내용:</span>
-                <p class="detail-value content-text">
-                    {{ project.content }}
-                </p>
+                <p class="detail-value content-text">{{ project.content }}</p>
             </div>
             <div>
                 <span v-for="tech in project.projectTeches" :key="tech.no" class="tech">
@@ -44,9 +42,9 @@ defineProps({
         type: Object,
         required: true,
     },
-    team: {
-        type: Object,
-    },
+    // team: {
+    //     type: Object,
+    // },
 });
 </script>
 

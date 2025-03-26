@@ -6,7 +6,7 @@
         받은 쪽지 <span v-if="unreadCount > 0" class="unread-badge">{{ unreadCount }}</span>
       </button>
       <button @click="loadMessages('sent')" :class="{ active: currentTab === 'sent' }">보낸 쪽지</button>
-      <router-link to="/messages/write">
+      <router-link to="/messages/add">
         <button>쪽지 보내기</button>
       </router-link>
     </div>

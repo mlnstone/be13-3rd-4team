@@ -39,9 +39,9 @@
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'messages'}">쪽지</RouterLink>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'messages/add'}">쪽지 등록</RouterLink>
-            </li>
+            </li> -->
             <!-- 프로젝트 -->
             <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'projects'}">프로젝트</RouterLink>
