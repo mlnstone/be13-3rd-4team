@@ -14,8 +14,8 @@
             <tr v-for="report in reports" :key="report.no"
                 @click.stop="emit('item-click', report.no)">
                 <td>{{ report.no }}</td>
-                <td>{{ report.reporterId }}</td>
-                <td>{{ report.reportedId }}</td>
+                <td>{{ report.reporterUsername }}</td>
+                <td>{{ report.reportedUsername }}</td>
                 <td>{{ report.reportType }}</td>
                 <td>{{ report.content }}</td>
                 <td>{{ report.url }}</td>
