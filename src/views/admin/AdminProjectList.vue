@@ -110,41 +110,128 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-.project-list-container {
+<style scoped>.project-list-container {
   padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .sort-container {
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: #444;
 }
 
+label {
+  font-weight: 600;
+  color: #555;
+}
+
+select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 0.9rem;
+}
+
+/* 테이블 디자인 */
 table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  margin-top: 16px;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  padding: 12px 15px;
   text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #444;
 }
 
+th {
+  background-color: #4c6ef5;
+  color: white;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f7faff;
+}
+
+/* 삭제 버튼 */
+button {
+  padding: 6px 14px;
+  background-color: #ff5c5c;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+}
+
+button:hover {
+  background-color: #ff3b3b;
+}
+
+/* 페이징 */
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  align-items: center;
+  margin-top: 25px;
+  gap: 10px;
 }
+
+.pagination button {
+  background-color: #4a90e2;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pagination button:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* 프로젝트 제목 링크 */
 .project-title-link {
-  color: inherit;           /* 상위 글자 색상 그대로 */
-  text-decoration: none;    /* 밑줄 제거 */
-  font-weight: normal;      /* 기본 굵기 */
+  color: #4c6ef5;
+  text-decoration: none;
+  font-weight: 500;
   transition: all 0.2s ease;
 }
 
 .project-title-link:hover {
-  text-decoration: underline; /* 마우스 올리면 밑줄 생김 */
-  font-weight: bold;          /* 글씨 굵어짐 */
+  text-decoration: underline;
+  font-weight: bold;
 }
 </style>

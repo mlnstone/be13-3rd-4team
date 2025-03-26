@@ -99,35 +99,93 @@ onMounted(fetchFeedbacks)
 <style scoped>
 .feedback-list-container {
   padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-th,
-td {
-  padding: 10px;
-  border: 1px solid #ccc;
+th, td {
+  padding: 12px 15px;
   text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #444;
 }
 
-.project-link {
-  color: black;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.project-link:hover {
-  text-decoration: underline;
+th {
+  background-color: #4c6ef5;
+  color: white;
   font-weight: bold;
 }
 
+tr:hover {
+  background-color: #f7faff;
+}
+
+/* 삭제 버튼 */
+button {
+  padding: 6px 14px;
+  background-color: #ff5c5c;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.85rem;
+}
+
+button:hover {
+  background-color: #ff3b3b;
+}
+
+/* 페이징 */
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  align-items: center;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.pagination button {
+  background-color: #4a90e2;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pagination button:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 0.9rem;
+  color: #333;
 }
 </style>
