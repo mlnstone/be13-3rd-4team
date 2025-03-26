@@ -1,4 +1,5 @@
 <template>
+  <BackButton />
     <div class="message-details">
         <h1>쪽지 내용</h1>
         <div v-if="message" class="message-content">
@@ -25,6 +26,7 @@
     </div>
 </template>
 <script setup>
+import BackButton from '@/components/common/BackButton.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import apiClient from '@/api';

@@ -1,7 +1,6 @@
 <template>
-
-
   <div>
+    <BackButton />
     <div class="max-w-7xl w-full mx-auto p-4 bg-white">
 
       <div class="flex items-center space-x-4 mb-6">
@@ -51,12 +50,12 @@
         <button class="px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none"
           @click="confirmDelete(post.postNo)">삭제</button>
       </div>
-      
-            <!-- 댓글 부분 -->
-          <div  v-if="post.boardType === 'FREE'">
-            <br />
-            <span>댓글 {{ post.commentCount }} 개</span>
-            <br />
+
+      <!-- 댓글 부분 -->
+      <div v-if="post.boardType === 'FREE'">
+        <br />
+        <span>댓글 {{ post.commentCount }} 개</span>
+        <br />
 
             <CommentCreate
               v-if="post.postNo"
@@ -73,7 +72,6 @@
               @commentDeleted="handleCommentDeleted"
               @refreshComments="() => {}"
             />
-
           </div>
       
       
@@ -82,6 +80,7 @@
 </template>
 
 <script setup>
+    import BackButton from '@/components/common/BackButton.vue';
     import { nextTick, ref, onMounted } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import dayjs from 'dayjs';
