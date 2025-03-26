@@ -8,14 +8,16 @@
             <p><strong>내용:</strong><br />{{ message.content }}</p>
 
             <!-- 가입 수락/거절 버튼 (팀장이 받은 쪽지일 때만) -->
-            <div v-if="isTeamJoinRequest" class="actions">
-                <button @click="acceptRequest">가입 수락</button>
-                <button @click="rejectRequest">가입 거절</button>
-            </div>
+            <!-- 가입 수락/거절 버튼 -->
+<div v-if="isTeamJoinRequest" class="actions">
+    <button class="accept-btn" @click="acceptRequest">가입 수락</button>
+    <button class="reject-btn" @click="rejectRequest">가입 거절</button>
+</div>
 
-            <div class="actions">
-                <button @click="deleteMessage">삭제</button>
-            </div>
+<!-- 삭제 버튼 -->
+<div class="actions">
+    <button class="delete-btn" @click="deleteMessage">삭제</button>
+</div>
         </div>
         <div v-else>
             <p>쪽지를 불러오는 중...</p>
@@ -117,33 +119,88 @@ const formatDate = (date) => {
 onMounted(fetchMessageDetails);
 </script>
 
-
 <style scoped>
 .message-details {
-    padding: 20px;
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.message-details h1 {
+  color: #374151;
+  font-weight: 700;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f0f4ff;
+  padding-bottom: 8px;
 }
 
 .message-content {
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 20px;
-    white-space: pre-wrap;
+  padding: 20px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.message-content strong {
+  font-weight: 600;
+  color: #374151;
 }
 
 .actions {
-    margin-top: 20px;
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
 }
 
-button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+.actions button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-button:hover {
-    background-color: darkred;
+.actions button:hover {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.actions button:active {
+  transform: scale(0.95);
+}
+
+/* 가입 수락 버튼 (파란색) */
+.actions button.accept-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.actions button.accept-btn:hover {
+  background-color: #2563eb;
+}
+
+/* 가입 거절 버튼 (빨간색) */
+.actions button.reject-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.actions button.reject-btn:hover {
+  background-color: #dc2626;
+}
+
+/* 삭제 버튼 (주황색) */
+.actions button.delete-btn {
+  background-color: orangered;
+  color: white;
+}
+
+.actions button.delete-btn:hover {
+  background-color: #e03e00;
 }
 </style>
