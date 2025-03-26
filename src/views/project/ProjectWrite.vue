@@ -39,7 +39,7 @@
                   </select>
                 </div>
   
-                <div>
+                <div class="py-4">
                   <ProjectTechList
                     :initialTechs="initialTechs"
                     @selectedTechs="handleSelectedTechs"
