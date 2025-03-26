@@ -6,6 +6,9 @@
             <button class="category-button" @click="memberPage()">팀원 목록</button>
         </div>
 
+        <!-- 검색바 -->
+        <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
+            @search="handleSearch" />
         <!-- 테이블 -->
         <div class="main-container">
             <div class="table-container">
@@ -38,23 +41,28 @@
 </template>
 
 <script setup>
-  import { ref, computed, onMounted, watch } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import apiClient from '@/api';
-  
-  const route = useRoute();
-  const router = useRouter();
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import apiClient from '@/api';
+import SearchBar from '@/components/common/SearchBar.vue';
 
-  // postList 초기값을 빈 객체로 설정
-  const postList = ref({ content: [] });
-  const searchQuery = ref('');
-  const selectOption = ref('Approved');
-  const teamNo = route.params.teamNo;
-  const leader = ref(false);
-  const sizeOptions = ref([10, 20, 30]);
- const selectOptions = ref([
-     { value: 'Approved', label: '승인' },
-    ]);
+const route = useRoute();
+const router = useRouter();
+
+// postList 초기값을 빈 객체로 설정
+const postList = ref({ content: [] });
+const selectOption = ref('Approved');
+const teamNo = route.params.teamNo;
+const leader = ref(false);
+const sizeOptions = ref([10, 20, 30]);
+const postSortOptions = ref([
+  { value: 'LATEST', label: '최신순' },
+]);
+const selectOptions = ref([
+    { value: 'Approved', label: '승인' },
+    { value: 'Rejected', label: '거절' },
+    { value: 'Pending', label: '대기' },
+]);
 
   
   const fetchPostList = async () => {
@@ -63,14 +71,9 @@
             leader.value = true;
             console.log('리더');
         }
-    const params = {};
-        if(selectOption.value === 'Pending'){
-            params.status = 'Pending';
-        }else if(selectOption.value === 'Rejected'){
-            params.status = 'Rejected';
-        }else if(selectOption.value === 'Approved'){
-            params.status = 'Approved';
-        }
+    const params = {
+        status: selectOption.value
+    };
 
     try {
         // 팀장이면 모든 팀원 조회가능
@@ -98,23 +101,18 @@
     postList.value = [];
 
     }
-  };
-  
-  const handleSearch = (searchParams) => {
-      selectOption.value = searchParams.selectOption;
-      searchQuery.value = searchParams.searchQuery;
-      fetchPostList();
-  };
-  
-  onMounted(() => {
-  fetchPostList();
-});
+};
 
-watch(selectOption, () => {
-    console.log('값 변경 확인')
-  fetchPostList();
-});
+const handleSearch = (searchParams) => {
+    console.log(searchParams);
+    selectOption.value = searchParams.selectOption;
+    searchQuery.value = searchParams.searchQuery;
+    fetchPostList();
+};
 
+onMounted(() => {
+fetchPostList();
+});
 
   const writePage = () => {
   router.push({

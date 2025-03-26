@@ -15,6 +15,24 @@
                 </div>
             </div>
 
+            <div>
+                <div v-if="project && project.name">
+                    <router-link :to="{ name: 'projects/no', params: { no: project.teamNo } }">
+                        <button class="category-button">프로젝트</button>
+                    </router-link>
+                </div>
+
+                <div class="space-y-6" v-else>
+                    <h2>아직 프로젝트가 생성되지 않았습니다.</h2>
+                    <div v-if="isLeader">
+                        <router-link :to="{ name: 'projects/add', query: { teamNo: team.no } }">
+                            <button class="category-button">프로젝트 생성</button>
+                        </router-link>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 가입 신청 -->
             <div v-if="(team.status === 'OPEN') && !isLeader || (team.status === 'OPEN') && !isMember">
                 <button
                     class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
@@ -50,6 +68,7 @@ const route = useRoute();
 const router = useRouter();
 const teamNo = route.params.no;
 const team = ref({});
+const project = ref({});
 const isLeader = ref(false);
 const isMember = ref(false);
 const leaderUsername = ref("");
@@ -64,6 +83,7 @@ const fetchTeamDetails = async () => {
             info: teamResponse.data.team.team.teamIntroduce,
             status: teamResponse.data.team.team.projectStatus,
         };
+        project.value = teamResponse.data.project;
 
         const config = {
             params: { teamNo }
@@ -81,8 +101,8 @@ const fetchTeamDetails = async () => {
             leaderUsername.value = leaderRes.data;
             console.log(leaderUsername.value);
         }
-        catch (error) {
-        console.error('데이터를 불러오는 중 오류 발생', error);
+    catch (error) {
+    console.error('데이터를 불러오는 중 오류 발생', error);
     }
 };
 
@@ -137,6 +157,7 @@ defineExpose({
   isLeader,
   isMember,
   leaderUsername,
+  project,
   goToEditPage,
   confirmDelete,
   confirmJoin,
