@@ -18,16 +18,24 @@
         </select>
       </div>
 
-      <div class="field"><strong>신고 내용:</strong><div class="value-box">{{ report.content }}</div></div>
+      <div class="field"><strong>신고 내용:</strong>
+        <div class="value-box">{{ report.content }}</div>
+      </div>
 
       <div class="field">
         <strong>관리자 메모:</strong>
         <textarea v-model="reportComment" class="textarea" placeholder="관리자 메모를 입력하세요"></textarea>
       </div>
 
-      <div class="field"><strong>신고 URL:</strong> <a :href="report.url" target="_blank">{{ report.url }}</a></div>
+      <div class="field">
+        <strong>신고 URL:</strong>
+        <a :href="getFullUrl(report.url)" target="_blank" rel="noopener noreferrer">
+          {{ report.url }}
+        </a>
+      </div>
       <div class="field"><strong>등록일:</strong> {{ formatDate(report.reportTime) }}</div>
-      <div class="field"><strong>신고 처리일:</strong> {{ report.commentTime ? formatDate(report.commentTime) : '처리 중' }}</div>
+      <div class="field"><strong>신고 처리일:</strong> {{ report.commentTime ? formatDate(report.commentTime) : '처리 중' }}
+      </div>
 
       <button @click="updateReport" class="update-button">수정 등록</button>
     </div>
@@ -57,7 +65,12 @@ const getStatusText = (status) => {
   };
   return statusMap[status] || status;
 };
-
+const getFullUrl = (url) => {
+  if (!url) return '#';
+  return url.startsWith('http://') || url.startsWith('https://')
+    ? url
+    : 'http://' + url;
+};
 const fetchReportDetail = async () => {
   if (!reportNo) return;
 
@@ -116,7 +129,7 @@ onMounted(fetchReportDetail);
   padding: 30px;
   background: #f9f9f9;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', sans-serif;
 }
 
