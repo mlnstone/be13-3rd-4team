@@ -143,7 +143,7 @@ const confirmJoin = async (teamNo) => {
 
       const messageData = {
         receiverUsername: leaderUsername.value,
-        content: `${team.value.no} 팀에 가입 신청했습니다. 검토 부탁드립니다.`,
+        content: `${team.value.name} 팀에 가입 신청했습니다. 검토 부탁드립니다.`,
       };
       await apiClient.post("/messages", messageData);
       alert("쪽지가 자동으로 전송되었습니다!");
