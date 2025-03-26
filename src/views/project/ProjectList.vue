@@ -8,27 +8,16 @@
       <router-link to="/projects">
         <button class="category-button" :class="{ active: isActive('/projects') }">프로젝트</button>
       </router-link>
-      <router-link to="/projects/write">
-        <button class="category-button" :class="{ active: isActive('/projects/write') }">프로젝트 생성</button>
-      </router-link>
     </div>
 
     <!-- 검색 바 -->
-    <SearchBar
-      :size-options="sizeOptions"
-      :post-sort-options="postSortOptions"
-      :select-options="selectOptions"
-      @search="handleSearch"
-    />
+    <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
+      @search="handleSearch" />
 
     <!-- 프로젝트 카드 리스트 -->
     <div class="project-list">
-      <div
-        v-for="project in paginatedProjects"
-        :key="project.no"
-        class="project-card"
-        @click="goToProjectDetail(project.no)"
-      >
+      <div v-for="project in paginatedProjects" :key="project.no" class="project-card"
+        @click="goToProjectDetail(project.no)">
         <div class="project-meta">
           <span class="meta-author">{{ project.teamName }}</span>
           <span class="meta-dot">•</span>
@@ -43,13 +32,8 @@
     </div>
 
     <!-- 페이징 -->
-    <PageNav
-      v-if="projectList && projectList.content && projectList.content.length > 0"
-      :current-page="page"
-      :items-per-page="parseInt(size)"
-      :total-pages="projectList.totalPages"
-      @set-page="setPage"
-    />
+    <PageNav v-if="projectList && projectList.content && projectList.content.length > 0" :current-page="page"
+      :items-per-page="parseInt(size)" :total-pages="projectList.totalPages" @set-page="setPage" />
   </div>
 </template>
 
@@ -138,6 +122,7 @@ onMounted(fetchProjectList);
   padding: 1.5rem;
   min-height: 100vh;
 }
+
 .category-bar {
   display: flex;
   padding: 0.75rem 1rem;
@@ -198,6 +183,7 @@ onMounted(fetchProjectList);
   color: #666;
   margin-bottom: 0.5rem;
 }
+
 .meta-dot {
   margin: 0 0.4rem;
 }

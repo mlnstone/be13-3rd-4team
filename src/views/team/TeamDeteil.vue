@@ -141,11 +141,7 @@ const confirmJoin = async (teamNo) => {
       await apiClient.post("/messages", messageData);
       alert("쪽지가 자동으로 전송되었습니다!");
     } catch (err) {
-        if(err.status === 500){
-            alert('로그인 후 이용해주세요!');
-        } else{
-            alert(err.response?.data?.message || err.message);
-        }
+        alert(err.response?.data?.message || err.message);
     }
   }
 };

@@ -28,18 +28,17 @@
 
       <!-- 본문 섹션 -->
       <div class="card-body bg-light-blue">
-        <ProjectInfo :project="project" v-if="project" />
+        <ProjectInfo :project="project" :team="teamNo" v-if="project.name" />
+
       </div>
 
       <!-- 푸터 섹션 -->
-      <div class="card-footer border-0 bg-white" v-if="leader.value">
+      <div class="card-footer border-0 bg-white" v-if="leader">
         <div class="d-flex gap-2 justify-content-end">
-          <button @click="goToEditPage"
-                  class="custom-btn-primary">
+          <button @click="goToEditPage" class="custom-btn-primary">
             <i class="bi bi-pencil-square me-1"></i>수정
           </button>
-          <button @click="confirmDelete"
-                  class="custom-btn-outline">
+          <button @click="confirmDelete" class="custom-btn-outline">
             <i class="bi bi-trash me-1"></i>삭제
           </button>
         </div>
@@ -58,7 +57,7 @@ import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
-const projectNo = route.params.no;
+const projectNo = Number(route.params.no);
 
 const project = ref({});
 const leader = ref(false);
@@ -74,7 +73,11 @@ const fetchProjectDetails = async () => {
             teamNo.value = response.data.teamNo;
         }
 
-        const leaderResponse = await apiClient.get(`/team/leader-role?teamNo=${teamNo.value}&projectNo=${projectNo}`);
+        const config = {
+            params: { projectNo }
+        };
+
+        const leaderResponse = await apiClient.get(`/team/leader-role`, config);
         if (leaderResponse.data.isLeader) {
             leader.value = true;
         }
@@ -89,7 +92,7 @@ const fetchProjectDetails = async () => {
 
 const goToEditPage = () => {
     router.push({
-        name: 'ProjectWrite',
+        name: 'projects/add',
         query: {
             teamNo: teamNo.value,
             projectNo,
@@ -105,16 +108,9 @@ const confirmDelete = async () => {
     if (!confirm('정말로 삭제하시겠습니까?')) return;
 
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`
-            }
-        };
-
-        await apiClient.delete(`/project/${projectNo}`, config);
+        await apiClient.delete(`/project/${projectNo}`);
         alert('프로젝트가 삭제되었습니다.');
-        router.push('/project');
+        router.push('/projects');
     } catch (error) {
         console.error('삭제 실패:', error.response?.data?.message || error.message);
     }
@@ -196,7 +192,7 @@ onMounted(fetchProjectDetails);
 }
 
 .card:hover {
-  box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.15)!important;
+  box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .15) !important;
 }
 
 /* 반응형 스타일 */
@@ -235,4 +231,3 @@ onMounted(fetchProjectDetails);
   transition: all 0.2s ease-in-out;
 }
 </style>
-
