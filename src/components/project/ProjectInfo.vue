@@ -31,6 +31,8 @@
         <router-link :to="`/teams/${team}`" v-else>
             <button class="view-more-button">팀 정보 보기</button>
         </router-link>
+        팀{{ team }}
+        플젝{{ project }}
     </div>
 </template>
 

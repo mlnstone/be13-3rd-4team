@@ -1,17 +1,17 @@
 <template>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item">
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center" v-if="totalPages > 1">
+      <li class="page-item" :class="{ disabled: currentPage === 1 }">
         <a class="page-link" href="#" aria-label="Previous" @click="prevPage">
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>
-      <li v-for="page in totalPages" :key="page" @click="() => setPage(page)">
-        <a class="page-link" :class="{ active: currentPage.valueOf === page }" href="#">
+      <li v-for="page in visiblePages" :key="page" class="page-item" :class="{ active: currentPage === page }">
+        <a class="page-link" href="#" @click="() => setPage(page)">
           {{ page }}
         </a>
       </li>
-      <li class="page-item">
+      <li class="page-item" :class="{ disabled: currentPage === totalPages }">
         <a class="page-link" href="#" aria-label="Next" @click="nextPage">
           <span aria-hidden="true">&raquo;</span>
         </a>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   currentPage: { type: Number, default: 1 },
@@ -49,6 +49,25 @@ const nextPage = () => {
     setPage(currentPage.value + 1);
   }
 };
+
+  // 표시할 페이지 번호 계산
+const visiblePages = computed(() => {
+  const maxVisiblePages = 5; // 최대 표시 페이지 수
+  const halfVisible = Math.floor(maxVisiblePages / 2);
+  let start = Math.max(1, currentPage.value - halfVisible);
+  let end = Math.min(props.totalPages, currentPage.value + halfVisible);
+
+  // 페이지가 적을 때 시작과 끝 조정
+  if (end - start < maxVisiblePages - 1) {
+    if (start === 1) {
+      end = Math.min(props.totalPages, maxVisiblePages);
+    } else {
+      start = Math.max(1, props.totalPages - maxVisiblePages + 1);
+    }
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+});
 </script>
 
 <style scoped>
