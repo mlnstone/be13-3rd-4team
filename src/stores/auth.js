@@ -224,8 +224,7 @@ export const useAuthStore = defineStore('auth', () => {
   };
 
   const getUsernameFromToken = () => {
-    const userInfo = getUserInfo();
-    const token = userInfo?.accessToken;
+    const token = localStorage.getItem('accessToken');
 
     if (!token) {
       console.warn("토큰이 존재하지 않습니다.");
