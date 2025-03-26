@@ -9,7 +9,7 @@
             class="rounded-circle border border-2 border-light" style="width: 64px; height: 64px; object-fit: cover;" />
           <div class="flex-grow-1">
             <h3 class="h5 mb-1">
-              <span class="custom-badge-primary me-2">팀</span>
+              <span class=" me-2">팀</span>
               {{ project.teamName }}
             </h3>
             <div class="d-flex align-items-center small gap-3">
@@ -34,12 +34,13 @@
       <!-- 푸터 섹션 -->
       <div class="card-footer border-0 bg-white" v-if="leader">
         <div class="d-flex gap-2 justify-content-end">
-          <button @click="goToEditPage" class="custom-btn-primary">
-            <i class="bi bi-pencil-square me-1"></i>수정
-          </button>
-          <button @click="confirmDelete" class="custom-btn-outline">
+          <button @click="confirmDelete" class="common-button-gray">
             <i class="bi bi-trash me-1"></i>삭제
           </button>
+          <button @click="goToEditPage" class="common-button">
+            <i class="bi bi-pencil-square me-1"></i>수정
+          </button>
+          
         </div>
       </div>
     </div>
@@ -226,4 +227,37 @@ onMounted(fetchProjectDetails);
 .custom-badge-secondary {
   transition: all 0.2s ease-in-out;
 }
+
+/* common-button.css */
+
+.common-button {
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  margin-left: 0.5rem; /* ml-2 */
+  color: #e5e7eb; /* text-gray-200 */
+  background-color: #1f2937; /* bg-gray-800 */
+  border-radius: 0.375rem; /* rounded-md */
+  transition: background-color 0.2s; /* hover transition */
+  cursor: pointer;
+}
+.common-button:hover {
+  background-color: #374151; /* hover:bg-gray-700 */
+}
+
+.common-button-gray:focus,
+.common-button:focus {
+  outline: none;
+  background-color: #374151; /* focus:bg-gray-700 */
+}
+
+/* common-button-gray.css */
+
+.common-button-gray {
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  margin-left: 0.5rem; /* ml-2 */
+  background-color: #e9ecef; /* bg-gray-800 */
+  border-radius: 0.375rem; /* rounded-md */
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
 </style>

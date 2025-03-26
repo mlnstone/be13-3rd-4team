@@ -48,14 +48,15 @@
                             </div>
                         </div>
                         <div class="flex justify-end mt-4">
-                            <button type="submit"
-                                class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
-                                {{ isEditMode ? "수정" : "저장" }}
-                            </button>
                             <button type="button" @click="router.back()"
                                 class="px-4 py-2 ml-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
                                 취소
                             </button>
+                            <button type="submit"
+                                class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                                {{ isEditMode ? "수정" : "저장" }}
+                            </button>
+                            
                         </div>
                     </form>
                 </div>
@@ -127,6 +128,7 @@ const submitPostData = async () => {
     }
 };
 </script>
+
 <style scoped>
 /* 중앙 정렬 및 화면 폭 제한 */
 .page-container {
@@ -143,6 +145,10 @@ const submitPostData = async () => {
 
 .mt-4 {
     margin-top: 1rem;
+}
+.justify-end {
+    justify-content: flex-end;
+    display: flex;
 }
 
 /* 카드 레이아웃과 배경, 테두리 등 */

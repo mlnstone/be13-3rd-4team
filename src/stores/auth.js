@@ -106,6 +106,8 @@ export const useAuthStore = defineStore('auth', () => {
         // 토큰들을 로컬 스토리지에 삭제
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
 
         // 로그인 상태를 변경한다.
         isLoggedIn.value = false;
