@@ -5,6 +5,9 @@ import UserFeedbackList from "@/views/feedback/UserFeedbackList.vue";
 import ProjectFeedbackList from "@/views/feedback/ProjectFeedbackList.vue";
 import FeedbackCreate from "@/views/feedback/FeedbackCreate.vue";
 import UpdatePasswordForm from "@/components/common/UpdatePasswordForm.vue";
+import UserMyPostList from "@/views/user/UserMyPostList.vue";
+import UserMyProjectList from "@/views/user/UserMyProjectList.vue";
+import UserMyCommentList from "@/views/user/UserMyCommentList.vue";
 
 // Auth
 const AuthLayout = () => import("@/layout/AuthLayout.vue");
@@ -84,6 +87,30 @@ const router = createRouter({
           name: "home",
           component: Home,
         },
+        
+        // user
+
+        {
+          path: "/my/posts",
+          name: "my-posts",
+          component: UserMyPostList,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: "/my/projects",
+          name: "my-projects",
+          component: UserMyProjectList,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: "/my/comments",
+          name: "my-comments",
+          component: UserMyCommentList,
+          meta: { requiresAuth: true }
+        },
+
+
+
         // post
         {
           path: "posts",
