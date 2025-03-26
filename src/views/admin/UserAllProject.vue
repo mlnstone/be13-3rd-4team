@@ -3,30 +3,30 @@
     <h2>{{ userName }} 님의 모든 프로젝트</h2>
     <table>
       <thead>
-      <tr>
-        <th>번호</th>
-        <th>프로젝트명</th>
-        <th>팀명</th>
-        <th>내용</th>
-        <th>상태</th>
-        <th>조회수</th>
-        <th>사용 기술</th>
-      </tr>
+        <tr>
+          <th>번호</th>
+          <th>프로젝트명</th>
+          <th>팀명</th>
+          <th>내용</th>
+          <th>상태</th>
+          <th>조회수</th>
+          <th>사용 기술</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="(project, index) in projects" :key="project.no">
-        <td>{{ currentPage * 10 + index + 1 }}</td>
-        <td>
-          <RouterLink :to="`/projects/${project.no}`" class="project-title-link">
-            {{ project.name }}
-          </RouterLink>
-        </td>
-        <td>{{ project.teamName }}</td>
-        <td>{{ project.content }}</td>
-        <td>{{ project.projectStatus }}</td>
-        <td>{{ project.view }}</td>
-        <td>{{ project.projectTeches.join(', ') }}</td>
-      </tr>
+        <tr v-for="(project, index) in projects" :key="project.no">
+          <td>{{ currentPage * 10 + index + 1 }}</td>
+          <td>
+            <RouterLink :to="`/projects/${project.no}`" class="project-title-link">
+              {{ project.name }}
+            </RouterLink>
+          </td>
+          <td>{{ project.teamName }}</td>
+          <td>{{ project.content }}</td>
+          <td>{{ project.projectStatus }}</td>
+          <td>{{ project.view }}</td>
+          <td>{{ project.projectTeches.join(', ') }}</td>
+        </tr>
       </tbody>
     </table>
 
@@ -42,7 +42,7 @@
 
 <script setup>
 import apiClient from "@/api";
-import {RouterLink} from "vue-router";
+import { RouterLink } from "vue-router";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -110,62 +110,96 @@ onMounted(fetchProjects);
 
 <style scoped>
 .user-project-list {
-  padding: 20px;
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.user-project-list h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #343a40;
+  text-align: center;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+th,
+td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #dee2e6;
 }
 
 th {
-  background-color: #f4f4f4;
+  background-color: #e9ecef;
+  color: #495057;
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f1f3f5;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .pagination button {
-  margin: 0 0.5rem;
   padding: 0.5rem 1rem;
-  border: none;
-  background-color: #007bff;
+  border-radius: 6px;
+  background-color: #4c6ef5;
   color: white;
+  font-weight: 500;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #3b5bdb;
 }
 
 .pagination button:disabled {
-  background-color: #ccc;
+  background-color: #ced4da;
+  color: #495057;
   cursor: not-allowed;
 }
 
 .back-btn {
   display: block;
-  margin: 1rem auto;
-  padding: 0.75rem 1.5rem;
+  margin: 1.5rem auto 0;
+  padding: 0.75rem 2rem;
+  background-color: #adb5bd;
   border: none;
-  background-color: #6c757d;
+  border-radius: 6px;
   color: white;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .back-btn:hover {
-  background-color: #545b62;
+  background-color: #868e96;
 }
 
 .project-title-link {
-  color: black;
+  color: #212529;
   text-decoration: none;
-  cursor: pointer;
 }
 
 .project-title-link:hover {

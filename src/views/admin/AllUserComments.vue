@@ -131,60 +131,104 @@ onMounted(fetchComments);
 
 <style scoped>
 .comments-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.comments-container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #343a40;
+  text-align: center;
 }
 
 .comments-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .comments-table th,
 .comments-table td {
-  border: 1px solid #ddd;
-  padding: 0.75rem;
-  text-align: left;
-  background-color: #fff;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .comments-table th {
-  background-color: #f0f0f0;
+  background-color: #e9ecef;
+  color: #495057;
+  font-weight: 600;
+}
+
+.comments-table tr:hover {
+  background-color: #f1f3f5;
+}
+
+.comments-table button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #dc3545;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.comments-table button:hover {
+  background-color: #c82333;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .pagination button {
-  margin: 0 0.5rem;
   padding: 0.5rem 1rem;
   border: none;
-  background-color: #007bff;
+  border-radius: 6px;
+  background-color: #4c6ef5;
   color: white;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #3b5bdb;
 }
 
 .pagination button:disabled {
-  background-color: #ccc;
+  background-color: #ced4da;
+  color: #495057;
   cursor: not-allowed;
 }
 
 .back-btn {
   display: block;
-  margin: 1rem auto;
-  padding: 0.75rem 1.5rem;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
+  background-color: #adb5bd;
   border: none;
-  background-color: #6c757d;
+  border-radius: 6px;
   color: white;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .back-btn:hover {
-  background-color: #545b62;
+  background-color: #868e96;
 }
 </style>
