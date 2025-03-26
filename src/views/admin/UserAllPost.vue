@@ -158,9 +158,20 @@ const goBack = () => {
 </script>
 
 
-<style scoped>
-.user-post-list {
-  padding: 20px;
+<style scoped>.user-post-list {
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.user-post-list h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #343a40;
+  text-align: center;
 }
 
 label {
@@ -169,60 +180,105 @@ label {
 }
 
 select {
-  padding: 5px;
-  margin-bottom: 15px;
+  padding: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 16px;
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  padding: 1rem;
   text-align: center;
+  border-bottom: 1px solid #dee2e6;
+}
+
+th {
+  background-color: #e9ecef;
+  color: #495057;
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f1f3f5;
+}
+
+button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+td button {
+  background-color: #dc3545;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+td button:hover {
+  background-color: #c82333;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .pagination button {
-  margin: 0 0.5rem;
   padding: 0.5rem 1rem;
-  border: none;
-  background-color: #007bff;
+  border-radius: 6px;
+  background-color: #4c6ef5;
   color: white;
-  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #3b5bdb;
 }
 
 .pagination button:disabled {
-  background-color: #ccc;
+  background-color: #ced4da;
+  color: #495057;
   cursor: not-allowed;
 }
 
 .back-btn {
   display: block;
-  margin: 1rem auto;
-  padding: 0.75rem 1.5rem;
+  margin: 1.5rem auto 0;
+  padding: 0.75rem 2rem;
+  background-color: #adb5bd;
   border: none;
-  background-color: #6c757d;
+  border-radius: 6px;
   color: white;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .back-btn:hover {
-  background-color: #545b62;
+  background-color: #868e96;
 }
 
 .post-title-link {
-  color: black;
+  color: #212529;
   text-decoration: none;
-  cursor: pointer;
 }
 
 .post-title-link:hover {
