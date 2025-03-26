@@ -61,8 +61,7 @@ const postSortOption = ref('LATEST');
 
 const sizeOptions = ref([10, 20, 30]);
 const postSortOptions = ref([
-  { value: 'LATEST', label: '모든 팀' },
-  { value: 'user', label: '내 팀' }
+  { value: 'LATEST', label: '최신순' },
 ]);
 const selectOptions = ref([
   { value: '', label: '전체' },
@@ -79,10 +78,7 @@ const fetchPostList = async () => {
       page: page.value - 1,
       size: size.value
     };
-    if (postSortOption.value === 'user') {
-      params['user'] = true;
-      console.log('유저번호 선택됨');
-    }
+    
     if (searchQuery.value && selectOption.value) {
       params[selectOption.value] = searchQuery.value;
     }

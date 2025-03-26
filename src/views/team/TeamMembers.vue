@@ -2,13 +2,11 @@
     <div>
         <!-- 분류바 -->
         <div class="category-bar">
+            <button class="category-button" @click="teamPage()">팀 페이지로</button>
             <button class="category-button" @click="writePage()">스케줄 목록</button>
             <button class="category-button" @click="memberPage()">팀원 목록</button>
         </div>
 
-        <!-- 검색바 -->
-        <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
-            @search="handleSearch" />
         <!-- 테이블 -->
         <div class="main-container">
             <div class="table-container">
@@ -20,7 +18,6 @@
                                 <th class="header-cell width-80">번호</th>
                                 <th class="header-cell width-350">이름</th>
                                 <th class="header-cell">권한</th>
-                                <th class="header-cell">상태</th>
                             </tr>
                         </thead>
                         <!-- 내용 -->
@@ -29,7 +26,6 @@
                                 <td class="body-cell">{{ index + 1 }}</td>
                                 <td class="body-cell"> {{ post.username }}</td>
                                 <td class="body-cell">{{ post.isLeader ? '팀장' : '팀원' }}</td>
-                                <td class="body-cell">{{ post.status }}</td>
 
                             </tr>
                         </tbody>
@@ -41,10 +37,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';
-import SearchBar from '@/components/common/SearchBar.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -54,77 +49,46 @@ const postList = ref({ content: [] });
 const selectOption = ref('Approved');
 const teamNo = route.params.teamNo;
 const leader = ref(false);
-const sizeOptions = ref([10, 20, 30]);
-const postSortOptions = ref([
-  { value: 'LATEST', label: '최신순' },
-]);
-const selectOptions = ref([
-    { value: 'Approved', label: '승인' },
-    { value: 'Rejected', label: '거절' },
-    { value: 'Pending', label: '대기' },
-]);
 
-  
-  const fetchPostList = async () => {
-    const leaderResponse = await apiClient.get(`/team/leader-role`, {params: { teamNo }});
-        if (leaderResponse.data.isLeader) {
-            leader.value = true;
-            console.log('리더');
-        }
-    const params = {
-        status: selectOption.value
-    };
-
+const fetchPostList = async () => {
     try {
-        // 팀장이면 모든 팀원 조회가능
-        if(leader){
-            const response = await apiClient.get(`/team/${teamNo}/setting/members`, { params });
-            if (response.status === 200) {
-                postList.value = response.data;
-                
-            } else {
-                alert('데이터 조회 실패');
-            }
-        }else{
-            const response = await apiClient.get(`/team/${teamNo}/setting/members/find`);
-            if (response.status === 200) {
-                postList.value = response.data;
-                console.log(postList.value);
-            } else {
-                alert('데이터 조회 실패');
-            }
+        const response = await apiClient.get(`/team/${teamNo}/setting/members/find`);
+        if (response.status === 200) {
+            postList.value = response.data;
+            console.log(postList.value);
+        } else {
+            alert('데이터 조회 실패');
         }
-        console.log(selectOptions.value);
-
-    } catch (error) {
+    }
+    catch (error) {
     console.error('데이터를 불러오는 중 오류 발생', error);
     postList.value = [];
 
     }
 };
 
-const handleSearch = (searchParams) => {
-    console.log(searchParams);
-    selectOption.value = searchParams.selectOption;
-    searchQuery.value = searchParams.searchQuery;
-    fetchPostList();
-};
-
 onMounted(() => {
 fetchPostList();
 });
 
-  const writePage = () => {
-  router.push({
+const writePage = () => {
+    router.push({
     name: 'ScheduleList',
     params: { teamNo }
-  });
+    });
 };
 
 const memberPage = () => {
-  router.push({
+    router.push({
     name: 'TeamMembers',
     params: { teamNo }
+    });
+};
+
+const teamPage = () => {
+  router.push({
+    name: 'teams/no',
+    params: { no: teamNo }
   });
 };
 </script>
