@@ -23,10 +23,8 @@
                                 <label class="text-gray-700">상태</label>
                                 <select v-model="projectStatus"
                                     class="w-full mt-2 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
-                                    <option value="OPEN">공개</option>
-                                    <option value="CLOSED">닫힘</option>
-                                    <option value="IN_PROGRESS">진행중</option>
-                                    <option value="COMPLETE">완료</option>
+                                    <option value="OPEN">모집</option>
+                                    <option value="CLOSED">모집종료</option>
                                 </select>
                             </div>
                         </div>

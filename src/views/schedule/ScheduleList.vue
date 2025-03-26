@@ -2,6 +2,7 @@
   <div>
     <div class="category-bar">
       <button class="category-button" @click="writePage()">스케줄 추가</button>
+      <button class="category-button" @click="memberPage()">팀원 목록</button>
     </div>
 
     <SearchBar :size-options="sizeOptions" :searchFalse="true" @search="handleSearch" />
@@ -50,7 +51,6 @@ import apiClient from '@/api';
 import { useAuthStore } from '@/stores/auth';
 import SearchBar from '@/components/common/SearchBar.vue';
 import PageNav from '@/components/common/PageNav.vue';
-import ScheduleWrite from './ScheduleWrite.vue';
 
 // 초기 페이지 설정
 const page = ref(1);
@@ -109,6 +109,13 @@ const detailePage = (scheduleNo) => {
 const writePage = () => {
   router.push({
     name: 'ScheduleWrite',
+    params: { teamNo }
+  });
+};
+
+const memberPage = () => {
+  router.push({
+    name: 'TeamMembers',
     params: { teamNo }
   });
 };
