@@ -18,6 +18,7 @@
                                 <th class="header-cell width-80">번호</th>
                                 <th class="header-cell width-350">이름</th>
                                 <th class="header-cell">권한</th>
+                                <th class="header-cell">역할</th>
                             </tr>
                         </thead>
                         <!-- 내용 -->
@@ -26,7 +27,7 @@
                                 <td class="body-cell">{{ index + 1 }}</td>
                                 <td class="body-cell"> {{ post.username }}</td>
                                 <td class="body-cell">{{ post.isLeader ? '팀장' : '팀원' }}</td>
-
+                                <td class="body-cell">{{ post.role}}</td>
                             </tr>
                         </tbody>
                     </table>

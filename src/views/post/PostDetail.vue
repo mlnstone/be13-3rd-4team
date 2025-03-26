@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BackButton />
+    <BackButton target="/posts"/>
     <div class="max-w-7xl w-full mx-auto p-4 bg-white">
 
       <div class="flex items-center space-x-4 mb-6">
@@ -38,8 +38,6 @@
             {{ post.content }}
           </p>
         </div>
-
-        <ProjectInfo :project="project" v-if="post.boardType === 'PROJECT_RECRUIT'" />
       </div>
 
       <!-- 수정 삭제 -->
@@ -52,7 +50,7 @@
       </div>
 
       <!-- 댓글 부분 -->
-      <div v-if="post.boardType === 'FREE'">
+      <div v-if="post.boardType !== 'NOTICE'">
         <br />
         <span>댓글 {{ post.commentCount }} 개</span>
         <br />
@@ -86,7 +84,6 @@
     import dayjs from 'dayjs';
     import apiClient from '@/api';
     import { useAuthStore } from '@/stores/auth.js';
-    import ProjectInfo from '@/components/project/ProjectInfo.vue';
     import CommentCreate from "@/views/post/comment/CommentCreate.vue";
     import CommentList from "@/views/post/comment/CommentList.vue";
 
@@ -96,7 +93,6 @@
     const post = ref({});
     const commentList = ref(null);
     const authStore = useAuthStore();
-    const project = ref({}); // 프로젝트 정보
 
     const fetchPostDetail = async () => {
     try {
@@ -119,17 +115,6 @@
         console.error('게시글 불러오기 실패:', error);
     }
 };
-    const projectInfo = async () => {
-        try{
-            const response = await apiClient.get(`/project/37`);
-            if (response.status === 200) {
-                project.value = response.data;
-            }
-
-        }catch(error){
-            console.error('프로젝트 정보 불러오기 실패',error);
-        }
-    }
 
     const goToEditPage = () => {
     router.push({
