@@ -72,9 +72,6 @@
               @commentDeleted="handleCommentDeleted"
               @refreshComments="() => {}"
             />
-        <CommentList v-if="post.postNo" ref="commentList" :postNo="Number(post.postNo)" :postStatus="post.postStatus"
-          @commentUpdated="fetchPostDetail" @commentDeleted="handleCommentDeleted" />
-
           </div>
       
       
