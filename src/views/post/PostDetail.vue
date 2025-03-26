@@ -1,4 +1,6 @@
 <template>
+
+
   <div>
     <div class="max-w-7xl w-full mx-auto p-4 bg-white">
 
@@ -10,6 +12,7 @@
           <p class="text-gray-500 text-sm">
             {{ new Date(post.createdAt).toLocaleDateString() }}
           </p>
+
         </div>
       </div>
 
@@ -47,16 +50,44 @@
         <button class="px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none"
           @click="confirmDelete(post.postNo)">삭제</button>
       </div>
+      
+            <!-- 댓글 부분 -->
+          <div  v-if="post.boardType === 'FREE'">
+            <br />
+            <span>댓글 {{ post.commentCount }} 개</span>
+            <br />
+
+            <CommentCreate
+              v-if="post.postNo"
+              :postNo="Number(post.postNo)"
+              @commentAdded="handleCommentAdded"
+            />
+
+            <CommentList
+              v-if="post.postNo"
+              ref="commentList"
+              :postNo="Number(post.postNo)"
+              :postStatus="post.postStatus"
+              @commentUpdated="fetchPostDetail"
+              @commentDeleted="handleCommentDeleted"
+            />
+
+          </div>
+      
+      
     </div>
   </div>
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { nextTick, ref, onMounted } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
+    import dayjs from 'dayjs';
     import apiClient from '@/api';
     import { useAuthStore } from '@/stores/auth.js';
     import ProjectInfo from '@/components/project/ProjectInfo.vue';
+    import CommentCreate from "@/views/post/comment/CommentCreate.vue";
+    import CommentList from "@/views/post/comment/CommentList.vue";
 
     const route = useRoute();
     const router = useRouter();
@@ -69,6 +100,8 @@
     try {
         const response = await apiClient.get(`/posts/${postNo}/with-comments`);
         post.value = response.data;
+
+        comments.value = response.data.comments || [];
         console.log(response.data);
 
         const bookmarkState = localStorage.getItem(`bookmark_${postNo}`);
@@ -143,6 +176,11 @@
     };
 
     onMounted(fetchPostDetail);
+
+    const formatDate = (dateString) => {
+      return dayjs(dateString).format('YYYY-MM-DD HH:mm:ss');
+    };
+   
 </script>
 
 <style>
