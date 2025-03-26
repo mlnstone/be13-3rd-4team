@@ -143,3 +143,135 @@ onMounted(() => {
   fetchReports(currentPage.value);
 });
 </script>
+<style>
+.container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.search-container input {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.search-container .btn {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #4c6ef5;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.btn-info {
+  background-color: #228be6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #3b5bdb;
+}
+
+.btn-secondary:hover {
+  background-color: #d0d0d0;
+}
+
+.btn-info:hover {
+  background-color: #1c7ed6;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+th {
+  background-color: #4c6ef5;
+  color: white;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f7faff;
+}
+
+/* 페이징 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  background-color: #4a90e2;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pagination button.active {
+  background-color: #2b74d8;
+  font-weight: bold;
+}
+
+.pagination button:hover:not(.active):not(:disabled) {
+  background-color: #72a9ee;
+}
+
+.pagination button:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}</style>
