@@ -257,6 +257,9 @@ watch(
   font-size: 1.125rem; /* text-lg */
   color: #353535; /* 텍스트에 색상 적용 */
   border-bottom: 1px solid #0077b6; /* 테두리에 색상 적용 */
+  white-space: nowrap; /* 텍스트를 줄바꿈하지 않음 */
+  overflow: hidden; /* 컨테이너를 벗어나는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 숨겨진 텍스트를 ...으로 표시 */
 }
 
 .body-cell:first-child {
