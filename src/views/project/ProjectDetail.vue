@@ -4,22 +4,20 @@
       <!-- 헤더 섹션 -->
       <div class="card-header border-0 bg-gradient">
         <div class="d-flex align-items-center gap-3 p-2">
-          <img src="https://cdn.startupful.io/img/app_logo/no_img.png"
-               alt="Author Avatar"
-               class="rounded-circle border border-2 border-light"
-               style="width: 64px; height: 64px; object-fit: cover;" />
+          <img src="https://cdn.startupful.io/img/app_logo/no_img.png" alt="Author Avatar"
+            class="rounded-circle border border-2 border-light" style="width: 64px; height: 64px; object-fit: cover;" />
           <div class="flex-grow-1 text-white">
             <h3 class="h5 mb-1">
               <span class="custom-badge-primary me-2">팀</span>
-              {{ project.value.teamName }}
+              {{ project.teamName }}
             </h3>
             <div class="d-flex align-items-center small gap-3">
-              <span class="opacity-75">번호 {{ project.value.no }}</span>
+              <span class="opacity-75">번호 {{ project.no }}</span>
               <span class="custom-badge-secondary">
-                {{ project.value.projectStatus }}
+                {{ project.projectStatus }}
               </span>
               <span class="opacity-75">
-                <i class="bi bi-eye me-1"></i>{{ project.value.view }}
+                <i class="bi bi-eye me-1"></i>{{ project.view }}
               </span>
             </div>
           </div>
@@ -28,18 +26,16 @@
 
       <!-- 본문 섹션 -->
       <div class="card-body bg-light-blue">
-        <ProjectInfo :project="project.value" v-if="project.value.name" />
+        <ProjectInfo :project="project" :team="teamNo" v-if="project.name" />
       </div>
 
       <!-- 푸터 섹션 -->
-      <div class="card-footer border-0 bg-white" v-if="leader.value">
+      <div class="card-footer border-0 bg-white" v-if="leader">
         <div class="d-flex gap-2 justify-content-end">
-          <button @click="goToEditPage"
-                  class="custom-btn-primary">
+          <button @click="goToEditPage" class="custom-btn-primary">
             <i class="bi bi-pencil-square me-1"></i>수정
           </button>
-          <button @click="confirmDelete"
-                  class="custom-btn-outline">
+          <button @click="confirmDelete" class="custom-btn-outline">
             <i class="bi bi-trash me-1"></i>삭제
           </button>
         </div>
@@ -58,7 +54,7 @@ import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
-const projectNo = route.params.projectNo;
+const projectNo = Number(route.params.no);
 
 const project = ref({});
 const leader = ref(false);
@@ -72,10 +68,6 @@ const fetchProjectDetails = async () => {
         }
 
         const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`
-            },
             params: { projectNo }
         };
 
@@ -92,7 +84,7 @@ const fetchProjectDetails = async () => {
 
 const goToEditPage = () => {
     router.push({
-        name: 'ProjectWrite',
+        name: 'projects/add',
         query: {
             teamNo: teamNo.value,
             projectNo,
@@ -108,16 +100,9 @@ const confirmDelete = async () => {
     if (!confirm('정말로 삭제하시겠습니까?')) return;
 
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${useAuthStore.getUserInfo().accessToken}`
-            }
-        };
-
-        await apiClient.delete(`/project/${projectNo}`, config);
+        await apiClient.delete(`/project/${projectNo}`);
         alert('프로젝트가 삭제되었습니다.');
-        router.push('/project');
+        router.push('/projects');
     } catch (error) {
         console.error('삭제 실패:', error.response?.data?.message || error.message);
     }
@@ -199,7 +184,7 @@ onMounted(fetchProjectDetails);
 }
 
 .card:hover {
-  box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.15)!important;
+  box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .15) !important;
 }
 
 /* 반응형 스타일 */
@@ -238,4 +223,3 @@ onMounted(fetchProjectDetails);
   transition: all 0.2s ease-in-out;
 }
 </style>
-
