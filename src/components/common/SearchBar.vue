@@ -72,8 +72,14 @@ export default {
 </script>
 
 <style scoped>
+
+.flex{
+  display: flex;
+  
+}
 .select-box {
-  width: 100%;
+  width: 110px;
+  margin-right: 10px;
   padding: 0.5rem 1rem;
   border: 1px solid #cbd5e0;
   /* gray-400 */

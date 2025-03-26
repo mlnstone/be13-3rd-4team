@@ -25,6 +25,12 @@
         </div>
         <button v-if="route.path.startsWith('/teams')" @click="routeProjectPage(project.teamNo)" class="view-more-button">프로젝트 자세히 보기</button>
         <button v-else @click="routeTeamPage(team)" class="view-more-button">팀 정보 보기</button>
+        <br>
+        <button
+          class="view-more-button"
+          @click="goToFeedbackPage(project.no)">
+          피드백 보기
+        </button>
     </div>
 </template>
 
@@ -41,11 +47,17 @@ defineProps({
     project: {
         type: Object,
         required: true,
+      
     },
     team: {
         type: Object,
     },
 });
+
+const goToFeedbackPage = (no) => {
+  router.push(`/project/${no}/feedbacks`)
+}
+
 
 const routeProjectPage = (no) => {
     router.push(`/projects/${no}`);

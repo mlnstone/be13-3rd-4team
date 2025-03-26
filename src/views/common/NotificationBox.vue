@@ -2,11 +2,15 @@
   <div class="notification-box">
     <h6>🔔 알림 목록</h6>
     <ul v-if="notifications.length > 0">
-      <li v-for="noti in notifications" :key="noti.id" class="mb-2">
-        {{ noti.message }}
-        <button class="btn btn-sm btn-outline-secondary ms-2" @click="markAsRead(noti.id)">읽음</button>
-      </li>
-    </ul>
+  <li
+    v-for="noti in notifications"
+    :key="noti.id"
+    class="mb-2 notification-item"
+    @click="markAsRead(noti.id)"
+  >
+    {{ noti.message }}
+  </li>
+</ul>
     <p v-else>새 알림이 없습니다.</p>
   </div>
 </template>
@@ -52,6 +56,7 @@ const markAsRead = async (id) => {
     await apiClient.post(`/notifications/${id}/read?username=${username}`);
     notifications.value = notifications.value.filter(n => n.id !== id);
   } catch (error) {
+    console.log('알림');
     console.error('🔴 알림 읽음 처리 실패:', error);
   }
 };
@@ -74,8 +79,32 @@ onUnmounted(() => {
   z-index: 9999;
   background: white;
   border: 1px solid #ccc;
-  width: 250px;
+  width: 360px;
   padding: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+ul {
+  list-style-position: inside; /* ● 을 안쪽에 표시 */
+  padding-left: 0; /* 기본 여백 제거 */
+  margin: 0;
+}
+
+.notification-item {
+  list-style-type: disc; /* ● 표시 */
+  padding-left: 0.5rem;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: #f0f4ff;
 }
 </style>
