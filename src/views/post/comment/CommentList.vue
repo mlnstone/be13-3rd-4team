@@ -16,6 +16,7 @@
           :postStatus="postStatus"
           :comment="comment"
           :postNo="postNo"
+          @commentAdded="handleCommentAdded"
           @commentUpdated="fetchComments"
           @commentDeleted="handleCommentDeleted"
       />
@@ -29,15 +30,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import apiClient from '@/api';
 import CommentItem from '@/views/post/comment/CommentItem.vue';
 import Pagination from '@/components/common/Pagination.vue';
-
+const emit = defineEmits(['commentDeleted']);
 const props = defineProps({
   postNo: Number,
   postStatus: String
 });
+
+
 
 const comments = ref([]);
 const sortOption = ref('NEW');
@@ -54,6 +57,9 @@ const fetchComments = async () => {
     console.error('postNo가 존재하지 않습니다.');
     return;
   }
+
+
+
   const params = {
     commentSortOption: sortOption.value,
     page: pageInfo.value.currentPage - 1,
@@ -80,6 +86,10 @@ const fetchComments = async () => {
   }
 };
 
+defineExpose({
+  fetchComments
+});
+
 const setPage = ({ page }) => {
   if (page >= 1 && page <= Math.ceil(pageInfo.value.totalCount / pageInfo.value.listLimit)) {
     pageInfo.value.currentPage = page;
@@ -87,12 +97,24 @@ const setPage = ({ page }) => {
   }
 };
 
+
+const handleCommentAdded = (newComment) => {
+  if (sortOption.value === 'NEW' && pageInfo.value.currentPage === 1) {
+    comments.value.unshift(newComment);
+  }
+  pageInfo.value.totalCount += 1;
+};
+
+
 const handleCommentDeleted = (deletedCommentNo) => {
   comments.value = comments.value.filter(comment => comment.commentNo !== deletedCommentNo);
   pageInfo.value.totalCount -= 1;
+  emit('commentDeleted', deletedCommentNo);
   fetchComments();
 };
 
+
+watch(() => props.postNo, fetchComments);
 onMounted(fetchComments);
 </script>
 
