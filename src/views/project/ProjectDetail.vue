@@ -13,13 +13,8 @@
               {{ project.teamName }}
             </h3>
             <div class="d-flex align-items-center small gap-3">
-              <span class="opacity-75">번호 {{ project.no }}</span>
-              <span class="custom-badge-secondary">
-                {{ project.projectStatus }}
-              </span>
-              <span class="opacity-75">
-                <i class="bi bi-eye me-1"></i>{{ project.view }}
-              </span>
+              <span class="tag">{{ getStatusText(project.projectStatus) }}</span>
+              <span class="opacity-75">{{ project.no }}번</span>
             </div>
           </div>
         </div>
@@ -29,8 +24,11 @@
       <div class="card-body bg-light-blue">
         <ProjectInfo :project="project" :team="teamNo" v-if="project.name" />
 
+        <span class="opacity-75">
+          <i class="bi bi-eye me-1">조회수 : {{ project.view }}</i>
+        </span>
       </div>
-
+      
       <!-- 푸터 섹션 -->
       <div class="card-footer border-0 bg-white" v-if="leader">
         <div class="d-flex gap-2 justify-content-end">
@@ -111,6 +109,17 @@ const confirmDelete = async () => {
     } catch (error) {
         console.error('삭제 실패:', error.response?.data?.message || error.message);
     }
+};
+
+const getStatusText = (status) => {
+  switch (status) {
+    case 'OPEN':
+      return '모집중';
+    case 'CLOSED':
+      return '모집마감';
+    default:
+      return status; // 알 수 없는 상태는 그대로 표시
+  }
 };
 
 onMounted(fetchProjectDetails);
@@ -258,6 +267,23 @@ onMounted(fetchProjectDetails);
   border-radius: 0.375rem; /* rounded-md */
   transition: background-color 0.2s;
   cursor: pointer;
+}
+
+.tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    background-color: #0077b6;
+    color: #ffffff;
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    background-color: #2196f3;
+    /* 더 밝은 색상으로 변경 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* 그림자 효과 추가 */
+    font-size: 0.875rem;
+    /* 폰트 크기 약간 증가 */
+    font-weight: 600;
+    /* 폰트 굵게 */
 }
 
 </style>
