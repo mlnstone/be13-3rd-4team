@@ -43,6 +43,9 @@
                             <button type="submit" class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md">
                                 {{ isEditMode ? "수정" : "저장" }}
                             </button>
+                            <button type="button" @click="router.back()" class="px-4 py-2 ml-2 text-gray-200 bg-gray-800 rounded-md">
+                                취소
+                            </button>
                         </div>
                     </form>
                 </div>
