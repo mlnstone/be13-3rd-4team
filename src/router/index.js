@@ -334,12 +334,29 @@ router.beforeEach((to, form, next) => {
     next({ name: "login" });
   }
 
-  if (to.path.startsWith("/admin") && userInfo.role !== "ADMIN") {
-    alert("관리자 권한이 필요합니다.");
-    return next({ name: "home" });
+  if (to.path.startsWith("/admin") && to.name !== "admin-login") {
+
+    if (authStore.isLoggedIn && userInfo.role !== "ADMIN") {
+
+      alert("관리자 권한이 필요합니다.");
+
+      return next({ name: "home" });
+    } else if (!authStore.isLoggedIn) {
+
+      alert("로그인이 필요합니다.");
+
+      return next({ name: "admin-login" });
+    }
+
+    return next();
   }
 
   next();
+});
+
+router.afterEach((to, from) => {
+  console.log("to: ", to);
+  console.log("from: ", from);
 });
 
 export default router;
