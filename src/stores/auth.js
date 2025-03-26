@@ -46,9 +46,9 @@ export const useAuthStore = defineStore('auth', () => {
             console.log(error);
 
             // if (error.status === 401) {
-            if (error.response.data.code === 401 || error.response.data.code === 403) {
+            if (error.response.data.code === 401 || error.response.data.code === 403 || error.response.data.code === 400) {
                 alert(error.response.data.message);
-            } else if (error.response.data.code === 400 || error.response.data.code === 423) {
+            } else if (error.response.data.code === 423) {
                 alert(error.response.data.message);
                 if (confirm('이메일 인증 후 비밀번호를 변경하시겠습니까?')) {
                     router.push({name: 'updatePassword'});
