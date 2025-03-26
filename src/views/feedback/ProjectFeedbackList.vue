@@ -105,7 +105,11 @@ const fetchProjectFeedbacks = async () => {
     isTeamMember.value = true // ✅ 성공 시 true
   } catch (err) {
     console.error('피드백 불러오기 실패:', err)
-    error.value = '피드백을 불러올 수 없습니다.'
+    if (err.response && err.response.data && err.response.data.message) {
+      error.value = err.response.data.message
+    } else {
+      error.value = '피드백을 불러올 수 없습니다.'
+    }
     isTeamMember.value = false // ✅ 실패 시 false
   } finally {
     loading.value = false
