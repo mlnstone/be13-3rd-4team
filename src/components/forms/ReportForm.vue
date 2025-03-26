@@ -1,8 +1,8 @@
 <template>
     <form @submit.prevent="submitClick">
         <div class="mb-3">
-            <label for="reportedId" class="form-label">신고 대상 아이디</label>
-            <input type="text" class="form-control" id="reportedId" v-model.trim ="formData.reportedId">
+            <label for="reportedUsername" class="form-label">신고 대상 아이디</label>
+            <input type="text" class="form-control" id="reportedUsername" v-model.trim ="formData.reportedUsername">
         </div>
         <div class="mb-3">
             <label for="reportType" class="form-label">신고 유형</label>
