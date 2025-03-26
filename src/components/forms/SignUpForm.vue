@@ -8,7 +8,7 @@
             <label for="floatingUsername">Username</label>
         </div>
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingPassword" placeholder="Password"
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
                 v-model.trim="formData.password" required>
             <label for="floatingPassword">Password</label>
         </div>
