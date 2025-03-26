@@ -29,12 +29,14 @@ import AdminUserList from './UserList.vue'
 import FeedbackList from './FeedbackList.vue'
 import AdminProjectList from './AdminProjectList.vue'
 import TechManager from './AdminTechManage.vue'
+import Reports from '@/views/report/Reports.vue'
 
 const tabs = [
   { name: 'AdminUserList', label: '회원 관리' },
   { name: 'FeedbackList', label: '피드백 관리' },
   { name: 'AdminProjectList', label: '프로젝트 관리' },
   { name: 'TechManager', label: '기술 관리' },
+  { name: 'Reports', label: '신고 관리' },
 ]
 
 const activeTab = ref('AdminUserList')
@@ -44,6 +46,7 @@ const componentsMap = {
   FeedbackList,
   AdminProjectList,
   TechManager,
+  Reports
 }
 
 const activeTabComponent = computed(() => componentsMap[activeTab.value])
