@@ -23,16 +23,17 @@
                 </span>
             </div>
         </div>
-        <button v-if="project.teamNo" @click="routeProjectPage(project.teamNo)" class="view-more-button">프로젝트 자세히 보기</button>
+        <button v-if="route.path.startsWith('/teams')" @click="routeProjectPage(project.teamNo)" class="view-more-button">프로젝트 자세히 보기</button>
         <button v-else @click="routeTeamPage(team)" class="view-more-button">팀 정보 보기</button>
     </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRoute,useRouter } from 'vue-router';
 import { defineProps } from 'vue';
 
 const router = useRouter();
+const route = useRoute();
 
 // 부모로 부터 받아올 데이터
 defineProps({
