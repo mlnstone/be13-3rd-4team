@@ -61,8 +61,11 @@ const sendMessage = async () => {
       alert('쪽지 전송 실패');
     }
   } catch (error) {
-    alert('전송 에러 발생: ' + error);
-  }
+    if (error.response && error.response.data) {
+    alert(error.response.data.message);  // → "존재하지 않는 유저입니다."
+  } else {
+    alert('전송 에러 발생: ' + error.message);
+  }  }
 };
 
 // ❌ 취소
