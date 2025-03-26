@@ -38,7 +38,8 @@
             if (error.response.status === 400) {
                 alert('신고 정보를 모두 입력해 주세요');
             } else {
-                alert('에러가 발생했습니다');
+                alert((error.response?.data?.message || error));
+
             }
         }
     }

@@ -1,13 +1,12 @@
 <template>
   <div class="container py-4">
+    <BackButton />
     <div class="card border-0 shadow-sm">
       <!-- 헤더 섹션 -->
       <div class="card-header border-0 bg-gradient">
         <div class="d-flex align-items-center gap-3 p-2">
-          <img src="https://cdn.startupful.io/img/app_logo/no_img.png"
-               alt="Author Avatar"
-               class="rounded-circle border border-2 border-light"
-               style="width: 64px; height: 64px; object-fit: cover;" />
+          <img src="https://cdn.startupful.io/img/app_logo/no_img.png" alt="Author Avatar"
+            class="rounded-circle border border-2 border-light" style="width: 64px; height: 64px; object-fit: cover;" />
           <div class="flex-grow-1">
             <h3 class="h5 mb-1">
               <span class="custom-badge-primary me-2">팀</span>
@@ -49,6 +48,7 @@
 
 
 <script setup>
+import BackButton from '@/components/common/BackButton.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';

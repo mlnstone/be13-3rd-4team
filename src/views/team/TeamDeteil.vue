@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackButton />
         <div class="max-w-7xl w-full mx-auto p-4 bg-white">
             <div class="flex items-center space-x-4 mb-6">
                 <img src="https://cdn.startupful.io/img/app_logo/no_img.png" alt="Author Avatar"
@@ -59,6 +60,7 @@
 </template>
 
 <script setup>
+import BackButton from '@/components/common/BackButton.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';
