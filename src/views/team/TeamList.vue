@@ -8,32 +8,20 @@
       <router-link to="/projects">
         <button class="category-button" :class="{ active: isActive('/projects') }">프로젝트</button>
       </router-link>
-      <router-link to="/teams/write">
+      <router-link to="/teams/add">
         <button class="category-button" :class="{ active: isActive('/teams/write') }">팀 생성</button>
-      </router-link>
-      <router-link to="/my-teams">
-        <button class="category-button" :class="{ active: isActive('/my-teams') }">내 팀</button>
       </router-link>
     </div>
 
     <!-- 검색 필터 -->
-    <SearchBar
-      :size-options="sizeOptions"
-      :post-sort-options="postSortOptions"
-      :select-options="selectOptions"
-      @search="handleSearch"
-    />
+    <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
+      @search="handleSearch" />
 
     <br>
 
     <!-- 팀 리스트 -->
     <div class="team-list">
-      <div
-        v-for="post in paginatedPosts"
-        :key="post.no"
-        class="team-item"
-        @click="detailPage(post.no)"
-      >
+      <div v-for="post in paginatedPosts" :key="post.no" class="team-item" @click="detailPage(post.no)">
         <div class="team-meta">
           <span class="meta-author">{{ post.team.teamName }}</span>
           <span class="meta-dot">•</span>
@@ -48,12 +36,8 @@
     </div>
 
     <!-- 페이지 네비게이션 -->
-    <PageNav
-      :current-page="page"
-      :items-per-page="parseInt(size)"
-      :total-pages="postList.totalPages || 1"
-      @set-page="setPage"
-    />
+    <PageNav :current-page="page" :items-per-page="parseInt(size)" :total-pages="postList.totalPages || 1"
+      @set-page="setPage" />
   </div>
 </template>
 
@@ -76,7 +60,10 @@ const selectOption = ref('');
 const postSortOption = ref('LATEST');
 
 const sizeOptions = ref([10, 20, 30]);
-const postSortOptions = ref([{ value: 'LATEST', label: '전체' }]);
+const postSortOptions = ref([
+  { value: 'LATEST', label: '모든 팀' },
+  { value: 'user', label: '내 팀' }
+]);
 const selectOptions = ref([
   { value: '', label: '전체' },
   { value: 'teamName', label: '제목' },
@@ -89,10 +76,13 @@ const paginatedPosts = computed(() => postList.value.content || []);
 const fetchPostList = async () => {
   try {
     const params = {
-      postSortOption: postSortOption.value,
       page: page.value - 1,
       size: size.value
     };
+    if (postSortOption.value === 'user') {
+      params['user'] = true;
+      console.log('유저번호 선택됨');
+    }
     if (searchQuery.value && selectOption.value) {
       params[selectOption.value] = searchQuery.value;
     }
@@ -142,6 +132,7 @@ onMounted(fetchPostList);
   gap: 0.5rem;
   background-color: #f9f9f9;
 }
+
 .category-button {
   padding: 0.4rem 0.8rem;
   font-size: 0.85rem;
@@ -153,11 +144,13 @@ onMounted(fetchPostList);
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .category-button:hover {
   background-color: #e9f3f9;
   border-color: #0077b6;
   color: #0077b6;
 }
+
 .category-button.active {
   background-color: #0077b6;
   color: white;
@@ -172,14 +165,17 @@ onMounted(fetchPostList);
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
 .page-size {
   display: flex;
   align-items: center;
 }
+
 .page-size label {
   font-size: 0.85rem;
   margin-right: 0.5rem;
 }
+
 .page-size select {
   padding: 0.3rem 0.6rem;
   font-size: 0.85rem;
@@ -193,6 +189,7 @@ onMounted(fetchPostList);
   flex-direction: column;
   gap: 1rem;
 }
+
 .team-item {
   background-color: #ffffff;
   padding: 1.2rem;
@@ -201,6 +198,7 @@ onMounted(fetchPostList);
   transition: all 0.3s ease;
   cursor: pointer;
 }
+
 .team-item:hover {
   background-color: #eef6fb;
   transform: translateY(-3px);
@@ -213,26 +211,31 @@ onMounted(fetchPostList);
   color: #888888;
   margin-bottom: 0.4rem;
 }
+
 .meta-dot {
   margin: 0 0.4rem;
 }
+
 .team-title {
   font-weight: 600;
   font-size: 1.1rem;
   color: #222;
   margin-bottom: 0.4rem;
 }
+
 .team-desc {
   font-size: 0.9rem;
   color: #555;
   margin-bottom: 0.5rem;
   line-height: 1.5;
 }
+
 .team-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
 }
+
 .tag {
   background-color: #0077b6;
   padding: 0.3rem 0.6rem;
