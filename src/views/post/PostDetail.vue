@@ -41,7 +41,7 @@
       </div>
 
       <!-- 수정 삭제 -->
-      <div>
+      <div v-if="authStore.userInfo?.username === post.userName">
         <br />
         <button class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
           @click="goToEditPage">수정</button>
