@@ -1,6 +1,10 @@
 <template>
   <div>
-    <textarea v-model="commentContent" placeholder="댓글을 입력하세요"></textarea>
+    <textarea v-model="commentContent" 
+              placeholder="댓글을 입력하세요"
+              ref="textareaRef"
+              @input="autoResize"
+    ></textarea>
     <div class="comment-write-btnBox">
       <button @click="submitComment" class="comment-create-btn">댓글 등록</button>
     </div>
@@ -8,15 +12,27 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 import apiClient from '@/api';
 
-
+const textareaRef = ref(null);
 const props = defineProps({
   postNo: {
     type: Number,
     required: true
   }
+});
+
+const autoResize = () => {              
+  const textarea = textareaRef.value;
+  if (textarea) {
+    textarea.style.height = 'auto';     
+    textarea.style.height = `${textarea.scrollHeight}px`; 
+  }
+};
+
+onMounted(() => {
+  autoResize();                       
 });
 
 const emit = defineEmits(['commentAdded', 'updateTotalPages']);
@@ -40,7 +56,8 @@ const submitComment = async () => {
 
     emit("commentAdded", response.data);
     emit('updateTotalPages');
-    commentContent.value = '';
+    commentContent.value = '';   
+    autoResize();
 
   } catch (error) {
     console.error('댓글 작성 실패:', error.response?.data || error.message);
@@ -52,11 +69,15 @@ const submitComment = async () => {
 <style scoped>
 textarea {
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   outline: none;
+  overflow: hidden;
+  resize: none;        
+  transition: height 0.2s ease; 
+
 }
 
 .comment-write-btnBox {
@@ -70,7 +91,7 @@ textarea {
   justify-content: center;
   margin-top: 10px;
   margin-bottom: 10px;
-  background-color: #4CAF50;
+  background-color: #0077b6;
   color: white;
   border: none;
   padding: 10px 10px;
@@ -81,6 +102,6 @@ textarea {
 }
 
 .comment-create-btn:hover {
-  background-color: #45a049;
+  background-color: #00b4d8;
 }
 </style>

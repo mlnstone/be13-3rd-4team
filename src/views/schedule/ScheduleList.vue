@@ -29,8 +29,8 @@
                 <td class="body-cell">{{ post.title }}</td>
                 <td class="body-cell">{{ post.createdBy }}</td>
                 <td class="body-cell">{{ getStatusText(post.status) }}</td>
-                <td class="body-cell">{{ new Date(post.startDate).toLocaleDateString() }}</td>
-                <td class="body-cell">{{ new Date(post.endDate).toLocaleDateString() }}</td>
+                <td class="body-cell">{{ formatDate(post.startDate)}}</td>
+                <td class="body-cell">{{ formatDate(post.endDate)}}</td>
               </tr>
             </tbody>
           </table>
@@ -52,6 +52,7 @@ import apiClient from '@/api';
 import { useAuthStore } from '@/stores/auth';
 import SearchBar from '@/components/common/SearchBar.vue';
 import PageNav from '@/components/common/PageNav.vue';
+import dayjs from "dayjs";
 
 // 초기 페이지 설정
 const page = ref(1);
@@ -144,6 +145,10 @@ const getStatusText = (status) => {
 onMounted(fetchPostList);
 
 watch(() => route.path, fetchPostList);
+
+const formatDate = (dateString) => {
+  return dayjs(dateString).format('YYYY-MM-DD');
+};
 </script>
 
 <style scoped>
