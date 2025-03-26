@@ -16,18 +16,23 @@
             </div>
 
             <div>
-                <ProjectInfo :project="project" v-if="project.name" />
+                <div v-if="project && project.name">
+                    <router-link :to="{ name: 'projects/no', params: { no: project.teamNo } }">
+                        <button class="category-button">프로젝트</button>
+                    </router-link>
+                </div>
+
                 <div class="space-y-6" v-else>
                     <h2>아직 프로젝트가 생성되지 않았습니다.</h2>
                     <div v-if="isLeader">
-                        <router-link
-                            :to="{ name: 'projects/add', query: { teamNo: team.no, projectNo: project && project.no } }">
+                        <router-link :to="{ name: 'projects/add', query: { teamNo: team.no } }">
                             <button class="category-button">프로젝트 생성</button>
                         </router-link>
                     </div>
                 </div>
             </div>
 
+            <!-- 가입 신청 -->
             <div v-if="(team.status === 'OPEN') && !isLeader || (team.status === 'OPEN') && !isMember">
                 <button
                     class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
@@ -57,7 +62,6 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';
-import ProjectInfo from '@/components/project/ProjectInfo.vue';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
@@ -97,8 +101,8 @@ const fetchTeamDetails = async () => {
             leaderUsername.value = leaderRes.data;
             console.log(leaderUsername.value);
         }
-        catch (error) {
-        console.error('데이터를 불러오는 중 오류 발생', error);
+    catch (error) {
+    console.error('데이터를 불러오는 중 오류 발생', error);
     }
 };
 
@@ -150,10 +154,10 @@ onMounted(fetchTeamDetails);
 
 defineExpose({
   team,
-  project,
   isLeader,
   isMember,
   leaderUsername,
+  project,
   goToEditPage,
   confirmDelete,
   confirmJoin,

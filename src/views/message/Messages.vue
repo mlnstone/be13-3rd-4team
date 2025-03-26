@@ -1,45 +1,56 @@
 <template>
   <div class="message-list">
-    <h2>쪽지 목록</h2>
-    <div>
-      <button @click="loadMessages('received')" :class="{ active: currentTab === 'received' }">
-        받은 쪽지 <span v-if="unreadCount > 0" class="unread-badge">{{ unreadCount }}</span>
+    <h2 class="title">쪽지 목록</h2>
+    <div class="tab-container">
+      <button 
+        @click="loadMessages('received')" 
+        :class="['tab-button', { active: currentTab === 'received' }]">
+        받은 쪽지 
+        <span v-if="unreadCount > 0" class="unread-badge">{{ unreadCount }}</span>
       </button>
-      <button @click="loadMessages('sent')" :class="{ active: currentTab === 'sent' }">보낸 쪽지</button>
+      <button 
+        @click="loadMessages('sent')" 
+        :class="['tab-button', { active: currentTab === 'sent' }]">
+        보낸 쪽지
+      </button>
       <router-link to="/messages/add">
-        <button>쪽지 보내기</button>
+        <button class="tab-button">쪽지 보내기</button>
       </router-link>
     </div>
 
-    <div v-if="messages.length === 0">쪽지가 없습니다.</div>
+    <div v-if="messages.length === 0" class="no-message">쪽지가 없습니다.</div>
     <div v-else>
       <div v-for="message in messages" :key="message.no" class="message-item">
         <div class="message-header">
-          <span class="sender">보낸 사람: {{ message.senderUsername }}</span>
-          <span class="receiver">받은 사람: {{ message.receiverUsername }}</span>
-          <span class="date">{{ formatDate(message.sendAt) }}</span>
-          <div class="message-content">
-            <router-link :to="`/messages/${message.no}`">
-              <p :class="message.read ? 'read' : 'unread'">
-                {{ message.content.length > 50 ? message.content.substring(0, 50) + '...' : message.content }}
-              </p>
-            </router-link>
+          <div class="sender-receiver">
+            <span>보낸 사람: {{ message.senderUsername }}</span>
+            <span>받는 사람: {{ message.receiverUsername }}</span>
           </div>
+          <span class="date">{{ formatDate(message.sendAt) }}</span>
+          <router-link :to="`/messages/${message.no}`">
+            <p :class="['message-content', message.read ? 'read' : 'unread']">
+              {{ message.content.length > 50 ? message.content.substring(0, 50) + '...' : message.content }}
+            </p>
+          </router-link>
         </div>
         <div class="message-actions">
-          <button class="btn btn-danger" @click="deleteMessage(message.no)">삭제</button>
+          <button class="delete-btn" @click="deleteMessage(message.no)">삭제</button>
         </div>
       </div>
 
       <div class="pagination">
         <button @click="loadMessages(currentTab, currentPage - 1)" :disabled="currentPage === 1">〈</button>
-        <button v-for="page in pageRange" :key="page" @click="loadMessages(currentTab, page)" :class="{ active: currentPage === page }">{{ page }}</button>
+        <button 
+          v-for="page in pageRange" :key="page" 
+          @click="loadMessages(currentTab, page)" 
+          :class="{ active: currentPage === page }">
+          {{ page }}
+        </button>
         <button @click="loadMessages(currentTab, currentPage + 1)" :disabled="currentPage === totalPages">〉</button>
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -129,17 +140,159 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.message-list { padding: 20px; }
-button.active { background-color: #007bff; color: white; }
-.message-item { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; display: flex; justify-content: space-between; }
-.message-header { display: flex; flex-direction: column; width: 100%; }
-.sender, .receiver, .date { font-weight: bold; }
-.message-content { margin-top: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.message-actions button { margin-right: 10px; padding: 10px 20px; font-size: 14px; }
-.pagination { text-align: center; margin-top: 20px; }
-.pagination button { padding: 10px 20px; margin: 0 5px; cursor: pointer; }
-.pagination button:disabled { background-color: #ccc; cursor: not-allowed; }
-.unread { color: blue; }
-.read { color: #6b6b6b; }
-.unread-badge { background-color: red; color: white; font-size: 12px; font-weight: bold; padding: 3px 6px; border-radius: 50%; margin-left: 5px; }
+.message-list {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  background-color: #fefefe;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-radius: 8px;
+}
+
+.title {
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.tab-container {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f3f4f6;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  margin-bottom: 15px;
+}
+
+.tab-button {
+  border: none;
+  background-color: transparent;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #374151;
+  transition: all 0.2s ease-in-out;
+}
+
+.tab-button.active {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tab-button:hover {
+  background-color: #3274e0;
+}
+
+.unread-badge {
+  background-color: #ef4444;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 4px;
+}
+
+.no-message {
+  text-align: center;
+  color: #6b7280;
+  margin: 20px 0;
+}
+
+.message-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.message-header {
+  flex: 1;
+}
+
+.sender-receiver {
+  display: flex;
+  gap: 15px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.date {
+  display: block;
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.message-content {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.message-content.unread {
+  color: #2563eb;
+}
+
+.message-content.read {
+  color: #6b7280;
+}
+
+.message-actions {
+  display: flex;
+  align-items: center;
+}
+
+.delete-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: white;
+  background-color: #ef4444;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+.delete-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 6px rgba(220,38,38,0.6);
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  margin: 0 4px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #e5e7eb;
+}
+
+.pagination button.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  color: #9ca3af;
+}
 </style>
