@@ -23,16 +23,17 @@
                 </span>
             </div>
         </div>
-        <router-link :to="`/projects/${project.teamNo}`" v-if="project.teamNo">
-            <button class="view-more-button">프로젝트 자세히 보기</button>
-        </router-link>
-        <router-link :to="`/teams/${team}`" v-else>
-            <button class="view-more-button">팀 정보 보기</button>
-        </router-link>
+        <button v-if="project.teamNo" @click="routeProjectPage(project.teamNo)" class="view-more-button">프로젝트 자세히 보기</button>
+        <button v-else @click="routeTeamPage(team)" class="view-more-button">팀 정보 보기</button>
     </div>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+import { defineProps } from 'vue';
+
+const router = useRouter();
+
 // 부모로 부터 받아올 데이터
 defineProps({
     // 받아올 데이터 명
@@ -40,10 +41,18 @@ defineProps({
         type: Object,
         required: true,
     },
-    // team: {
-    //     type: Object,
-    // },
+    team: {
+        type: Object,
+    },
 });
+
+const routeProjectPage = (no) => {
+    router.push(`/projects/${no}`);
+};
+
+const routeTeamPage = (no) => {
+    router.push(`/teams/${no}`);
+};
 </script>
 
 <style scoped>
