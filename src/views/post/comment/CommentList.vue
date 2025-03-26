@@ -97,6 +97,7 @@ onMounted(fetchComments);
 </script>
 
 <style scoped>
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
 .sort-option {
   margin-bottom: 10px;
 }
