@@ -23,7 +23,12 @@
         
 
         <div v-if="editMode">
-          <textarea v-model="editedContent" class="edited-content-box"></textarea>
+          <textarea v-model="editedContent" 
+                    class="edited-content-box"
+                    ref="editBox"
+                    @input="autoResize">
+            
+          </textarea>
         </div>
         <p v-else class="comment-content">{{ comment.content }}</p>
       </div>
@@ -44,10 +49,12 @@
   </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch, nextTick  } from 'vue';
 import apiClient from '@/api';
 import { useAuthStore } from '@/stores/auth.js';
 import dayjs from 'dayjs';
+
+const emit = defineEmits(['commentUpdated', 'commentDeleted']);
 
 const props = defineProps({
   comment: Object,
@@ -58,9 +65,15 @@ const props = defineProps({
 const authStore = useAuthStore();
 const editMode = ref(false);
 const editedContent = ref('');
+const editBox = ref(null);
 const originalContent = ref('');
 const currentUsername = ref(authStore.getUsernameFromToken());
 
+onMounted(() => {
+  const username = authStore.getUsernameFromToken();
+  currentUsername.value = username;
+  console.log('현재 유저:', username);
+});
 const isEditable = computed(() => props.comment.userName === currentUsername.value);
 const isDeletable = computed(() => {
   const userInfo = authStore.getUserInfo();
@@ -84,6 +97,7 @@ watch(
 const toggleEdit = () => {
   editMode.value = true;
   editedContent.value = props.comment.content;
+  nextTick(() => autoResize());
 };
 
 const cancelEdit = () => {
@@ -155,6 +169,16 @@ const toggleLike = async () => {
   }
 };
 
+const autoResize = () => {
+  nextTick(() => {
+    if (editBox.value) {
+      editBox.value.style.height = 'auto'; // 초기화
+      editBox.value.style.height = editBox.value.scrollHeight + 'px'; // 실제 높이 적용
+    }
+  });
+};
+
+
 const formatDate = (dateString) => {
   return dayjs(dateString).format('YYYY-MM-DD HH:mm:ss');
 };
@@ -170,7 +194,7 @@ const formatDate = (dateString) => {
   display: flex;
   flex-direction: column;
   gap: 6px;
- height: 180px;
+  min-height: 180px;
 }
 
 .comment-info-box {
@@ -214,7 +238,9 @@ const formatDate = (dateString) => {
   border-radius: 6px;
   padding: 6px;
   font-size: 14px;
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
+  outline: none;
 }
 
 /* 좋아요 박스 - 오른쪽 정렬 */
@@ -282,6 +308,9 @@ const formatDate = (dateString) => {
 /* 수정/삭제 버튼 */
 .edit-delete-box {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
   gap: 8px;
 }
 
