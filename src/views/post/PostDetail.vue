@@ -8,12 +8,21 @@
                 <div>
                     <h3 class="font-semibold">{{ post.userName }}</h3>
                     <p class="text-gray-500 text-sm">
-                        {{ new Date(post.createdAt).toLocaleDateString() }}
+                        {{ formatDate(post.createdAt)}}
                     </p>
                 </div>
             </div>
+         
+          <!-- 북마크 버튼 -->
+          <div class="bookmark-section">
+            {{ post.bookmarkCount }}
+            <button @click="toggleBookmark" :class="{bookmarked: post.bookmarked}" :disabled="post.postStatus === 'INACTIVE'" class="bookmark-btn">
+              <i class="fi fi-ss-bookmark-slash" :class="{'bookmark-icon': post.bookmarked}"></i>
+            </button>
+          </div>
 
-            <!-- Main Content -->
+
+          <!-- Main Content -->
             <div class="space-y-6">
                 <!-- 제목 -->
                 <h1 class="text-3xl font-bold text-black">
@@ -30,17 +39,10 @@
                 <ProjectInfo :project="project" v-if="post.boardType === 'PROJECT_RECRUIT'" />
             </div>
 
-            <!-- 북마크 버튼 -->
-            <div class="bookmark-section">
-                {{ post.bookmarkCount }}
-                <button @click="toggleBookmark" :class="{bookmarked: post.bookmarked}" :disabled="post.postStatus === 'INACTIVE'" class="bookmark-btn">
-                    <i class="fi fi-ss-bookmark-slash" :class="{'bookmark-icon': post.bookmarked}"></i>
-                </button>
-            </div>
-
+          
             <!-- 수정 삭제 -->
             <div>
-                <br />
+                <br/>
                 <button
                     class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
                     @click="goToEditPage">수정</button>
@@ -48,16 +50,42 @@
                     class="px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none"
                     @click="confirmDelete(post.postNo)">삭제</button>
             </div>
+
+          <!-- 댓글 부분 -->
+          <div  v-if="post.boardType === 'FREE'">
+            <br />
+            <span>댓글 {{ post.commentCount }} 개</span>
+            <br />
+
+            <CommentCreate
+              v-if="post.postNo"
+              :postNo="Number(post.postNo)"
+              @commentAdded="handleCommentAdded"
+            />
+
+            <CommentList
+              v-if="post.postNo"
+              ref="commentList"
+              :postNo="Number(post.postNo)"
+              :postStatus="post.postStatus"
+              @commentUpdated="fetchPostDetail"
+              @commentDeleted="handleCommentDeleted"
+            />
+
+          </div>
         </div>
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { nextTick, ref, onMounted } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
+    import dayjs from 'dayjs';
     import apiClient from '@/api';
     import { useAuthStore } from '@/stores/auth.js';
     import ProjectInfo from '@/components/project/ProjectInfo.vue';
+    import CommentCreate from "@/views/post/comment/CommentCreate.vue";
+    import CommentList from "@/views/post/comment/CommentList.vue";
 
     const route = useRoute();
     const router = useRouter();
@@ -70,6 +98,8 @@
     try {
         const response = await apiClient.get(`/posts/${postNo}/with-comments`);
         post.value = response.data;
+
+        comments.value = response.data.comments || [];
         console.log(response.data);
 
         const bookmarkState = localStorage.getItem(`bookmark_${postNo}`);
@@ -152,6 +182,11 @@
     };
 
     onMounted(fetchPostDetail);
+
+    const formatDate = (dateString) => {
+      return dayjs(dateString).format('YYYY-MM-DD HH:mm:ss');
+    };
+   
 </script>
 
 <style>

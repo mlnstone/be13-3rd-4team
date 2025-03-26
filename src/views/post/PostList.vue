@@ -26,6 +26,7 @@
                                 <th class="header-cell width-350">제목</th>
                                 <th class="header-cell">글쓴이</th>
                                 <th class="header-cell">작성일</th>
+                                <th class="header-cell">조회수</th>
                             </tr>
                         </thead>
                         <!-- 내용 -->
@@ -35,7 +36,9 @@
                                 <td class="body-cell">{{ post.postNo }}</td>
                                 <td class="body-cell">{{ post.title }}</td>
                                 <td class="body-cell">{{ post.userName }}</td>
-                                <td class="body-cell">{{ new Date(post.createdAt).toLocaleDateString() }}</td>
+                                <td class="body-cell"> {{ formatDate(post.createdAt)}}</td>
+                                <td class="body-cell"> {{ post.viewCount }}</td>
+                          
                             </tr>
                         </tbody>
                     </table>
@@ -52,6 +55,7 @@
 <script setup>
   import { ref, computed, onMounted, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
+  import dayjs from 'dayjs';
   import apiClient from '@/api';
   import PageNav from "@/components/common/PageNav.vue";
   import SearchBar from '@/components/common/SearchBar.vue';
@@ -150,6 +154,10 @@ watch(
     }
   }
 );
+
+  const formatDate = (dateString) => {
+    return dayjs(dateString).format('YYYY-MM-DD');
+  };
 </script>
 
 <style scoped>

@@ -49,6 +49,11 @@ const pageInfo = ref({
 });
 
 const fetchComments = async () => {
+
+  if (!props.postNo) {
+    console.error('postNo가 존재하지 않습니다.');
+    return;
+  }
   const params = {
     commentSortOption: sortOption.value,
     page: pageInfo.value.currentPage - 1,
