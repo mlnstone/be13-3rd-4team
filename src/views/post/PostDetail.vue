@@ -22,6 +22,16 @@
           {{ post.title }}
         </h1>
 
+        <!-- 북마크 버튼 -->
+        <div class="bookmark-section">
+          {{ post.bookmarkCount }}
+          <button @click="toggleBookmark" :class="{ bookmarked: post.bookmarked }"
+                  :disabled="post.postStatus === 'INACTIVE'" class="bookmark-btn">
+            <i class="fi fi-ss-bookmark-slash" :class="{ 'bookmark-icon': post.bookmarked }"></i>
+          </button>
+        </div>
+
+
         <!-- 내용 -->
         <div class="prose max-w-none text-black">
           <p class="text-gray-500 leading-relaxed">
@@ -30,15 +40,6 @@
         </div>
 
         <ProjectInfo :project="project" v-if="post.boardType === 'PROJECT_RECRUIT'" />
-      </div>
-
-      <!-- 북마크 버튼 -->
-      <div class="bookmark-section">
-        {{ post.bookmarkCount }}
-        <button @click="toggleBookmark" :class="{ bookmarked: post.bookmarked }"
-          :disabled="post.postStatus === 'INACTIVE'" class="bookmark-btn">
-          <i class="fi fi-ss-bookmark-slash" :class="{ 'bookmark-icon': post.bookmarked }"></i>
-        </button>
       </div>
 
       <!-- 수정 삭제 -->
@@ -56,12 +57,27 @@
         <span>댓글 {{ post.commentCount }} 개</span>
         <br />
 
-        <CommentCreate v-if="post.postNo" :postNo="Number(post.postNo)" @commentAdded="handleCommentAdded" />
+            <CommentCreate
+              v-if="post.postNo"
+              :postNo="Number(post.postNo)"
+              @commentAdded="handleCommentAdded"
+            />
 
+            <CommentList
+              v-if="post.postNo"
+              ref="commentList"
+              :postNo="Number(post.postNo)"
+              :postStatus="post.postStatus"
+              @commentUpdated="fetchPostDetail"
+              @commentDeleted="handleCommentDeleted"
+              @refreshComments="() => {}"
+            />
         <CommentList v-if="post.postNo" ref="commentList" :postNo="Number(post.postNo)" :postStatus="post.postStatus"
           @commentUpdated="fetchPostDetail" @commentDeleted="handleCommentDeleted" />
 
-      </div>
+          </div>
+      
+      
     </div>
   </div>
 </template>
@@ -81,6 +97,7 @@
     const router = useRouter();
     const postNo = Number(route.params.postNo);
     const post = ref({});
+    const commentList = ref(null);
     const authStore = useAuthStore();
     const project = ref({}); // 프로젝트 정보
 
@@ -88,8 +105,7 @@
     try {
         const response = await apiClient.get(`/posts/${postNo}/with-comments`);
         post.value = response.data;
-
-        comments.value = response.data.comments || [];
+      
         console.log(response.data);
 
         const bookmarkState = localStorage.getItem(`bookmark_${postNo}`);
@@ -161,6 +177,18 @@
     } catch (error) {
         alert('게시글 삭제에 실패했습니다.');
     }
+    };
+
+    const handleCommentAdded = () => {
+      post.value.commentCount += 1;
+      nextTick(() => {
+        commentList.value?.fetchComments(); // 자식의 메서드 호출
+      });
+    };
+
+ 
+    const handleCommentDeleted = () => {
+      post.value.commentCount -= 1;
     };
 
     onMounted(fetchPostDetail);
