@@ -192,16 +192,6 @@ const router = createRouter({
         },
         // reports
         {
-          path: "reports",
-          name: "reports",
-          component: Reports,
-        },
-        {
-          path: "reports/:no",
-          name: "reports/no",
-          component: ReportDetail,
-        },
-        {
           path: "reports/add",
           name: "reports/add",
           component: AddReport,
@@ -286,6 +276,16 @@ const router = createRouter({
           path: 'users',
           name: 'admin-users',
           component: UserList
+        },
+        {
+          path: "reports/:no",
+          name: "admin-reports-detail",
+          component: ReportDetail,
+        },
+        {
+          path: "reports",
+          name: "admin-reports",
+          component: Reports,
         },
       ],
     },
