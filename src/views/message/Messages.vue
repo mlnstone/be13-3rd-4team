@@ -6,7 +6,7 @@
         받은 쪽지 <span v-if="unreadCount > 0" class="unread-badge">{{ unreadCount }}</span>
       </button>
       <button @click="loadMessages('sent')" :class="{ active: currentTab === 'sent' }">보낸 쪽지</button>
-      <router-link to="/messages/write">
+      <router-link to="/messages/add">
         <button>쪽지 보내기</button>
       </router-link>
     </div>
@@ -15,8 +15,8 @@
     <div v-else>
       <div v-for="message in messages" :key="message.no" class="message-item">
         <div class="message-header">
-          <span class="sender">보낸 사람: {{ message.senderId }}</span>
-          <span class="receiver">받은 사람: {{ message.receiverId }}</span>
+          <span class="sender">보낸 사람: {{ message.senderUsername }}</span>
+          <span class="receiver">받은 사람: {{ message.receiverUsername }}</span>
           <span class="date">{{ formatDate(message.sendAt) }}</span>
           <div class="message-content">
             <router-link :to="`/messages/${message.no}`">
@@ -44,13 +44,9 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import apiClient from '@/api';
-import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
 const route = useRoute();
-
-const authStore = useAuthStore();
-const userInfo = authStore.userInfo;
 
 const messages = ref([]);
 const currentPage = ref(1);
@@ -63,6 +59,7 @@ const loadMessages = async (type = currentTab.value, page = 1) => {
   try {
     const response = await apiClient.get(`/messages?type=${type}&page=${page - 1}&size=${perPage}&sort=no,desc`);
 
+    console.log(response);
     if (response.status === 200) {
       messages.value = response.data.content;
       currentPage.value = response.data.pageable.pageNumber + 1;
@@ -94,7 +91,7 @@ const deleteMessage = async (messageNo) => {
 const getUnreadMessages = async () => {
   try {
     const response = await apiClient.get(`/messages-unread`);
-    
+
     if (response.status === 200) {
       unreadCount.value = response.data;
     }

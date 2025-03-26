@@ -100,44 +100,74 @@ const goToUserDetail = (userNo) => {
 
 onMounted(fetchUsers);
 </script>
-
 <style scoped>
 .user-list-container {
   padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 h2 {
   text-align: center;
-  margin: 20px 0;
+  margin-bottom: 30px;
+  color: #333;
+  font-weight: bold;
 }
 
 label {
-  margin-right: 10px;
+  font-weight: 600;
+  color: #555;
 }
 
 select {
-  margin-bottom: 15px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%; /* 테이블 전체 너비 지정 */
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 th, td {
-  padding: 10px;
+  padding: 12px 15px;
   text-align: center;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-  background-color: grey;
+  background-color: #4c6ef5;
   color: white;
 }
 
+tr:hover {
+  background-color: #f7faff;
+  cursor: pointer;
+}
+
+/* 페이징 스타일 개선 */
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .pagination button {
-  padding: 5px 10px;
-  margin: 0 5px;
+  padding: 6px 12px;
+  margin: 0 3px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  color: #4c6ef5;
+  transition: all 0.2s ease;
 }
 
 .pagination button.active {
@@ -145,17 +175,31 @@ th {
   color: white;
 }
 
+.pagination button:hover:not(.active):not(:disabled) {
+  background-color: #e3edff;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 역할 badge 스타일 개선 */
+.role-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
 .role-badge.admin {
   background-color: #ff6b6b;
   color: white;
-  padding: 2px 6px;
-  border-radius: 8px;
 }
 
 .role-badge.user {
   background-color: #15aabf;
   color: white;
-  padding: 2px 6px;
-  border-radius: 8px;
 }
+
 </style>

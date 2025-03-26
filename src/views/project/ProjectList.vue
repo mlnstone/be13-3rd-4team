@@ -8,18 +8,11 @@
       <router-link to="/projects">
         <button class="category-button" :class="{ active: isActive('/projects') }">프로젝트</button>
       </router-link>
-      <router-link to="/projects/write">
-        <button class="category-button" :class="{ active: isActive('/projects/write') }">프로젝트 생성</button>
-      </router-link>
     </div>
 
     <!-- 검색 바 -->
-    <SearchBar
-      :size-options="sizeOptions"
-      :post-sort-options="postSortOptions"
-      :select-options="selectOptions"
-      @search="handleSearch"
-    />
+    <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
+      @search="handleSearch" />
 
     <!-- 프로젝트 카드 리스트 -->
     <div class="project-list">
@@ -29,6 +22,10 @@
         class="project-card"
         @click="goToProjectDetail(project.no)"
       >
+        <div class="project-tags">
+          <span class="tag">{{ statusLabels[project.projectStatus] }}</span>
+        </div>
+
         <div class="project-meta">
           <span class="meta-author">{{ project.teamName }}</span>
           <span class="meta-dot">•</span>
@@ -36,20 +33,17 @@
         </div>
         <div class="project-title">{{ project.name }}</div>
         <div class="project-desc">{{ project.content }}</div>
-        <div class="project-tags">
-          <span class="tag">{{ project.projectStatus }}</span>
+        <div class="tech-tags">
+          <span class="tech-tag" v-for="tech in project.projectTeches" :key="tech">
+            {{ tech }}
+          </span>
         </div>
       </div>
     </div>
 
     <!-- 페이징 -->
-    <PageNav
-      v-if="projectList && projectList.content && projectList.content.length > 0"
-      :current-page="page"
-      :items-per-page="parseInt(size)"
-      :total-pages="projectList.totalPages"
-      @set-page="setPage"
-    />
+    <PageNav v-if="projectList && projectList.content && projectList.content.length > 0" :current-page="page"
+      :items-per-page="parseInt(size)" :total-pages="projectList.totalPages" @set-page="setPage" />
   </div>
 </template>
 
@@ -108,6 +102,13 @@ const fetchProjectList = async () => {
   }
 };
 
+const statusLabels = {
+  OPEN: '모집중',
+  CLOSED: '마감',
+  IN_PROGRESS: '진행중',
+  COMPLETE: '완료',
+};
+
 const setPage = (newPage) => {
   page.value = newPage;
   fetchProjectList();
@@ -126,6 +127,7 @@ const goToProjectDetail = (no) => {
   router.push(`/projects/${no}`);
 };
 
+
 const isActive = (path) => route.path === path;
 
 onMounted(fetchProjectList);
@@ -138,6 +140,7 @@ onMounted(fetchProjectList);
   padding: 1.5rem;
   min-height: 100vh;
 }
+
 .category-bar {
   display: flex;
   padding: 0.75rem 1rem;
@@ -186,6 +189,7 @@ onMounted(fetchProjectList);
   border: 1px solid #e0e0e0;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .project-card:hover {
@@ -198,6 +202,7 @@ onMounted(fetchProjectList);
   color: #666;
   margin-bottom: 0.5rem;
 }
+
 .meta-dot {
   margin: 0 0.4rem;
 }
@@ -216,6 +221,12 @@ onMounted(fetchProjectList);
   line-height: 1.4;
 }
 
+.project-tags {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
 .project-tags .tag {
   display: inline-block;
   font-size: 0.75rem;
@@ -224,4 +235,26 @@ onMounted(fetchProjectList);
   padding: 0.3rem 0.7rem;
   border-radius: 9999px;
 }
+
+.tech-tags {
+  margin-bottom: 0.8rem;
+}
+
+.tech-tag {
+  display: inline-block;
+  background-color: #e9f3ff;
+  color: #4c6ef5;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 0.75rem;
+  margin-right: 0.3rem;
+  margin-top: 0.3rem;
+  transition: background-color 0.2s ease;
+}
+
+.tech-tag:hover {
+  background-color: #4c6ef5;
+  color: white;
+}
+
 </style>
