@@ -35,9 +35,9 @@
       </div>
     </div>
 
-    <!-- 페이지 네비게이션 -->
-    <PageNav :current-page="page" :items-per-page="parseInt(size)" :total-pages="postList.totalPages || 1"
-      @set-page="setPage" />
+    <!-- 페이징 -->
+    <PageNav v-if="postList && postList.content && postList.content.length > 0" :current-page="page"
+      :items-per-page="parseInt(size)" :total-pages="postList.totalPages" @set-page="setPage" />
   </div>
 </template>
 
@@ -85,6 +85,7 @@ const fetchPostList = async () => {
 
     const response = await apiClient.get('/team', { params });
     postList.value = response.data;
+    console.log(postList.value)
   } catch (error) {
     console.error('데이터를 불러오는 중 오류 발생', error);
     postList.value = { content: [] };
