@@ -197,7 +197,7 @@ src/
 <details>
   <summary>팀 생성</summary>
     
-   ![Image](https://github.com/user-attachments/assets/923ed858-aeec-4f39-8f03-3d9d10d2c158)
+ ![Image](https://github.com/user-attachments/assets/9ab6f8d9-be26-45a3-924b-70b190710b45)
 </details>
 
 <details>
@@ -209,8 +209,8 @@ src/
 
 <details>
   <summary>팀원 목록 조회</summary>
-    
-![Image](https://github.com/user-attachments/assets/9ab6f8d9-be26-45a3-924b-70b190710b45)
+  
+  ![Image](https://github.com/user-attachments/assets/923ed858-aeec-4f39-8f03-3d9d10d2c158)
 </details>
 
 <details>
