@@ -54,7 +54,7 @@ const handleLogin = async () => {
 
     console.log ('로그인 성공');
     // 관리자 페이지로 이동
-    router.push('/admin')
+    router.push({name: 'admin-home'});
   } catch (error) {
     console.log ('로그인 실패');
     console.log (error);
