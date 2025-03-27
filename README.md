@@ -1,6 +1,6 @@
 # Moyobom - 팀 협업 플랫폼
 
-![Moyobom 로고](./src/assets/moyobom.svg)
+![Moyobom 로고](https://github.com/user-attachments/assets/2073c21b-e64c-487f-8430-da96c69139fb)
 
 Moyobom은 Vue 3로 구축된 종합적인 팀 협업 플랫폼으로, 사용자가 팀을 생성하고, 프로젝트를 관리하며, 활동을 스케줄링하고, 효과적으로 소통할 수 있도록 설계되었습니다. 이 플랫폼은 팀 구성, 프로젝트 관리 및 협업을 위한 원활한 경험을 제공합니다.
 
