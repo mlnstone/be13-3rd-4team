@@ -181,13 +181,13 @@ src/
 <details>
   <summary>쪽지 송신</summary>
     
-   https://github.com/user-attachments/assets/2cd1bc0a-a29b-4210-a13a-6d26458930e9
+  ![Image](https://github.com/user-attachments/assets/3dfe94e0-8592-48b2-873a-ef3d114d8440)
 </details>
 
 <details>
   <summary>쪽지 수신</summary>
     
-   https://github.com/user-attachments/assets/612cc1cc-38e5-4311-b168-5ac7d760c6ba
+ ![Image](https://github.com/user-attachments/assets/96a4865d-e275-418c-bfdf-6d19b028ed59)
 </details>
 
 <br>
@@ -197,31 +197,31 @@ src/
 <details>
   <summary>팀 생성</summary>
     
-   https://github.com/user-attachments/assets/03732354-2bd0-4bba-bde6-9c573650838a
+ ![Image](https://github.com/user-attachments/assets/e201aec3-1ef6-4259-997c-d29fc56516c7)
 </details>
 
 <details>
   <summary>팀 신청</summary>
     
-   https://github.com/user-attachments/assets/0380d50f-d81a-46c6-a6dc-26bc320378cd
+  ![Image](https://github.com/user-attachments/assets/459b9586-6d94-4ab7-8c5e-773c06336ce4)
 </details>
 
 <details>
   <summary>팀원 목록 조회</summary>
     
-   https://github.com/user-attachments/assets/659c1bdc-7b41-41c4-97ff-2a228c5e6a1e
+![Image](https://github.com/user-attachments/assets/9ab6f8d9-be26-45a3-924b-70b190710b45)
 </details>
 
 <details>
   <summary>프로젝트 생성</summary>
     
-   https://github.com/user-attachments/assets/0d110c39-14cd-4657-a333-279430e990eb
+  ![Image](https://github.com/user-attachments/assets/b57d7fc3-7879-4efa-82f5-a1ce6c1d0c74)
 </details>
 
 <details>
   <summary>프로젝트 내 스케줄 생성</summary>
   
-  https://github.com/user-attachments/assets/c142fc5b-7455-4187-94e3-5aaaf3d190c2
+ ![Image](https://github.com/user-attachments/assets/923ed858-aeec-4f39-8f03-3d9d10d2c158)
 </details>
 
 
