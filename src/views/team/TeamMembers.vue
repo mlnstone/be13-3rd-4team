@@ -28,7 +28,9 @@
                                 <td class="body-cell">{{ index + 1 }}</td>
                                 <td class="body-cell"> {{ post.username }}</td>
                                 <td class="body-cell">{{ post.isLeader ? '팀장' : '팀원' }}</td>
-                                <td class="body-cell">{{ post.role}}</td>
+                                <td class="body-cell">{{ post.role}}
+                                    <span v-if="isCurrentUserOrLeader(post.username)" @click="openRoleChangeModal(post.no)">⚙️</span>
+                                </td>
                                 <td class="body-cell" v-if="leader">
                                     <span v-if="!post.isLeader" @click="passLeaderConfirm(post.no)">✅</span>
                                 </td>
@@ -54,9 +56,15 @@ const postList = ref({ content: [] });
 const selectOption = ref('Approved');
 const teamNo = route.params.teamNo;
 const leader = ref(false);
+const currentUserName = ref(null);
 
 const fetchPostList = async () => {
     try {
+        currentUserName.value = localStorage.getItem('user');
+        const userObject = JSON.parse(currentUserName.value);
+        currentUserName.value = userObject.username;
+        console.log(currentUserName.value);
+
         const response = await apiClient.get(`/team/${teamNo}/setting/members/find`);
         if (response.status === 200) {
             postList.value = response.data;
@@ -111,6 +119,7 @@ const passLeader = async (no) => {
         const response = await apiClient.put(`/team/${teamNo}/setting/members?nextUserNo=${no}`);
         if (response.status === 200) {
             alert('위임 성공');
+            leader.value = false;
             fetchPostList();
         } else {
             alert('위임 실패');
@@ -120,11 +129,37 @@ const passLeader = async (no) => {
     console.error('오류 발생 권한없음', error);
     }
 }
+// /{teamNo}/setting/members/role
 
-// const changeRole = () =>{
-//     if (confirm('역할명 변경')) {
-//     }
-// }
+const isCurrentUserOrLeader = (userName) => {
+    return leader.value || (currentUserName.value && currentUserName.value === userName);
+};
+
+const openRoleChangeModal = async (no) => {
+    console.log(no);
+    const userInput = prompt('역할명을 입력하세요.');
+    if (userInput !== null) {
+        if (!userInput.trim()) {
+            alert('역할명을 입력해주세요.');
+            return;
+        }
+        try {
+            const response = await apiClient.put(`/team/${teamNo}/setting/members/role?newRole=${userInput}&userNo=${no}`);
+
+            if (response.status === 200) {
+                alert('역할 변경 성공.');
+                fetchPostList();
+            } else {
+                alert('역할 변경 실패. 서버 오류가 발생했습니다.');
+            }
+        } catch (error) {
+            console.error('역할 변경 중 오류 발생:', error);
+            alert('역할 변경 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        }
+    } else {
+        console.log('입력 취소.');
+    }
+}
 </script>
 
 <style scoped>
