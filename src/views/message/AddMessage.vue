@@ -56,7 +56,8 @@ const sendMessage = async () => {
 
     const response = await apiClient.post('/messages', data);
     if (response.status === 200) {
-      alert('쪽지가 전송되었습니다. 알림이 발송되었습니다.');
+      alert('쪽지가 전송되었습니다.');
+      router.back();
     } else {
       alert('쪽지 전송 실패');
     }
