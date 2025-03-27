@@ -2,19 +2,19 @@
     <form @submit.prevent="submitClick">
         <div class="mb-3">
             <label for="username" class="form-label">유저 아이디</label>
-            <input type="text" class="form-control" id="username" v-model.trim="formData.username">
+            <input type="text" class="form-control" id="username" v-model.trim="formData.username" readonly>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">유저 이메일</label>
-            <input type="text" class="form-control" id="email" v-model.trim="formData.email">
+            <input type="text" class="form-control" id="email" v-model.trim="formData.email" readonly>
         </div>
         <div class="mb-3">
             <label for="phoneNum" class="form-label">전화번호</label>
-            <input type="text" class="form-control" id="phoneNum" v-model.trim="formData.phoneNum">
+            <input type="text" class="form-control" id="phoneNum" v-model.trim="formData.phoneNum" readonly>
         </div>
         <div class="mb-3">
             <label for="status" class="form-label">상태</label>
-            <select class="form-select" id="status" v-model="formData.status">
+            <select class="form-select" id="status" v-model="formData.status" disabled>
                 <option value="ACTIVE">활성</option>
                 <option value="INACTIVE">비활성</option>
                 <option value="DELETED">삭제</option>

@@ -344,9 +344,6 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const userInfo = authStore.userInfo;
 
-  console.log("to: ", to);
-  console.log("from: ", from);
-
   // 인증이 필요없는 페이지 목록
   const publicPages = ["login", "signup", "updatePassword", "admin-login"];
   const isPublicPage = publicPages.includes(to.name);
@@ -358,6 +355,11 @@ router.beforeEach((to, from, next) => {
 
   // 2. 비공개 페이지에 대한 로그인 검증
   if (!authStore.isLoggedIn) {
+    if (to.name === "admin-home" && from.name === "admin-login") {
+      console.log('here');
+      return next();
+    }
+
     // 관리자 페이지에 접근하려는 경우 관리자 로그인으로 리다이렉트
     if (to.path.startsWith("/admin")) {
       return next({ name: "admin-login" });
@@ -382,11 +384,6 @@ router.beforeEach((to, from, next) => {
 
   // 모든 검증을 통과한 경우 요청한 페이지로 이동
   next();
-});
-
-router.afterEach((to, from) => {
-  console.log("to: ", to);
-  console.log("from: ", from);
 });
 
 export default router;
