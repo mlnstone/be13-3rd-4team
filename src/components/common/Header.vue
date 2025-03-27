@@ -55,9 +55,9 @@
             <!--                <RouterLink class="nav-link" :to="{name: 'projects/add'}">프로젝트 등록</RouterLink>-->
             <!--            </li>-->
             <!-- 팀 -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <RouterLink class="nav-link" :to="{ name: 'teams' }">팀</RouterLink>
-            </li>
+            </li> -->
             <!--            <li class="nav-item">-->
             <!--                <RouterLink class="nav-link" :to="{name: 'teams/no', params: {no: '033'}}">팀 상세 조회</RouterLink>-->
             <!--            </li>-->

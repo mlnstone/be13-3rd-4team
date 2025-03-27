@@ -1,6 +1,6 @@
 <template>
     <div>
-        <BackButton />
+      <BackButton target="/teams"/>
         <div class="max-w-7xl w-full mx-auto p-4 bg-white">
             <div class="flex items-center space-x-4 mb-6">
                 <img src="https://cdn.startupful.io/img/app_logo/no_img.png" alt="Author Avatar"

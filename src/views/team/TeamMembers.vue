@@ -18,6 +18,8 @@
                                 <th class="header-cell width-80">번호</th>
                                 <th class="header-cell width-350">이름</th>
                                 <th class="header-cell">권한</th>
+                                <th class="header-cell">역할</th>
+                                <th v-if="leader" class="header-cell">팀장 위임</th>
                             </tr>
                         </thead>
                         <!-- 내용 -->
@@ -26,7 +28,8 @@
                                 <td class="body-cell">{{ index + 1 }}</td>
                                 <td class="body-cell"> {{ post.username }}</td>
                                 <td class="body-cell">{{ post.isLeader ? '팀장' : '팀원' }}</td>
-
+                                <td class="body-cell">{{ post.role}}</td>
+                                <td v-if="leader" class="body-cell" @click="passLeaderConfirm(post.no)">✅</td>
                             </tr>
                         </tbody>
                     </table>
@@ -55,9 +58,12 @@ const fetchPostList = async () => {
         const response = await apiClient.get(`/team/${teamNo}/setting/members/find`);
         if (response.status === 200) {
             postList.value = response.data;
-            console.log(postList.value);
         } else {
             alert('데이터 조회 실패');
+        }
+        const leaderResponse = await apiClient.get(`/team/leader-role`, {params: { teamNo}});
+        if (leaderResponse.data.isLeader) {
+            leader.value = true;
         }
     }
     catch (error) {
@@ -91,6 +97,28 @@ const teamPage = () => {
     params: { no: teamNo }
   });
 };
+
+const passLeaderConfirm = (no) => {
+    if (confirm('정말로 권한을 위임하시겠습니까?')) {
+        passLeader(no);
+    }
+};
+
+const passLeader = async (no) => {
+    try {
+        const response = await apiClient.put(`/team/${teamNo}/setting/members?nextUserNo=${no}`);
+        if (response.status === 200) {
+            alert('위임 성공');
+            fetchPostList();
+        } else {
+            alert('위임 실패');
+        }
+    }
+    catch (error) {
+    console.error('오류 발생 권한없음', error);
+    }
+}
+
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <div class="container py-4">
-    <BackButton />
+    <BackButton target="/projects"/>
     <div class="card border-0 shadow-sm">
       <!-- 헤더 섹션 -->
       <div class="card-header border-0 bg-gradient">
