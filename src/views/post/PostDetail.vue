@@ -50,7 +50,7 @@
 
       <!-- 댓글 부분 -->
 
-      <div v-if="post.boardType === 'FREE'" class="comment-section">
+      <div v-if="post.boardType !== 'NOTICE'" class="comment-section">
 
         <br />
         <span>댓글 {{ post.commentCount }} 개</span>
