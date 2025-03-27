@@ -7,10 +7,10 @@
             <p>{{ formatDate(comment.updatedAt || comment.createdAt) }}</p>
           </div>
           <div class="comment-info-like">
-            <div class="like-bnt-box">
+            <div class="like-bnt-box"  @click="toggleLike">
               <span>좋아요 {{ comment.likeCount }}</span>
               <button
-                @click="toggleLike"
+               
                 :class="{ liked: comment.liked }"
                 :disabled="postStatus === 'INACTIVE'">
                 <i class="fi fi-ss-heart" :class="{ liked: comment.liked }"></i>
@@ -54,7 +54,7 @@ import apiClient from '@/api';
 import { useAuthStore } from '@/stores/auth.js';
 import dayjs from 'dayjs';
 
-const emit = defineEmits(['commentUpdated', 'commentDeleted']);
+const emit = defineEmits(['commentUpdated', 'commentDeleted', 'editing']);
 
 const props = defineProps({
   comment: Object,
@@ -97,12 +97,14 @@ watch(
 const toggleEdit = () => {
   editMode.value = true;
   editedContent.value = props.comment.content;
+  emit('editing', true);
   nextTick(() => autoResize());
 };
 
 const cancelEdit = () => {
   editMode.value = false;
   editedContent.value = originalContent.value;
+  emit('editing', false);
 };
 
 const updateComment = async () => {
@@ -123,6 +125,7 @@ const updateComment = async () => {
 
     editMode.value = false;
     emit('commentUpdated');
+    emit('editing', false);
   } catch (error) {
     alert('댓글 수정 실패: ' + (error.response?.data?.message || '알 수 없는 오류'));
   }
@@ -330,4 +333,5 @@ const formatDate = (dateString) => {
 .edit-delete-box button:hover {
   background-color: #e2e2e2;
 }
+
 </style>
