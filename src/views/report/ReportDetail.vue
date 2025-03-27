@@ -46,7 +46,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import axios from 'axios';
+import apiClient from '@/api';
 
 const route = useRoute();
 const reportNo = route.params.no;
@@ -81,7 +81,7 @@ const fetchReportDetail = async () => {
         Authorization: 'Bearer ' + token,
       },
     };
-    const response = await axios.get(`http://localhost:8087/reports/${reportNo}`, config);
+    const response = await apiClient.get(`/reports/${reportNo}`, config);
     report.value = response.data;
     reportStatus.value = report.value.reportStatus;
     reportComment.value = report.value.comment;
@@ -105,7 +105,7 @@ const updateReport = async () => {
       status: reportStatus.value,
     };
 
-    const response = await axios.put(`http://localhost:8087/reports/${reportNo}`, updateData, config);
+    const response = await apiClient.put(`/reports/${reportNo}`, updateData, config);
     console.log("신고 수정 성공:", response.data);
     alert("수정된 신고 내용이 저장되었습니다.");
   } catch (error) {

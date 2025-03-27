@@ -57,6 +57,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
+import apiClient from '@/api';
 import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
@@ -85,15 +86,15 @@ const fetchReports = async (page = 1, reset = false) => {
       }
     };
 
-    let url = 'http://localhost:8087/reports';
+    let url = ':8087/reports';
     if (isSearching.value && !reset) {
-      url = `http://localhost:8087/reports/user/${searchUserId.value}`;
+      url = `/reports/user/${searchUserId.value}`;
     } else {
       isSearching.value = false;
       searchUserId.value = '';
     }
 
-    const response = await axios.get(url, config);
+    const response = await apiClient.get(url, config);
     reports.value = response.data.content;
     totalReports.value = response.data.totalElements;
     totalPages.value = response.data.totalPages;
