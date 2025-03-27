@@ -36,7 +36,7 @@
         <div class="team-title">{{ post.team.teamName }}</div>
         <div class="team-desc">{{ post.team.teamIntroduce }}</div>
         <div class="team-tags">
-          <span class="tag">{{ post.team.projectStatus }}</span>
+          <span class="tag" :class="{ closed: post.team.projectStatus === 'CLOSED' }">{{ post.team.projectStatus }}</span>
         </div>
       </div>
     </div>
@@ -176,20 +176,6 @@ onMounted(fetchPostList);
   border: 1px solid #0077b6;
 }
 
-/* 보기 개수 선택 영역 - 오른쪽 정렬 */
-.pagination-area {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.page-size {
-  display: flex;
-  align-items: center;
-}
-
 .page-size label {
   font-size: 0.85rem;
   margin-right: 0.5rem;
@@ -261,5 +247,8 @@ onMounted(fetchPostList);
   font-size: 0.75rem;
   border-radius: 9999px;
   color: white;
+}
+.tag.closed {
+  background-color: #e53935; /* 빨간색 배경 */
 }
 </style>

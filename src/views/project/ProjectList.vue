@@ -23,7 +23,7 @@
         @click="goToProjectDetail(project.no)"
       >
         <div class="project-tags">
-          <span class="tag">{{ statusLabels[project.projectStatus] }}</span>
+          <span class="tag" :class="{closed: project.projectStatus === 'CLOSED' }">{{ statusLabels[project.projectStatus] }}</span>
         </div>
 
         <div class="project-meta">
@@ -234,6 +234,10 @@ onMounted(fetchProjectList);
   color: #ffffff;
   padding: 0.3rem 0.7rem;
   border-radius: 9999px;
+}
+
+.tag.closed {
+  background-color: #ff4d4f;
 }
 
 .tech-tags {
