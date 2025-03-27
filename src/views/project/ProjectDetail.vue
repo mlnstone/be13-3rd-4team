@@ -13,7 +13,7 @@
               {{ project.teamName }}
             </h3>
             <div class="d-flex align-items-center small gap-3">
-              <span class="tag">{{ getStatusText(project.projectStatus) }}</span>
+              <span class="tag" :class="{closed: project.projectStatus === 'CLOSED' }">{{ getStatusText(project.projectStatus) }}</span>
               <span class="opacity-75">{{ project.no }}번</span>
             </div>
           </div>
@@ -286,4 +286,7 @@ onMounted(fetchProjectDetails);
     /* 폰트 굵게 */
 }
 
+.tag.closed {
+  background-color: #ff4d4f;
+}
 </style>

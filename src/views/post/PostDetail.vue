@@ -12,15 +12,6 @@
             {{ formatDate(post.createdAt)}}
           </p>
         </div>
-      </div>
-
-      <!-- Main Content -->
-      <div class="space-y-6">
-        <!-- 제목 -->
-        <h1 class="text-3xl font-bold text-black">
-          {{ post.title }}
-        </h1>
-
         <!-- 북마크 버튼 -->
         <div class="bookmark-section">
           {{ post.bookmarkCount }}
@@ -29,7 +20,14 @@
             <i class="fi fi-ss-bookmark-slash" :class="{ 'bookmark-icon': post.bookmarked }"></i>
           </button>
         </div>
+      </div>
 
+      <!-- Main Content -->
+      <div class="space-y-6">
+        <!-- 제목 -->
+        <h1 class="text-3xl font-bold text-black">
+          {{ post.title }}
+        </h1>
 
         <!-- 내용 -->
         <div class="prose max-w-none text-black">
@@ -267,7 +265,7 @@
 
 /* 북마크 버튼 */
 .bookmark-section {
-
+  margin-left: auto;
   margin-top: 1rem;
   text-align: right;
   /* 북마크 버튼 오른쪽 정렬 */

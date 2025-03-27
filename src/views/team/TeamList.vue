@@ -36,7 +36,7 @@
         <div class="team-title">{{ post.team.teamName }}</div>
         <div class="team-desc">{{ post.team.teamIntroduce }}</div>
         <div class="team-tags">
-          <span class="tag" :class="{ closed: post.team.projectStatus === 'CLOSED' }">{{ post.team.projectStatus }}</span>
+          <span class="tag" :class="{ closed: post.team.projectStatus === 'CLOSED' }">{{ getStatusText(post.team.projectStatus) }}</span>
         </div>
       </div>
     </div>
@@ -115,6 +115,17 @@ const handleSearch = (searchParams) => {
 
 const detailPage = (no) => {
   router.push(`/teams/${no}`);
+};
+
+const getStatusText = (status) => {
+  switch (status) {
+    case 'OPEN':
+      return '모집중';
+    case 'CLOSED':
+      return '마감';
+    default:
+      return status; // 알 수 없는 상태는 그대로 표시
+  }
 };
 
 onMounted(fetchPostList);
