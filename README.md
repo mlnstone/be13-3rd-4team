@@ -119,22 +119,113 @@ src/
 - **프로젝트 감독**: 플랫폼의 모든 프로젝트 모니터링
 - **기술 관리**: 사용 가능한 기술 태그 관리
 
+<br>
+
+### 회원
+<details>
+  <summary>로그인 구현</summary>
+  
+  ![Image](https://github.com/user-attachments/assets/4cc4516d-0639-4f9b-baf0-434ed190aea3)
+</details>
+
+<details>
+  <summary>이메일 인증 성공/실패 구현</summary>
+    
+  ![Image](https://github.com/user-attachments/assets/775e6ee6-78f1-4efd-92e5-e0f2e6d89408)
+</details>
+
+<br>
+
+### 게시판
+
+<details>
+  <summary>게시글 작성</summary>
+    
+  ![Image](https://github.com/user-attachments/assets/6c4f2f8a-9e94-41a5-afc4-eb09580c7d39)
+</details>
+
+<details>
+  <summary>게시글 수정/삭제</summary>
+    
+  ![Image](https://github.com/user-attachments/assets/1540cf62-e9c3-4973-a988-3b42cc602e67)
+</details>
+
+<details>
+  <summary>이메일 인증 성공/실패 구현</summary>
+    
+  ![Image](https://github.com/user-attachments/assets/775e6ee6-78f1-4efd-92e5-e0f2e6d89408)
+</details>
+
+<details>
+  <summary>북마크</summary>
+    
+  ![Image](https://github.com/user-attachments/assets/3e2b7810-942e-407e-b251-4cbe385d9843)
+</details>
+
+<details>
+  <summary>일반회원 공지사항 작성 불가</summary>
+    
+  ![Image](https://github.com/user-attachments/assets/12f09b33-b982-4455-b302-126eb2ddf85e)
+</details>
+<details>
+  <summary>댓글 이벤트 발생 시 알림 전송, 댓글 렌더링, 좋아요 기능</summary>
+    
+   ![Image](https://github.com/user-attachments/assets/652a5ccc-b314-4246-8ed7-4367b93a9452)
+</details>
+
+
+<br>
+
 ### 쪽지 전송
 
-https://github.com/user-attachments/assets/2cd1bc0a-a29b-4210-a13a-6d26458930e9
+<details>
+  <summary>쪽지 송신</summary>
+    
+   https://github.com/user-attachments/assets/2cd1bc0a-a29b-4210-a13a-6d26458930e9
+</details>
 
-https://github.com/user-attachments/assets/612cc1cc-38e5-4311-b168-5ac7d760c6ba
+<details>
+  <summary>쪽지 수신</summary>
+    
+   https://github.com/user-attachments/assets/612cc1cc-38e5-4311-b168-5ac7d760c6ba
+</details>
 
+<br>
 
 ### 팀 
 
-https://github.com/user-attachments/assets/03732354-2bd0-4bba-bde6-9c573650838a
+<details>
+  <summary>팀 생성</summary>
+    
+   https://github.com/user-attachments/assets/03732354-2bd0-4bba-bde6-9c573650838a
+</details>
 
-https://github.com/user-attachments/assets/0380d50f-d81a-46c6-a6dc-26bc320378cd
+<details>
+  <summary>팀 신청</summary>
+    
+   https://github.com/user-attachments/assets/0380d50f-d81a-46c6-a6dc-26bc320378cd
+</details>
 
-https://github.com/user-attachments/assets/659c1bdc-7b41-41c4-97ff-2a228c5e6a1e
+<details>
+  <summary>팀원 목록 조회</summary>
+    
+   https://github.com/user-attachments/assets/659c1bdc-7b41-41c4-97ff-2a228c5e6a1e
+</details>
 
-https://github.com/user-attachments/assets/0d110c39-14cd-4657-a333-279430e990eb
+<details>
+  <summary>프로젝트 생성</summary>
+    
+   https://github.com/user-attachments/assets/0d110c39-14cd-4657-a333-279430e990eb
+</details>
 
-https://github.com/user-attachments/assets/c142fc5b-7455-4187-94e3-5aaaf3d190c2
+<details>
+  <summary>프로젝트 내 스케줄 생성</summary>
+  
+  https://github.com/user-attachments/assets/c142fc5b-7455-4187-94e3-5aaaf3d190c2
+</details>
+
+
+
+
+
 
