@@ -6,11 +6,11 @@
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">유저 이메일</label>
-            <input type="text" class="form-control" id="email" v-model.trim="formData.email" readonly>
+            <input type="text" class="form-control" id="email" v-model.trim="formData.email">
         </div>
         <div class="mb-3">
             <label for="phoneNum" class="form-label">전화번호</label>
-            <input type="text" class="form-control" id="phoneNum" v-model.trim="formData.phoneNum" readonly>
+            <input type="text" class="form-control" id="phoneNum" v-model.trim="formData.phoneNum">
         </div>
         <div class="mb-3">
             <label for="status" class="form-label">상태</label>
@@ -20,23 +20,27 @@
                 <option value="DELETED">삭제</option>
             </select>
         </div>
-        <button @click="userStore.goToUserComments" @mouseover="hoverIn($event)" @mouseout="hoverOut($event)"
-            style="background-color: white; color: #4c6ef5; border: 1px solid #4c6ef5; border-radius: 6px; padding: 8px 14px; margin-bottom: 10px; margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer;">
-            모든 댓글 가져오기
-        </button>
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary" @click.stop="updateUser">개인정보 수정</button>
+        </div>
+        <div class="mb-3">
+            <button @click="userStore.goToUserComments" @mouseover="hoverIn($event)" @mouseout="hoverOut($event)"
+                style="background-color: white; color: #4c6ef5; border: 1px solid #4c6ef5; border-radius: 6px; padding: 8px 14px; margin-bottom: 10px; margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer;">
+                모든 댓글 가져오기
+            </button>
 
-        <button @click="userStore.goToUserPosts" @mouseover="hoverIn($event)" @mouseout="hoverOut($event)"
-            style="background-color: white; color: #4c6ef5; border: 1px solid #4c6ef5; border-radius: 6px; padding: 8px 14px; margin-bottom: 10px; margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer;">
-            모든 게시글 가져오기
-        </button>
+            <button @click="userStore.goToUserPosts" @mouseover="hoverIn($event)" @mouseout="hoverOut($event)"
+                style="background-color: white; color: #4c6ef5; border: 1px solid #4c6ef5; border-radius: 6px; padding: 8px 14px; margin-bottom: 10px; margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer;">
+                모든 게시글 가져오기
+            </button>
 
-        <button @click="userStore.goToUserProjects" @mouseover="hoverIn($event)" @mouseout="hoverOut($event)"
-            style="background-color: white; color: #4c6ef5; border: 1px solid #4c6ef5; border-radius: 6px; padding: 8px 14px; margin-bottom: 10px; margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer;">
-            모든 프로젝트 가져오기
-        </button>
-        <!-- <button type="submit" class="btn btn-primary" v-text="submitButtonText"></button> -->
-        <!-- <button type="submit" class="btn btn-danger">삭제</button> -->
+            <button @click="userStore.goToUserProjects" @mouseover="hoverIn($event)" @mouseout="hoverOut($event)"
+                style="background-color: white; color: #4c6ef5; border: 1px solid #4c6ef5; border-radius: 6px; padding: 8px 14px; margin-bottom: 10px; margin-right: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer;">
+                모든 프로젝트 가져오기
+            </button>
+        </div>
         <hr>
+        <h2>비밀번호 변경</h2>
         <div class="form-floating">
             <p id="isSentText" style="color: green;"></p>
         </div>
@@ -68,6 +72,7 @@ import { reactive, toRaw, watch } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
 import apiClient from '@/api';
+import router from '@/router';
 
 const userStore = useUserStore();
 
@@ -99,19 +104,54 @@ let isSentCode = false;
 
 const authStore = useAuthStore();
 
-const authEmailSend = () => {
-    const valid_email = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 정규 표현식
-    if (formData.email === '' || valid_email.test(formData.email) === false) {
+const updateUser = async () => {
+    try {
+        console.log('updateUser()');
+        console.log(toRaw(formData));
+        const response = await apiClient.post(`/update`, toRaw(formData));
 
-        alert('올바른 이메일을 입력해주세요');
-        return;
+        if (response.status === 200) {
+            alert('유저 정보가 성공적으로 수정되었습니다.');
+        } else {
+            alert('유저 정보 수정 실패');
+        }
+    } catch (error) {
+        alert('유저 정보 수정 실패');
+    }
+    
+
+}
+
+const authEmailSend = async () => {
+
+
+    try {
+
+        const response = await apiClient.post('/matchEmail', {username: formData.username, email: formData.email});
+
+        console.log(response);
+        if (response.status !== 200) {
+            alert('개인 정보로 등록된 이메일이 아닙니다. 다시 확인해주세요.');
+            return;
+        }
+
+        const valid_email = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 정규 표현식
+        if (formData.email === '' || valid_email.test(formData.email) === false) {
+
+            alert('올바른 이메일을 입력해주세요');
+            return;
+        }
+
+        isSentCode = true;
+
+        document.getElementById('isSentText').innerText = '인증코드 전송 완료';
+
+        authStore.authEmailSend(toRaw(formData));
+    } catch (error) {
+        alert('개인 정보로 등록된 이메일이 아닙니다. 다시 확인해주세요.');
     }
 
-    isSentCode = true;
-
-    document.getElementById('isSentText').innerText = '인증코드 전송 완료';
-
-    authStore.authEmailSend(toRaw(formData));
+    
 };
 
 const authEmailValidate = async () => {
@@ -171,4 +211,12 @@ const updatePassword = async () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+h2 {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30px;
+}
+</style>
