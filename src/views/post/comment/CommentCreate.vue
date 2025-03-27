@@ -6,7 +6,7 @@
               @input="autoResize"
     ></textarea>
     <div class="comment-write-btnBox">
-      <button @click="submitComment" class="comment-create-btn">댓글 등록</button>
+      <button @click="submitComment" class="comment-create-btn" :disabled="props.disabled" >댓글 등록</button>
     </div>
   </div>
 </template>
@@ -20,6 +20,10 @@ const props = defineProps({
   postNo: {
     type: Number,
     required: true
+  },
+  disabled: {
+    type: Boolean,
+    default: false  // 기본값은 false (수정 중 아님)
   }
 });
 
@@ -66,6 +70,7 @@ const submitComment = async () => {
 };
 </script>
 
+
 <style scoped>
 textarea {
   width: 100%;
@@ -97,8 +102,14 @@ textarea {
   padding: 10px 10px;
   border-radius: 10px;
   cursor: pointer;
-  width: 110px;
-  height: 45px;
+  width: 100px;
+  height: 40px;
+}
+.comment-create-btn:disabled {
+  background-color: #b0b0b0;
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .comment-create-btn:hover {
