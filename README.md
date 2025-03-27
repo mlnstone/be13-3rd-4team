@@ -197,7 +197,7 @@ src/
 <details>
   <summary>팀 생성</summary>
     
-   ![Image](https://github.com/user-attachments/assets/459b9586-6d94-4ab7-8c5e-773c06336ce4)
+   ![Image](https://github.com/user-attachments/assets/923ed858-aeec-4f39-8f03-3d9d10d2c158)
 </details>
 
 <details>
@@ -221,8 +221,8 @@ src/
 
 <details>
   <summary>프로젝트 내 스케줄 생성</summary>
-  
- ![Image](https://github.com/user-attachments/assets/923ed858-aeec-4f39-8f03-3d9d10d2c158)
+   ![Image](https://github.com/user-attachments/assets/459b9586-6d94-4ab7-8c5e-773c06336ce4)
+
 </details>
 
 
