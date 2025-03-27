@@ -10,7 +10,7 @@
                 <span class="detail-label">상태:</span>
                 <span class="detail-value"
                     :class="[project.projectStatus === 'OPEN' ? 'status-open' : project.projectStatus === 'IN_PROGRESS' ? 'status-in-progress' : 'status-closed']">
-                    {{ project.projectStatus }}
+                    {{ getStatusText(project.projectStatus) }}
                 </span>
             </div>
             <div class="detail-item content-item">
@@ -66,6 +66,18 @@ const routeProjectPage = (no) => {
 const routeTeamPage = (no) => {
     router.push(`/teams/${no}`);
 };
+
+const getStatusText = (status) => {
+  switch (status) {
+    case 'OPEN':
+      return '모집중';
+    case 'CLOSED':
+      return '모집마감';
+    default:
+      return status; // 알 수 없는 상태는 그대로 표시
+  }
+};
+
 </script>
 
 <style scoped>

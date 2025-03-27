@@ -8,24 +8,39 @@
                 <div>
                     <h3 class="font-semibold">{{ team.name }}</h3>
                     <p class="project-tags">
-                        <span class="tag">{{ getStatusText(team.status) }}</span>
+                        <span class="tag" :class="{closed: project.projectStatus === 'CLOSED' }">{{ getStatusText(team.status) }}</span>
                         <span class="d"> 팀장 {{ leaderUsername }}</span>
                     </p>
                 </div>
+              <div class="space-y-6 margin-left">
+                  <!-- 팀 스케줄 -->
+                  <div  v-if="isMember">
+                      <router-link :to="{ name: 'ScheduleList', params: { teamNo: team.no } }">
+                          <button class="view-more-button">팀 스케줄</button>
+                      </router-link>
+                  </div>
+                  <!-- 가입 신청 -->
+                  <div v-else-if="(team.status === 'OPEN') && !isLeader || (team.status === 'OPEN') && !isMember">
+                      <button
+                          class="view-more-button"
+                          @click="confirmJoin(team.no)">가입 신청</button>
+                  </div>
+              </div>
             </div>
             <!-- 내용 -->
             <div>
                 <h4>{{ team.info }}</h4>
             </div>
             <!-- 프로젝트 -->
-            <div class="space-y-6 center">
+            <div class="space-y-6 center scale-up-center">
                 <div v-if="project && project.name">
                     <router-link :to="{ name: 'projects/no', params: { no: project.teamNo } }">
-                        <button class="view-more-button">프로젝트</button>
+                        <button class="view-more-button">프로젝트 보러가기</button>
                     </router-link>
                 </div>
 
                 <div v-else>
+                  <br><br>
                     <h2>아직 프로젝트가 생성되지 않았습니다.</h2>
                     <div class="center" v-if="isLeader">
                         <router-link :to="{ name: 'projects/add', query: { teamNo: team.no } }">
@@ -35,18 +50,7 @@
                 </div>
             </div>
             <br><br>
-            <!-- 팀 스케줄 -->
-            <div class="space-y-6" v-if="isMember">
-                        <router-link :to="{ name: 'ScheduleList', params: { teamNo: team.no } }">
-                            <button class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none">팀 스케줄</button>
-                        </router-link>
-                    </div>
-                <!-- 가입 신청 -->
-                <div class="space-y-6" v-if="(team.status === 'OPEN') && !isLeader || (team.status === 'OPEN') && !isMember">
-                    <button
-                        class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
-                        @click="confirmJoin(team.no)">가입 신청</button>
-                </div>
+            
 
             <div class="right" v-if="isLeader">
                 <button
@@ -394,4 +398,13 @@ defineExpose({
     align-self: center;
     margin-top: 16px;
 }
+
+.tag.closed {
+  background-color: #ff4d4f;
+}
+
+.margin-left {
+  margin-left: auto;
+}
+
 </style>
