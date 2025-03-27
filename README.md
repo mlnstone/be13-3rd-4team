@@ -118,3 +118,23 @@ src/
 - **콘텐츠 중재**: 신고된 콘텐츠 처리
 - **프로젝트 감독**: 플랫폼의 모든 프로젝트 모니터링
 - **기술 관리**: 사용 가능한 기술 태그 관리
+
+### 쪽지 전송
+
+https://github.com/user-attachments/assets/2cd1bc0a-a29b-4210-a13a-6d26458930e9
+
+https://github.com/user-attachments/assets/612cc1cc-38e5-4311-b168-5ac7d760c6ba
+
+
+### 팀 
+
+https://github.com/user-attachments/assets/03732354-2bd0-4bba-bde6-9c573650838a
+
+https://github.com/user-attachments/assets/0380d50f-d81a-46c6-a6dc-26bc320378cd
+
+https://github.com/user-attachments/assets/659c1bdc-7b41-41c4-97ff-2a228c5e6a1e
+
+https://github.com/user-attachments/assets/0d110c39-14cd-4657-a333-279430e990eb
+
+https://github.com/user-attachments/assets/c142fc5b-7455-4187-94e3-5aaaf3d190c2
+
