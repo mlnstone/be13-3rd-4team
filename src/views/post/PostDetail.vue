@@ -9,9 +9,8 @@
         <div>
           <h3 class="font-semibold">{{ post.userName }}</h3>
           <p class="text-gray-500 text-sm">
-            {{ new Date(post.createdAt).toLocaleDateString() }}
+            {{ formatDate(post.createdAt)}}
           </p>
-
         </div>
       </div>
 
@@ -34,14 +33,16 @@
 
         <!-- 내용 -->
         <div class="prose max-w-none text-black">
-          <p class="text-gray-500 leading-relaxed">
+          <p style="white-space: pre-line;" class="text-gray-500 leading-relaxed">
             {{ post.content }}
           </p>
         </div>
       </div>
 
       <!-- 수정 삭제 -->
-      <div>
+
+      <div v-if="post.userName === currentUsername || currentUser.value?.role === 'ADMIN'">
+
         <br />
         <button class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
           @click="goToEditPage">수정</button>
@@ -50,7 +51,9 @@
       </div>
 
       <!-- 댓글 부분 -->
-      <div v-if="post.boardType !== 'NOTICE'">
+
+      <div v-if="post.boardType === 'FREE'" class="comment-section">
+
         <br />
         <span>댓글 {{ post.commentCount }} 개</span>
         <br />
@@ -71,19 +74,18 @@
               @refreshComments="() => {}"
             />
           </div>
-      
-      
     </div>
   </div>
 </template>
 
 <script setup>
     import BackButton from '@/components/common/BackButton.vue';
-    import { nextTick, ref, onMounted } from 'vue';
+    import {nextTick, ref, onMounted, onActivated, computed} from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import dayjs from 'dayjs';
     import apiClient from '@/api';
-    import { useAuthStore } from '@/stores/auth.js';
+    import { useAuthStore} from '@/stores/auth.js';
+    import ProjectInfo from '@/components/project/ProjectInfo.vue';
     import CommentCreate from "@/views/post/comment/CommentCreate.vue";
     import CommentList from "@/views/post/comment/CommentList.vue";
 
@@ -93,6 +95,11 @@
     const post = ref({});
     const commentList = ref(null);
     const authStore = useAuthStore();
+    const currentUser = computed(() => authStore.getUserInfo());
+    const currentUsername = ref(authStore.getUsernameFromToken());
+    const project = ref({}); // 프로젝트 정보
+   
+    
 
     const fetchPostDetail = async () => {
     try {
@@ -104,10 +111,11 @@
         const bookmarkState = localStorage.getItem(`bookmark_${postNo}`);
         if (bookmarkState !== null) {
         post.value.bookmarked = bookmarkState === 'true';
+        }else{
+          post.value.bookmarked = false;
         }
 
         if(post.value.boardType === 'PROJECT_RECRUIT'){
-            console.log("안녕");
             await projectInfo();
         }
 
@@ -174,11 +182,13 @@
     };
 
     onMounted(fetchPostDetail);
+    // 페이지 재 진입 시 api를 다시 불러옴
+    onActivated(fetchPostDetail);
 
     const formatDate = (dateString) => {
       return dayjs(dateString).format('YYYY-MM-DD HH:mm:ss');
     };
-   
+    
 </script>
 
 <style>
@@ -249,6 +259,10 @@
 .max-w-none {
   max-width: none;
   /* 본문 폭 제한 제거 */
+}
+
+.comment-section{
+  margin-top: 60px;
 }
 
 /* 북마크 버튼 */

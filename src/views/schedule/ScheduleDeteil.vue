@@ -22,10 +22,10 @@
             </div>
             <div class="schedule-dates">
                 <p class="text-gray-500 text-sm">
-                    시작 시간: {{ new Date(schedules.startDate).toLocaleDateString() }}
+                    시작 시간: {{ formatDate(schedules.startDate)}}
                 </p>
                 <p class="text-gray-500 text-sm">
-                    마감 시간: {{ new Date(schedules.endDate).toLocaleDateString() }}
+                    마감 시간: {{ formatDate(schedules.endDate)}}
                 </p>
             </div>
             <div>
@@ -51,6 +51,7 @@ import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';
 import { useAuthStore } from '@/stores/auth';
 import BackButton from '@/components/common/BackButton.vue';
+import dayjs from "dayjs";
 
 const route = useRoute();
 const router = useRouter();
@@ -110,6 +111,10 @@ const getStatusText = (status) => {
 };
 
 onMounted(fetchSchedule);
+
+const formatDate = (dateString) => {
+  return dayjs(dateString).format('YYYY-MM-DD HH:mm:ss');
+};
 </script>
 
 <style>
