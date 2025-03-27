@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { jwtDecode } from 'jwt-decode';
+import { eventBus } from '@/utils/eventBus'; // 추가하세요
+
 
 export const useAuthStore = defineStore('auth', () => {
     // 페이지 이동하기 위해 router를 추가
@@ -36,6 +38,9 @@ export const useAuthStore = defineStore('auth', () => {
                 userInfo.role = parseToken.role;
 
                 localStorage.setItem('user', JSON.stringify({ username: parseToken.username }));
+
+                eventBus.emit('login-success', userInfo.username);
+
 
                 console.log('로그인 성공');
                 console.log('username: ', userInfo.username);
