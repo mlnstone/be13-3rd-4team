@@ -197,13 +197,14 @@ src/
 <details>
   <summary>팀 생성</summary>
     
- ![Image](https://github.com/user-attachments/assets/e201aec3-1ef6-4259-997c-d29fc56516c7)
+   ![Image](https://github.com/user-attachments/assets/459b9586-6d94-4ab7-8c5e-773c06336ce4)
 </details>
 
 <details>
   <summary>팀 신청</summary>
     
-  ![Image](https://github.com/user-attachments/assets/459b9586-6d94-4ab7-8c5e-773c06336ce4)
+
+  ![Image](https://github.com/user-attachments/assets/e201aec3-1ef6-4259-997c-d29fc56516c7)
 </details>
 
 <details>
