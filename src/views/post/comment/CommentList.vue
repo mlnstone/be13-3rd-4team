@@ -16,6 +16,7 @@
           :postStatus="postStatus"
           :comment="comment"
           :postNo="postNo"
+          @editing="(val) => $emit('editing', val)"
           @commentAdded="handleCommentAdded"
           @commentUpdated="fetchComments"
           @commentDeleted="handleCommentDeleted"

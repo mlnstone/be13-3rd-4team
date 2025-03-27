@@ -59,6 +59,7 @@
             <CommentCreate
               v-if="post.postNo"
               :postNo="Number(post.postNo)"
+              :disabled="isEditing"
               @commentAdded="handleCommentAdded"
             />
 
@@ -69,6 +70,7 @@
               :postStatus="post.postStatus"
               @commentUpdated="fetchPostDetail"
               @commentDeleted="handleCommentDeleted"
+              @editing="handleEditing"
               @refreshComments="() => {}"
             />
           </div>
@@ -92,6 +94,7 @@
     const postNo = Number(route.params.postNo);
     const post = ref({});
     const commentList = ref(null);
+    const isEditing = ref(false);
     const authStore = useAuthStore();
     const currentUser = computed(() => authStore.getUserInfo());
     const currentUsername = ref(authStore.getUsernameFromToken());
@@ -165,6 +168,10 @@
     } catch (error) {
         alert('게시글 삭제에 실패했습니다.');
     }
+    };
+
+    const handleEditing = (editing) => {
+      isEditing.value = editing;
     };
 
     const handleCommentAdded = () => {
@@ -364,4 +371,6 @@
   border-radius: 1rem;
   /* 부드러운 둥근 처리 */
 }
+
+
 </style>
