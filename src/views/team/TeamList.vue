@@ -1,17 +1,23 @@
 <template>
   <div class="team-wrapper">
     <!-- 상단 카테고리 바 -->
-    <div class="category-bar">
-      <router-link to="/teams">
-        <button class="category-button" :class="{ active: isActive('/teams') }">팀</button>
-      </router-link>
-      <router-link to="/projects">
-        <button class="category-button" :class="{ active: isActive('/projects') }">프로젝트</button>
-      </router-link>
-      <router-link to="/teams/add">
-        <button class="category-button" :class="{ active: isActive('/teams/write') }">팀 생성</button>
-      </router-link>
+    <div class="category-bar-wrapper">
+      <div class="category-bar">
+        <router-link to="/teams">
+          <button class="category-button" :class="{ active: isActive('/teams') }">팀</button>
+        </router-link>
+        <router-link to="/projects">
+          <button class="category-button" :class="{ active: isActive('/projects') }">프로젝트</button>
+        </router-link>
+      </div>
+      <div class="category-action">
+        <router-link to="/teams/add">
+          <button class="category-button" :class="{ active: isActive('/teams/write') }">팀 생성</button>
+        </router-link>
+      </div>
     </div>
+
+
 
     <!-- 검색 필터 -->
     <SearchBar :size-options="sizeOptions" :post-sort-options="postSortOptions" :select-options="selectOptions"
@@ -121,6 +127,22 @@ onMounted(fetchPostList);
   padding: 1.5rem;
   min-height: 100vh;
 }
+
+.category-bar-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-bar {
+  display: flex;
+  gap: 10px; /* 버튼 간격 조절 */
+}
+
+.category-action {
+  /* 필요 시 마진이나 패딩 조정 가능 */
+}
+
 
 /* 카테고리 바 */
 .category-bar {
