@@ -87,7 +87,9 @@
                     @click="showNoti = !showNoti">
                     <i class="fi fi-ss-bell-ring" style="color: #e67700;"></i>
                 </button>
-                <NotificationBox v-if="showNoti" class="position-absolute end-0 mt-2" />
+                <div class="position-absolute end-0 mt-2" :style="{ display: showNoti ? 'block' : 'none' }">
+                    <NotificationBox />
+                </div>
             </li>
         </ul>
         <div class="col-md-3 text-end">
@@ -134,6 +136,7 @@ onMounted(() => {
 
 <style scoped>
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
 /* 현재 URL과 정확하게 일치하는 경우에만 스타일이 적용된다. */
 .router-link-exact-active {
     color: rgb(108, 117, 125);

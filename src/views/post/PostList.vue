@@ -5,9 +5,6 @@
             <button @click="changeBoardType('NOTICE')" class="category-button">공지</button>
             <button @click="changeBoardType('PROJECT_RECRUIT')" class="category-button">프로젝트</button>
             <button @click="changeBoardType('FREE')" class="category-button">자유</button>
-            <router-link to="/posts/add">
-                <button class="category-button">글 작성</button>
-            </router-link>
         </div>
 
         <!-- 검색바 -->
@@ -44,6 +41,11 @@
                     </table>
                 </div>
             </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end;">
+          <router-link to="/posts/add">
+            <button class="category-button">글 작성</button>
+          </router-link>
         </div>
 
         <!-- 페이징 -->

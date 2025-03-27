@@ -261,7 +261,7 @@ const router = createRouter({
         // admin
         {
           path: "",
-          name: "admin",
+          name: "admin-home",
           component: AdminMain,
         },
         {
@@ -340,44 +340,47 @@ const router = createRouter({
 // 네비게이션 가드
 //  - 라우팅이 일어날 때 프로그래밍 방식으로 네비게이션을 안전하게 보호하는 기능을 수행한다.
 //  - 네비게이션 가드는 라우트하는 경로가 바뀔 때 반응한다.
-router.beforeEach((to, form, next) => {
+router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const userInfo = authStore.userInfo;
 
   console.log("to: ", to);
-  console.log("from: ", form);
+  console.log("from: ", from);
 
-  // 로그인 페이지에서 회원가입 페이지로 이동할 때는 그대로 이동한다. => 무한 리다이렉트 방지
-  if (
-    to.name === "signup" ||
-    to.name === "updatePassword" ||
-    to.name === "admin-login"
-  ) {
-    next();
-  }
+  // 인증이 필요없는 페이지 목록
+  const publicPages = ["login", "signup", "updatePassword", "admin-login"];
+  const isPublicPage = publicPages.includes(to.name);
 
-  // 로그인 페이지가 아니고, 로그인 상태가 아니면 로그인 페이지로 리다이렉트한다.
-  if (to.name !== "login" && !authStore.isLoggedIn) {
-    next({ name: "login" });
-  }
-
-  if (to.path.startsWith("/admin") && to.name !== "admin-login") {
-
-    if (authStore.isLoggedIn && userInfo.role !== "ADMIN") {
-
-      alert("관리자 권한이 필요합니다.");
-
-      return next({ name: "home" });
-    } else if (!authStore.isLoggedIn) {
-
-      alert("로그인이 필요합니다.");
-
-      return next({ name: "admin-login" });
-    }
-
+  // 1. 공개 페이지(로그인, 회원가입, 비밀번호 변경, 관리자 로그인)는 모두 접근 가능
+  if (isPublicPage) {
     return next();
   }
 
+  // 2. 비공개 페이지에 대한 로그인 검증
+  if (!authStore.isLoggedIn) {
+    // 관리자 페이지에 접근하려는 경우 관리자 로그인으로 리다이렉트
+    if (to.path.startsWith("/admin")) {
+      return next({ name: "admin-login" });
+    }
+    // 일반 페이지에 접근하려는 경우 일반 로그인으로 리다이렉트
+    return next({ name: "login" });
+  }
+
+  // 3. 관리자 페이지에 대한 권한 검증 
+  if (to.path.startsWith("/admin") && !isPublicPage) {
+    if (userInfo.role !== "ADMIN") {
+      alert("관리자 권한이 필요합니다.");
+      return next({ name: "home" });
+    }
+  }
+
+  // 4. 기타 인증 필요 페이지는 requiresAuth 메타 데이터로 관리
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+    alert("로그인이 필요한 페이지입니다.");
+    return next({ name: "login" });
+  }
+
+  // 모든 검증을 통과한 경우 요청한 페이지로 이동
   next();
 });
 
