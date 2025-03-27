@@ -29,7 +29,9 @@
                                 <td class="body-cell"> {{ post.username }}</td>
                                 <td class="body-cell">{{ post.isLeader ? '팀장' : '팀원' }}</td>
                                 <td class="body-cell">{{ post.role}}</td>
-                                <td v-if="leader" class="body-cell" @click="passLeaderConfirm(post.no)">✅</td>
+                                <td class="body-cell" v-if="leader">
+                                    <span v-if="!post.isLeader" @click="passLeaderConfirm(post.no)">✅</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -119,6 +121,10 @@ const passLeader = async (no) => {
     }
 }
 
+// const changeRole = () =>{
+//     if (confirm('역할명 변경')) {
+//     }
+// }
 </script>
 
 <style scoped>
