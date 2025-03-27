@@ -15,7 +15,7 @@
 
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <RouterLink class="nav-link" style="color: red;">배포 테스트용</RouterLink>
+                <div class="nav-link" style="color: red;">배포 테스트용</div>
             </li>
             <li class="nav-item">
                 <!-- 화면 전환에 필요한 링크를 생성한다. -->
