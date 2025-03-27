@@ -90,9 +90,10 @@ const deleteMessage = async (messageNo) => {
     const response = await apiClient.delete(`/messages/${messageNo}`);
 
     if (response.status === 200) {
-      alert('쪽지가 삭제되었습니다.');
-      loadMessages(currentTab.value, currentPage.value);
-    }
+  alert('쪽지가 삭제되었습니다.');
+  await loadMessages(currentTab.value, currentPage.value);
+  await getUnreadMessages(); // 💡 삭제 후 읽지 않은 쪽지 수 갱신
+}
   } catch (error) {
     console.error('쪽지 삭제 실패:', error);
     alert('쪽지 삭제 실패');
