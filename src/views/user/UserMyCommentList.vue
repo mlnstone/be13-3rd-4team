@@ -18,7 +18,11 @@
       <tbody>
       <tr v-for="(comment, index) in comments" :key="comment.commentNo">
         <td>{{ currentPage * 10 + index + 1 }}</td>
-        <td>{{ comment.content }}</td>
+        <td>
+          <router-link :to="`/posts/${comment.postNo}`" class="post-title-link">
+            {{ comment.content }}
+          </router-link>
+        </td>
         <td>{{ comment.postNo }}</td>
         <td>{{ comment.likeCount }}</td>
         <td>{{ formatDate(comment.createdAt) }}</td>
@@ -171,5 +175,15 @@ onMounted(fetchComments);
 
 .back-btn:hover {
   background-color: #545b62;
+}
+
+.post-title-link {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.post-title-link:hover {
+  text-decoration: underline;
+  font-weight: bold;
 }
 </style>
