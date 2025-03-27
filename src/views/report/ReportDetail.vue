@@ -45,10 +45,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api';
 
 const route = useRoute();
+const router = useRouter();
 const reportNo = route.params.no;
 
 const report = ref(null);
@@ -108,6 +109,7 @@ const updateReport = async () => {
     const response = await apiClient.put(`/reports/${reportNo}`, updateData, config);
     console.log("신고 수정 성공:", response.data);
     alert("수정된 신고 내용이 저장되었습니다.");
+    router.push('/reports');
   } catch (error) {
     console.error("신고 수정 실패:", error);
     alert("수정하는 데 실패했습니다.");
