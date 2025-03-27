@@ -86,7 +86,7 @@ const fetchReports = async (page = 1, reset = false) => {
       }
     };
 
-    let url = ':8087/reports';
+    let url = '/reports';
     if (isSearching.value && !reset) {
       url = `/reports/user/${searchUserId.value}`;
     } else {
