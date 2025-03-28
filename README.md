@@ -241,8 +241,50 @@ src/
 
 <br><br>
 
-# UI/UX 테스트 명세서
+# 화면 설계서(Figma)
+<details>
+  <summary>홈 페이지</summary>
+  
+<!-- summary 아래 한칸 공백 두어야함 -->
+![홈 페이지](https://github.com/user-attachments/assets/527b4d43-822d-4d5f-b91f-c6d6ca47154b)
+</details>
+<details>
+<summary>유저 페이지</summary>
+  
+<!-- summary 아래 한칸 공백 두어야함 -->
+![유저 페이지1](https://github.com/user-attachments/assets/2130e0e5-2f3a-4f18-bf30-e00d27d9dda2)
+![유저 페이지2](https://github.com/user-attachments/assets/89b35749-120b-41f8-a95c-ccd2407d109d)
+</details>
+<details>
+<summary>팀 페이지</summary>
 
+<!-- summary 아래 한칸 공백 두어야함 -->
+![팀 페이지1](https://github.com/user-attachments/assets/1c4306e4-0525-4e09-8d96-10f86a3821e0)
+![팀 페이지2](https://github.com/user-attachments/assets/a2fb2fd9-b646-4ef4-b0a4-1bc36baf01a9)
+</details>
+<details>
+<summary>프로젝트 페이지</summary>
+
+<!-- summary 아래 한칸 공백 두어야함 -->
+![프로젝트 페이지](https://github.com/user-attachments/assets/f4938f51-78eb-4862-99c2-eeff2cf71bde)
+</details>
+<details>
+<summary>게시판 페이지</summary>
+
+<!-- summary 아래 한칸 공백 두어야함 -->
+![게시판 페이지1](https://github.com/user-attachments/assets/8f1b653c-ee32-4754-8f16-f5d9aa59ba37)
+![게시판 페이지2](https://github.com/user-attachments/assets/2a9060ac-9709-4b73-97c6-efb11fb3bf73)
+</details>
+<details>
+<summary>쪽지 페이지</summary>
+
+<!-- summary 아래 한칸 공백 두어야함 -->
+![쪽지 페이지](https://github.com/user-attachments/assets/aeb7b657-81d5-4f4f-a232-48b2b0674166)
+</details>
+
+<br><br>
+
+# UI/UX 테스트 명세서
 <details>
   <summary>UI/UX 테스트 명세서</summary>
   
