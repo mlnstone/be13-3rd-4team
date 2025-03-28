@@ -244,6 +244,8 @@ src/
 # UI/UX 테스트 명세서
 
 <details>
+  <summary>UI/UX 테스트 명세서</summary>
+  
 <!-- summary 아래 한칸 공백 두어야함 -->
 [UI_UX 테스트 명세서.pdf](https://github.com/user-attachments/files/19500514/UI_UX.pdf)
 
