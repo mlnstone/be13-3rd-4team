@@ -245,7 +245,8 @@ src/
 
 <details>
 <!-- summary 아래 한칸 공백 두어야함 -->
-[UI_UX 테스트 명세서.pdf](https://github.com/user-attachments/files/19500476/2.-.UI_UX.pdf)
+[UI_UX 테스트 명세서.pdf](https://github.com/user-attachments/files/19500514/UI_UX.pdf)
+
 
 ![UI_UX_1](https://github.com/user-attachments/assets/030827af-5b65-4ebe-b4d4-e6487e296b7d)
 ![UI_UX_2](https://github.com/user-attachments/assets/e7868fe6-c1eb-4d23-8643-2a5970b0ec6f)
