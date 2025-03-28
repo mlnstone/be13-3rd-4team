@@ -214,6 +214,18 @@ src/
 </details>
 
 <details>
+  <summary>팀원 역할명 변경</summary>
+  
+  ![Animation](https://github.com/user-attachments/assets/39d55b57-90ec-4aff-855a-e3153b88f1ee)
+</details>
+
+<details>
+  <summary>팀장 권한 위임</summary>
+  
+  ![Animationjh](https://github.com/user-attachments/assets/734b261c-4066-4c3b-843a-6606c7fb7c8c)
+</details>
+
+<details>
   <summary>프로젝트 생성</summary>
     
   ![Image](https://github.com/user-attachments/assets/b57d7fc3-7879-4efa-82f5-a1ce6c1d0c74)
